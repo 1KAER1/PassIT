@@ -3,9 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/PassIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/add_button.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/basic_button.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/custom_input.xml" value="0.4945" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_high.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_high_selected.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_high_selector.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_medium.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_medium_selected.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_medium_selector.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_normal.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_normal_selected.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_normal_selector.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_selected.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_selector.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_text_color.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/radio_unselected.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_subject.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_main.xml" value="0.33" />
       </map>

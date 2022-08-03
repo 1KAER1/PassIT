@@ -16,5 +16,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        addSubjectButton = findViewById(R.id.subjectsBtn);
+
+        addSubjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSubjects();
+            }
+        });
+
     }
+
+    public void openSubjects() {
+        Intent intent = new Intent(this, AddSubject.class);
+        startActivity(intent);
+    }
+
 }
