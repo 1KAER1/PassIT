@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">PassIT</string>
+    
+    <string-array name="days">
+        <item>PONIEDZIAŁEK</item>
+        <item>WTOREK</item>
+        <item>ŚRODA</item>
+        <item>CZWARTEK</item>
+        <item>PIĄTEK</item>
+        <item>SOBOTA</item>
+        <item>NIEDZIELA</item>
+    </string-array>
 </resources>
