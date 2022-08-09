@@ -19,7 +19,8 @@
     <color name="normalImportanceSelected">#116107</color>
     <color name="mediumImportanceSelected">#75670B</color>
     <color name="highImportanceSelected">#670909</color>
-    <color name="hintColor">#77747A</color>
+    <color name="hintColor">#5C595E</color>
     <color name="unselectedButton">#43394C</color>
     <color name="selectedButton">#74299F</color>
+    <color name="removeButton">#B646F6</color>`
 </resources>

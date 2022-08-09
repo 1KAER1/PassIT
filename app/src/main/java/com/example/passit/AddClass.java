@@ -7,12 +7,14 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -27,7 +29,6 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
     private ArrayList<String> dayList = new ArrayList<>();
     private ArrayList<String> hourList = new ArrayList<>();
     private Button addDayButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,24 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
         classTimeRVAdapter = new ClassTimeRVAdapter(dayList, hourList);
         classTimeRV.setAdapter(classTimeRVAdapter);
 
-        addDayButton.setOnClickListener(view -> addItem(dayPicker.getSelectedItem().toString(), timeButton.getText().toString()));
+        addDayButton.setOnClickListener(view -> {
+            String pickedDay = dayPicker.getSelectedItem().toString();
+            String pickedTime = timeButton.getText().toString();
+
+            if (TextUtils.isEmpty(pickedTime)) {
+                Toast.makeText(getApplicationContext(), "Wybierz godzinę!",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                if (classTimeRVAdapter.getItemCount() < 6) {
+                    Toast.makeText(getApplicationContext(), "Number of items in RV: " + classTimeRVAdapter.getItemCount(),
+                            Toast.LENGTH_SHORT).show();
+                    addItem(pickedDay, pickedTime);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Dodano już maksymalną liczbę dat!",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public void popTimePicker(View view) {
@@ -57,11 +75,10 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
             timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
         };
 
-        int style = AlertDialog.THEME_HOLO_DARK;
+        int style = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, style, onTimeSetListener, hour, minute, true);
 
-        timePickerDialog.setTitle("Wybierz godzinę");
         timePickerDialog.show();
     }
 

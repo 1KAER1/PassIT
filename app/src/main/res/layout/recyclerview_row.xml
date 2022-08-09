@@ -1,12 +1,13 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="50dp"
-    android:layout_marginEnd="50dp"
+    android:layout_marginStart="10dp"
     android:layout_marginTop="4dp"
+    android:layout_marginEnd="10dp"
     android:layout_marginBottom="4dp"
-    app:cardCornerRadius="6dp"
+    app:cardCornerRadius="15dp"
     app:cardElevation="9dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,14 +17,16 @@
 
         <TextView
             android:id="@+id/dayName"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:padding="12dp"
             android:text="PONIEDZIAŁEK"
-            android:textSize="16sp"
             android:textAllCaps="true"
             android:textColor="@color/textColor"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,20 +35,37 @@
 
         <TextView
             android:id="@+id/classesHour"
-            android:layout_width="wrap_content"
+            android:layout_width="66dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:padding="12dp"
-            android:textSize="16sp"
             android:text="00:00"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/textColor"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.142"
             app:layout_constraintStart_toEndOf="@+id/dayName"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/removeFromRV"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_remove_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.757"
+            app:layout_constraintStart_toEndOf="@+id/classesHour"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

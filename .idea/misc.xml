@@ -7,6 +7,7 @@
         <entry key="..\:/PassIT/app/src/main/res/drawable/add_button.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/basic_button.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/custom_input.xml" value="0.4945" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/ic_remove_button.xml" value="0.5435" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/next_button.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_high.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_high_selected.xml" value="0.4885" />
@@ -21,8 +22,8 @@
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_selector.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_text_color.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_unselected.xml" value="0.4885" />
-        <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_class.xml" value="0.33" />
-        <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_subject.xml" value="0.25" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_class.xml" value="0.5" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_subject.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/custom_dropdown_spinner_layout.xml" value="0.55" />
         <entry key="..\:/PassIT/app/src/main/res/layout/custom_spinner_layout.xml" value="0.3109375" />
