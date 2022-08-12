@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/constLay" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/importanceRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -174,7 +174,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/importanceRadioGroup"
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
@@ -186,6 +186,7 @@
         android:ems="10"
         android:hint="Nazwa przedmiotu"
         android:inputType="textPersonName"
+        android:textColor="@color/textColor"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:textColorHint="@color/hintColor"

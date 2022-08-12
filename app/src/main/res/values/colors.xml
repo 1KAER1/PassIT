@@ -21,6 +21,7 @@
     <color name="highImportanceSelected">#670909</color>
     <color name="hintColor">#5C595E</color>
     <color name="unselectedButton">#43394C</color>
+    <color name="unselectedEditText">#332A3C</color>
     <color name="selectedButton">#74299F</color>
     <color name="removeButton">#B646F6</color>`
 </resources>

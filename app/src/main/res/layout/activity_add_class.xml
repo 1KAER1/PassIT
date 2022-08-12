@@ -81,26 +81,12 @@
             android:ems="10"
             android:hint="1"
             android:inputType="number"
+            android:maxLength="2"
             android:textAlignment="center"
             android:textColor="@color/textColor"
             android:textColorHint="@color/hintColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="10dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="28dp"
-            android:text="-"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/textColor"
-            android:textSize="28sp"
-            app:layout_constraintStart_toEndOf="@+id/firstWeeks"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
 
         <EditText
             android:id="@+id/secondWeeks"
@@ -112,6 +98,7 @@
             android:ems="10"
             android:hint="7"
             android:inputType="number"
+            android:maxLength="2"
             android:textAlignment="center"
             android:textColor="@color/textColor"
             android:textColorHint="@color/hintColor"
@@ -119,6 +106,21 @@
             app:layout_constraintHorizontal_bias="0.024"
             app:layout_constraintStart_toEndOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="10dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:text="-"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="28sp"
+            app:layout_constraintStart_toEndOf="@+id/firstWeeks"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
 
         <Spinner
             android:id="@+id/dayPicker"
@@ -155,18 +157,18 @@
 
         <Button
             android:id="@+id/addDayBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/next_button"
-            android:text="DODAJ"
+            android:background="@drawable/ic_custom_add"
+            android:gravity="center"
             android:textAllCaps="false"
             android:textColor="@color/textColor"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.157"
+            app:layout_constraintHorizontal_bias="0.507"
             app:layout_constraintStart_toEndOf="@+id/timeButton"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
