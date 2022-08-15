@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button addSubjectButton;
+    private Button addSubjectButton, scheduleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,18 +17,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addSubjectButton = findViewById(R.id.subjectsBtn);
+        scheduleButton = findViewById(R.id.scheduleBtn);
 
-        addSubjectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openSubjects();
-            }
-        });
+        addSubjectButton.setOnClickListener(view -> openSubjects());
+        scheduleButton.setOnClickListener(view -> addNewSubject());
 
     }
 
     public void openSubjects() {
         Intent intent = new Intent(this, AddSubject.class);
+        startActivity(intent);
+    }
+
+    public void addNewSubject() {
+        Intent intent = new Intent(this, SubjectInformation.class);
         startActivity(intent);
     }
 

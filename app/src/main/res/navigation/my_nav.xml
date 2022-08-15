@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/subjectInfo">
+
+    <fragment
+        android:id="@+id/subjectInfo"
+        android:name="com.example.passit.SubjectInfo"
+        android:label="fragment_subject_info"
+        tools:layout="@layout/fragment_subject_info" >
+        <action
+            android:id="@+id/navigateToLecture"
+            app:destination="@id/lectureInfo" />
+        <action
+            android:id="@+id/action_subjectInfo_to_exerciseInfo"
+            app:destination="@id/exerciseInfo" />
+        <action
+            android:id="@+id/action_subjectInfo_to_labInfo"
+            app:destination="@id/labInfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/lectureInfo"
+        android:name="com.example.passit.LectureInfo"
+        android:label="fragment_lecture_info"
+        tools:layout="@layout/fragment_lecture_info" >
+        <action
+            android:id="@+id/navigateToExercise"
+            app:destination="@id/exerciseInfo" />
+        <action
+            android:id="@+id/action_lectureInfo_to_labInfo"
+            app:destination="@id/labInfo" />
+        <action
+            android:id="@+id/action_lectureInfo_to_subjectInfoSummary"
+            app:destination="@id/subjectInfoSummary" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseInfo"
+        android:name="com.example.passit.ExerciseInfo"
+        android:label="fragment_exercise_info"
+        tools:layout="@layout/fragment_exercise_info" >
+        <action
+            android:id="@+id/navigateToLab"
+            app:destination="@id/labInfo" />
+        <action
+            android:id="@+id/action_exerciseInfo_to_subjectInfoSummary"
+            app:destination="@id/subjectInfoSummary" />
+    </fragment>
+    <fragment
+        android:id="@+id/labInfo"
+        android:name="com.example.passit.LabInfo"
+        android:label="fragment_lab_info"
+        tools:layout="@layout/fragment_lab_info" >
+        <action
+            android:id="@+id/action_labInfo_to_subjectInfoSummary"
+            app:destination="@id/subjectInfoSummary" />
+    </fragment>
+    <fragment
+        android:id="@+id/subjectInfoSummary"
+        android:name="com.example.passit.SubjectInfoSummary"
+        android:label="fragment_subject_info_summary"
+        tools:layout="@layout/fragment_subject_info_summary" />
+</navigation>

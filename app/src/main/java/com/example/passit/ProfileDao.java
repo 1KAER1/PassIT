@@ -41,4 +41,16 @@ public interface ProfileDao {
     void insertLessonDate(LessonDate... lessonDates);
     @Delete
     void deleteLessonDate(LessonDate... lessonDate);
+
+    @Query("SELECT profile_id FROM profile WHERE isActive = 1")
+    int getActiveProfile();
+
+    @Query("SELECT profile_name FROM profile WHERE isActive = 1")
+    String getActiveProfileName();
+
+    @Query("UPDATE profile SET isActive = 0 WHERE isActive = 1")
+    void deactivateProfiles();
+
+    @Query("UPDATE profile SET isActive = 1 WHERE profile_name = :profileName")
+    void activateProfile(String profileName);
 }

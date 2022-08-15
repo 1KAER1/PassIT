@@ -138,11 +138,11 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.837"
-            app:layout_constraintStart_toEndOf="@+id/button9"
+            app:layout_constraintStart_toEndOf="@+id/scheduleBtn"
             app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2" />
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/scheduleBtn"
             android:layout_width="170dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
@@ -165,7 +165,7 @@
             android:textColor="@color/textColor"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button9" />
+            app:layout_constraintTop_toBottomOf="@+id/scheduleBtn" />
 
         <Button
             android:id="@+id/button"
