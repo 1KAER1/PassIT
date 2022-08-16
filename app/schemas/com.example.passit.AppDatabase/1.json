@@ -1,0 +1,346 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "76b011d05c0eb5db1081cec7bfbf7d24",
+    "entities": [
+      {
+        "tableName": "Lesson",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lesson_type` TEXT, `lecturer_name` TEXT, `is_even_lesson` INTEGER NOT NULL, `starting_week` INTEGER NOT NULL, `ending_week` INTEGER NOT NULL, `passed` INTEGER NOT NULL DEFAULT false, `lesson_date_id` INTEGER NOT NULL, `subject_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "lesson_id",
+            "columnName": "lesson_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lesson_type",
+            "columnName": "lesson_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lecturer_name",
+            "columnName": "lecturer_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "is_even_lesson",
+            "columnName": "is_even_lesson",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "starting_week",
+            "columnName": "starting_week",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ending_week",
+            "columnName": "ending_week",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "passed",
+            "columnName": "passed",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "lesson_date_id",
+            "columnName": "lesson_date_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subject_id",
+            "columnName": "subject_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "lesson_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "LessonDate",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_date_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `day_name` TEXT, `lesson_time` TEXT, `lesson_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "lesson_date_id",
+            "columnName": "lesson_date_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "day_name",
+            "columnName": "day_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lesson_time",
+            "columnName": "lesson_time",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lesson_id",
+            "columnName": "lesson_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "lesson_date_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Profile",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profile_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `profile_name` TEXT, `semester` INTEGER NOT NULL, `isActive` INTEGER NOT NULL DEFAULT false)",
+        "fields": [
+          {
+            "fieldPath": "profile_id",
+            "columnName": "profile_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profile_name",
+            "columnName": "profile_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "semester",
+            "columnName": "semester",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "profile_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Profile_profile_name",
+            "unique": true,
+            "columnNames": [
+              "profile_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Profile_profile_name` ON `${TABLE_NAME}` (`profile_name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Subject",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`subject_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `subject_name` TEXT, `importance` TEXT, `ect_points` INTEGER NOT NULL, `is_lecture` INTEGER NOT NULL, `is_exercise` INTEGER NOT NULL, `is_lab` INTEGER NOT NULL, `profile_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "subject_id",
+            "columnName": "subject_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subject_name",
+            "columnName": "subject_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "importance",
+            "columnName": "importance",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ect_points",
+            "columnName": "ect_points",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "is_lecture",
+            "columnName": "is_lecture",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "is_exercise",
+            "columnName": "is_exercise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "is_lab",
+            "columnName": "is_lab",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profile_id",
+            "columnName": "profile_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "subject_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Task",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_name` TEXT, `importance` TEXT, `date_due` TEXT, `description` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "task_id",
+            "columnName": "task_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "task_name",
+            "columnName": "task_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "importance",
+            "columnName": "importance",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_due",
+            "columnName": "date_due",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "finished",
+            "columnName": "finished",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "subject_id",
+            "columnName": "subject_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "task_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Test",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`test_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `test_name` TEXT, `importance` TEXT, `date_due` TEXT, `description` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "test_id",
+            "columnName": "test_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "test_name",
+            "columnName": "test_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "importance",
+            "columnName": "importance",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_due",
+            "columnName": "date_due",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "finished",
+            "columnName": "finished",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "subject_id",
+            "columnName": "subject_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "test_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '76b011d05c0eb5db1081cec7bfbf7d24')"
+    ]
+  }
+}
