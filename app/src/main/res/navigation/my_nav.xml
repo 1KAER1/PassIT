@@ -60,5 +60,15 @@
         android:id="@+id/subjectInfoSummary"
         android:name="com.example.passit.SubjectInfoSummary"
         android:label="fragment_subject_info_summary"
-        tools:layout="@layout/fragment_subject_info_summary" />
+        tools:layout="@layout/fragment_subject_info_summary" >
+        <action
+            android:id="@+id/action_subjectInfoSummary_to_labInfo"
+            app:destination="@id/labInfo" />
+        <action
+            android:id="@+id/action_subjectInfoSummary_to_exerciseInfo"
+            app:destination="@id/exerciseInfo" />
+        <action
+            android:id="@+id/action_subjectInfoSummary_to_lectureInfo"
+            app:destination="@id/lectureInfo" />
+    </fragment>
 </navigation>

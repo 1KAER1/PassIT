@@ -13,7 +13,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Subject;
 
 public class AddSubject extends AppCompatActivity {
@@ -32,7 +31,7 @@ public class AddSubject extends AppCompatActivity {
         setContentView(R.layout.activity_add_subject);
 
         nextButton = findViewById(R.id.nextBtn);
-        subjectName = findViewById(R.id.subjectName);
+        subjectName = findViewById(R.id.lecturerName);
         ectsPoints = findViewById(R.id.ectsPoints);
         lectureCB = findViewById(R.id.lectureCB);
         exerciseCB = findViewById(R.id.exerciseCB);

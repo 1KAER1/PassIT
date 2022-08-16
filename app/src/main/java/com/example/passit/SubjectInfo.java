@@ -35,7 +35,7 @@ public class SubjectInfo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_subject_info, container, false);
 
         nextButton = view.findViewById(R.id.nextBtn);
-        subjectName = view.findViewById(R.id.subjectName);
+        subjectName = view.findViewById(R.id.lecturerName);
         ectsPoints = view.findViewById(R.id.ectsPoints);
         lectureCB = view.findViewById(R.id.lectureCB);
         exerciseCB = view.findViewById(R.id.exerciseCB);
@@ -49,7 +49,7 @@ public class SubjectInfo extends Fragment {
             @Override
             public void onClick(View view) {
 
-                AppDatabase db = AppDatabase.getDbInstance(getActivity().getApplicationContext());
+                AppDatabase db = AppDatabase.getDbInstance(getActivity());
 
                 /*Profile profile = new Profile();
                 profile.profile_name = "Informatyka";
@@ -65,14 +65,14 @@ public class SubjectInfo extends Fragment {
                 db.profileDao().activateProfile("Informatyka");
 
                 int activeProfileId = db.profileDao().getActiveProfile();
-                Toast.makeText(getActivity().getApplicationContext(), "Aktywny profil: " + activeProfileId + " " + db.profileDao().getActiveProfileName(),
+                Toast.makeText(getActivity(), "Aktywny profil: " + activeProfileId + " " + db.profileDao().getActiveProfileName(),
                         Toast.LENGTH_SHORT).show();
 
                 String selectedImportance;
                 selectedImportance = checkImportanceSelection();
 
                 if (TextUtils.isEmpty(subjectName.getText()) || TextUtils.isEmpty(ectsPoints.getText()) || selectedImportance == null || !checkLessonType()) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Uzupełnij wszystkie dane!",
+                    Toast.makeText(getActivity(), "Uzupełnij wszystkie dane!",
                             Toast.LENGTH_SHORT).show();
                 } else {
 //                    saveNewSubject(
@@ -120,6 +120,7 @@ public class SubjectInfo extends Fragment {
         getParentFragmentManager().setFragmentResult("lecture", subjectBundle);
         getParentFragmentManager().setFragmentResult("exercise", subjectBundle);
         getParentFragmentManager().setFragmentResult("lab", subjectBundle);
+        getParentFragmentManager().setFragmentResult("summary", subjectBundle);
 
     }
 
@@ -140,7 +141,7 @@ public class SubjectInfo extends Fragment {
 
     public void saveNewSubject(String subjectName, boolean isLecture, boolean isExercise, boolean isLab, int ectsPoints, String importance) {
 
-        AppDatabase db = AppDatabase.getDbInstance(this.getActivity().getApplicationContext());
+        AppDatabase db = AppDatabase.getDbInstance(this.getActivity());
 
         Subject subject = new Subject();
         subject.subject_name = subjectName;
@@ -152,7 +153,7 @@ public class SubjectInfo extends Fragment {
         subject.profile_id = db.profileDao().getActiveProfile();
         db.profileDao().insertSubject(subject);
 
-        Toast.makeText(getActivity().getApplicationContext(), "Dodano do bazy",
+        Toast.makeText(getActivity(), "Dodano do bazy",
                 Toast.LENGTH_LONG).show();
 
     }
