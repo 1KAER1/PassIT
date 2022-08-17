@@ -160,7 +160,6 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/ic_custom_add"
             android:gravity="center"
@@ -168,7 +167,24 @@
             android:textColor="@color/textColor"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.507"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeButton" />
+
+        <EditText
+            android:id="@+id/lessonPeriod"
+            android:layout_width="80dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="2"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/hintColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.387"
             app:layout_constraintStart_toEndOf="@+id/timeButton"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -178,13 +194,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/dayPicker"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="52dp"
             android:layout_marginEnd="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dayPicker" />
+            app:layout_constraintTop_toBottomOf="@+id/addDayBtn" />
 
         <TextView
             android:id="@+id/textView10"

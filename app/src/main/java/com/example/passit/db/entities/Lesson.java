@@ -19,7 +19,6 @@ public class Lesson {
     public int ending_week;
     @ColumnInfo(defaultValue = "false")
     public boolean passed;
-    public int lesson_date_id;
     public int subject_id;
 
 }

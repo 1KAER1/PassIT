@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Subject;
 
 
@@ -75,14 +76,6 @@ public class SubjectInfo extends Fragment {
                     Toast.makeText(getActivity(), "Uzupełnij wszystkie dane!",
                             Toast.LENGTH_SHORT).show();
                 } else {
-//                    saveNewSubject(
-//                            subjectName.getText().toString(),
-//                            lectureCB.isChecked(),
-//                            exerciseCB.isChecked(),
-//                            labCB.isChecked(),
-//                            Integer.parseInt(ectsPoints.getText().toString()),
-//                            selectedImportance
-//                    );
 
                     passBundleInformation(selectedImportance);
 
@@ -121,6 +114,7 @@ public class SubjectInfo extends Fragment {
         getParentFragmentManager().setFragmentResult("exercise", subjectBundle);
         getParentFragmentManager().setFragmentResult("lab", subjectBundle);
         getParentFragmentManager().setFragmentResult("summary", subjectBundle);
+        getParentFragmentManager().setFragmentResult("database", subjectBundle);
 
     }
 
@@ -137,24 +131,5 @@ public class SubjectInfo extends Fragment {
             selectedImportance = null;
         }
         return selectedImportance;
-    }
-
-    public void saveNewSubject(String subjectName, boolean isLecture, boolean isExercise, boolean isLab, int ectsPoints, String importance) {
-
-        AppDatabase db = AppDatabase.getDbInstance(this.getActivity());
-
-        Subject subject = new Subject();
-        subject.subject_name = subjectName;
-        subject.is_lecture = isLecture;
-        subject.is_exercise = isExercise;
-        subject.is_lab = isLab;
-        subject.ect_points = ectsPoints;
-        subject.importance = importance;
-        subject.profile_id = db.profileDao().getActiveProfile();
-        db.profileDao().insertSubject(subject);
-
-        Toast.makeText(getActivity(), "Dodano do bazy",
-                Toast.LENGTH_LONG).show();
-
     }
 }

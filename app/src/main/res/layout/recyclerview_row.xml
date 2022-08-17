@@ -16,7 +16,7 @@
         android:background="@color/darkPurple">
 
         <TextView
-            android:id="@+id/dayName"
+            android:id="@+id/subjectName"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -34,37 +34,65 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/classesHour"
+            android:id="@+id/ectsTv"
             android:layout_width="66dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:padding="12dp"
-            android:text="00:00"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:padding="12dp"
+            android:text="00:00"
             android:textColor="@color/textColor"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.142"
-            app:layout_constraintStart_toEndOf="@+id/dayName"
+            app:layout_constraintStart_toEndOf="@+id/subjectName"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/classPeriod"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="1"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ectsTv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.454" />
 
         <Button
             android:id="@+id/removeFromRV"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/ic_remove_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.757"
-            app:layout_constraintStart_toEndOf="@+id/classesHour"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/classPeriod"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="h"
+            android:textColor="@color/textColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/removeFromRV"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/classPeriod"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

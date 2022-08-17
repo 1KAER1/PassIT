@@ -29,6 +29,7 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
     private int hour, minute;
     private ArrayList<String> dayList = new ArrayList<>();
     private ArrayList<String> hourList = new ArrayList<>();
+    private ArrayList<String> lessonPeriodList = new ArrayList<>();
     private Button addDayButton;
 
     @Override
@@ -36,7 +37,7 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_class);
 
-        classTimeRV = findViewById(R.id.classesTimeRV);
+        /*classTimeRV = findViewById(R.id.classesTimeRV);
         timeButton = findViewById(R.id.timeButton);
         addDayButton = findViewById(R.id.addDayBtn);
 
@@ -46,7 +47,7 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
         dayPicker.setAdapter(adapter);
         dayPicker.setOnItemSelectedListener(this);
 
-        classTimeRVAdapter = new ClassTimeRVAdapter(dayList, hourList);
+        classTimeRVAdapter = new ClassTimeRVAdapter(dayList, hourList, lessonPeriodList);
         classTimeRV.setAdapter(classTimeRVAdapter);
 
         addDayButton.setOnClickListener(view -> {
@@ -66,7 +67,7 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
                             Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
     }
 
     public void popTimePicker(View view) {
@@ -84,10 +85,11 @@ public class AddClass extends AppCompatActivity implements AdapterView.OnItemSel
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void addItem(String day, String hour) {
+    private void addItem(String day, String hour, String period) {
         if (!day.isEmpty()) {
             dayList.add(day);
             hourList.add(hour);
+            lessonPeriodList.add(period);
             classTimeRVAdapter.notifyDataSetChanged();
         }
     }

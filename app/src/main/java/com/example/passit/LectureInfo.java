@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.passit.rvadapters.ClassTimeRVAdapter;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -34,10 +35,11 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
     private ClassTimeRVAdapter classTimeRVAdapter;
     private Spinner dayPicker;
     private Button timeButton, nextButton, addDayButton;
-    private EditText lecturerName, firstWeek, lastWeek;
+    private EditText lecturerName, firstWeek, lastWeek, lessonPeriod;
     private int hour, minute;
     private ArrayList<String> dayList = new ArrayList<>();
     private ArrayList<String> hourList = new ArrayList<>();
+    private ArrayList<Integer> lessonPeriodList = new ArrayList<>();
     private long pressedTime;
 
     @Override
@@ -75,6 +77,7 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
         lecturerName = view.findViewById(R.id.lecturerName);
         firstWeek = view.findViewById(R.id.firstWeeks);
         lastWeek = view.findViewById(R.id.secondWeeks);
+        lessonPeriod = view.findViewById(R.id.lessonPeriod);
 
         dayPicker = view.findViewById(R.id.dayPicker);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.days, R.layout.custom_spinner_layout);
@@ -82,7 +85,7 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
         dayPicker.setAdapter(adapter);
         dayPicker.setOnItemSelectedListener(this);
 
-        classTimeRVAdapter = new ClassTimeRVAdapter(dayList, hourList);
+        classTimeRVAdapter = new ClassTimeRVAdapter(dayList, hourList, lessonPeriodList);
         classTimeRV.setAdapter(classTimeRVAdapter);
 
 
@@ -91,18 +94,19 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
         addDayButton.setOnClickListener(view2 -> {
             String pickedDay = dayPicker.getSelectedItem().toString();
             String pickedTime = timeButton.getText().toString();
+            int pickedPeriod = Integer.parseInt(lessonPeriod.getText().toString());
 
             if (TextUtils.isEmpty(pickedTime)) {
                 Toast.makeText(getActivity(), "Wybierz godzinę!",
                         Toast.LENGTH_LONG).show();
             } else {
                 if (classTimeRVAdapter.getItemCount() < 6) {
-                    Toast.makeText(getActivity(), "Number of items in RV: " + classTimeRVAdapter.getItemCount(),
-                            Toast.LENGTH_SHORT).show();
-                    addItem(pickedDay, pickedTime);
+                    if (checkIfContainsDate(pickedDay, pickedTime, pickedPeriod)) {
+                        addItem(pickedDay, pickedTime, pickedPeriod);
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Dodano już maksymalną liczbę dat!",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -111,24 +115,19 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onClick(View view) {
 
-                AppDatabase db = AppDatabase.getDbInstance(getActivity());
-
-                /*Profile profile = new Profile();
-                profile.profile_name = "Biotechnologia";
-                profile.semester = 7;
-                db.profileDao().insertProfile(profile);*/
-
                 if (checkInput()) {
-                    passBundleInformation();
-                    getParentFragmentManager().setFragmentResultListener("lecture", getViewLifecycleOwner(), ((requestKey, result) -> {
-                        if (!result.getBoolean("isExercise") && !result.getBoolean("isLab")) {
-                            Navigation.findNavController(view).navigate(R.id.action_lectureInfo_to_subjectInfoSummary);
-                        } else if (result.getBoolean("isExercise")) {
-                            Navigation.findNavController(view).navigate(R.id.navigateToExercise);
-                        } else if (!result.getBoolean("isExercise") && result.getBoolean("isLab")) {
-                            Navigation.findNavController(view).navigate(R.id.action_lectureInfo_to_labInfo);
-                        }
-                    }));
+                    if (checkWeeks(Integer.parseInt(String.valueOf(firstWeek.getText())), Integer.parseInt(String.valueOf(lastWeek.getText())))) {
+                        passBundleInformation();
+                        getParentFragmentManager().setFragmentResultListener("lecture", getViewLifecycleOwner(), ((requestKey, result) -> {
+                            if (!result.getBoolean("isExercise") && !result.getBoolean("isLab")) {
+                                Navigation.findNavController(view).navigate(R.id.action_lectureInfo_to_subjectInfoSummary);
+                            } else if (result.getBoolean("isExercise")) {
+                                Navigation.findNavController(view).navigate(R.id.navigateToExercise);
+                            } else if (!result.getBoolean("isExercise") && result.getBoolean("isLab")) {
+                                Navigation.findNavController(view).navigate(R.id.action_lectureInfo_to_labInfo);
+                            }
+                        }));
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Uzupełnij wszystkie dane!",
                             Toast.LENGTH_SHORT).show();
@@ -148,15 +147,56 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
                 && !hourList.isEmpty();
     }
 
-    public void passBundleInformation(){
+    public boolean checkWeeks(int firstWeek, int lastWeek) {
+
+        if (firstWeek > lastWeek) {
+            Toast.makeText(getActivity(), "Pierwszy tydzień nie może być większy od ostatniego!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (firstWeek == 0 || lastWeek == 0) {
+            Toast.makeText(getActivity(), "Tydzień musi być liczbą pozytywną!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean checkIfContainsDate(String pickedDay, String pickedTime, int pickedPeriod) {
+
+        LocalTime time = LocalTime.parse(pickedTime);
+
+        for (int i = 0; i < dayList.size(); i++) {
+            if (pickedDay.equals(dayList.get(i))) {
+                LocalTime timePlusPeriod = time.plusHours(pickedPeriod);
+                LocalTime time2 = LocalTime.parse(hourList.get(i));
+                LocalTime time3 = time2.plusHours(lessonPeriodList.get(i));
+                if (pickedTime.equals(hourList.get(i))) {
+                    Toast.makeText(getActivity(), "Podano już taką datę!",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                } else if (!(timePlusPeriod.minusMinutes(1).isBefore(time2) || time.isAfter(time3.minusMinutes(1)))) {
+                    Toast.makeText(getActivity(), "Niepoprawna godzina!",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public void passBundleInformation() {
         Bundle bundle = new Bundle();
         bundle.putString("lecturerName", lecturerName.getText().toString());
         bundle.putInt("firstWeek", Integer.parseInt(String.valueOf(firstWeek.getText())));
         bundle.putInt("lastWeek", Integer.parseInt(String.valueOf(lastWeek.getText())));
         bundle.putStringArrayList("dayList", dayList);
         bundle.putStringArrayList("hourList", hourList);
+        bundle.putIntegerArrayList("lessonPeriodList", lessonPeriodList);
 
         getParentFragmentManager().setFragmentResult("lectureSummary", bundle);
+        getParentFragmentManager().setFragmentResult("lectureDatabase", bundle);
     }
 
     public void popTimePicker() {
@@ -174,10 +214,11 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void addItem(String day, String hour) {
+    private void addItem(String day, String hour, int period) {
         if (!day.isEmpty()) {
             dayList.add(day);
             hourList.add(hour);
+            lessonPeriodList.add(period);
             classTimeRVAdapter.notifyDataSetChanged();
         }
     }

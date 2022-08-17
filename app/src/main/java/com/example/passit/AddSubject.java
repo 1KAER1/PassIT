@@ -121,7 +121,7 @@ public class AddSubject extends AppCompatActivity {
         subject.is_lecture = isLecture;
         subject.is_exercise = isExercise;
         subject.is_lab = isLab;
-        subject.ect_points = ectsPoints;
+        subject.ects_points = ectsPoints;
         subject.importance = importance;
         subject.profile_id = db.profileDao().getActiveProfile();
         db.profileDao().insertSubject(subject);

@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\Kacper\.android\avd\Pixel_3a_API_26.avd" />
+            <value value="C:\Users\Kacper\.android\avd\Samsung_S22_API_26.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-08-08T18:23:04.665628900Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-08-17T09:58:47.736796700Z" />
   </component>
 </project>

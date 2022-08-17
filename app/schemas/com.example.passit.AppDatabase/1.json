@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "76b011d05c0eb5db1081cec7bfbf7d24",
+    "identityHash": "2a1cd1b251496605b7415a51df10f94f",
     "entities": [
       {
         "tableName": "Lesson",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lesson_type` TEXT, `lecturer_name` TEXT, `is_even_lesson` INTEGER NOT NULL, `starting_week` INTEGER NOT NULL, `ending_week` INTEGER NOT NULL, `passed` INTEGER NOT NULL DEFAULT false, `lesson_date_id` INTEGER NOT NULL, `subject_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lesson_type` TEXT, `lecturer_name` TEXT, `is_even_lesson` INTEGER NOT NULL, `starting_week` INTEGER NOT NULL, `ending_week` INTEGER NOT NULL, `passed` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "lesson_id",
@@ -52,12 +52,6 @@
             "defaultValue": "false"
           },
           {
-            "fieldPath": "lesson_date_id",
-            "columnName": "lesson_date_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "subject_id",
             "columnName": "subject_id",
             "affinity": "INTEGER",
@@ -75,7 +69,7 @@
       },
       {
         "tableName": "LessonDate",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_date_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `day_name` TEXT, `lesson_time` TEXT, `lesson_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`lesson_date_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `day_name` TEXT, `lesson_time` TEXT, `lesson_period` INTEGER NOT NULL, `lesson_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "lesson_date_id",
@@ -94,6 +88,12 @@
             "columnName": "lesson_time",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "lesson_period",
+            "columnName": "lesson_period",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "lesson_id",
@@ -162,7 +162,7 @@
       },
       {
         "tableName": "Subject",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`subject_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `subject_name` TEXT, `importance` TEXT, `ect_points` INTEGER NOT NULL, `is_lecture` INTEGER NOT NULL, `is_exercise` INTEGER NOT NULL, `is_lab` INTEGER NOT NULL, `profile_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`subject_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `subject_name` TEXT, `importance` TEXT, `ects_points` INTEGER NOT NULL, `is_lecture` INTEGER NOT NULL, `is_exercise` INTEGER NOT NULL, `is_lab` INTEGER NOT NULL, `profile_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "subject_id",
@@ -183,8 +183,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "ect_points",
-            "columnName": "ect_points",
+            "fieldPath": "ects_points",
+            "columnName": "ects_points",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -219,7 +219,17 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Subject_subject_name",
+            "unique": true,
+            "columnNames": [
+              "subject_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Subject_subject_name` ON `${TABLE_NAME}` (`subject_name`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -340,7 +350,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '76b011d05c0eb5db1081cec7bfbf7d24')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2a1cd1b251496605b7415a51df10f94f')"
     ]
   }
 }

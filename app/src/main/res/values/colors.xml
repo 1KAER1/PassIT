@@ -13,9 +13,9 @@
     <color name="textColor">#F8F8F2</color>
     <color name="textColorDarken">#9C9C9C</color>
     <color name="lightPurple">#9585AC</color>
-    <color name="normalImportance">#2EB31E</color>
-    <color name="mediumImportance">#F8DC23</color>
-    <color name="highImportance">#E81C1C</color>
+    <color name="normalImportance">#30AA23</color>
+    <color name="mediumImportance">#F1D200</color>
+    <color name="highImportance">#C81C1C</color>
     <color name="normalImportanceSelected">#116107</color>
     <color name="mediumImportanceSelected">#75670B</color>
     <color name="highImportanceSelected">#670909</color>
