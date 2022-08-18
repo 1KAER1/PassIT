@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2a1cd1b251496605b7415a51df10f94f",
+    "identityHash": "a2a169b450cb3c7492ab00e891c3c0fc",
     "entities": [
       {
         "tableName": "Lesson",
@@ -234,7 +234,7 @@
       },
       {
         "tableName": "Task",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_name` TEXT, `importance` TEXT, `date_due` TEXT, `description` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "task_id",
@@ -257,6 +257,12 @@
           {
             "fieldPath": "date_due",
             "columnName": "date_due",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hour_due",
+            "columnName": "hour_due",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -291,7 +297,7 @@
       },
       {
         "tableName": "Test",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`test_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `test_name` TEXT, `importance` TEXT, `date_due` TEXT, `description` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`test_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `test_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `passed` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "test_id",
@@ -318,14 +324,20 @@
             "notNull": false
           },
           {
+            "fieldPath": "hour_due",
+            "columnName": "hour_due",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "finished",
-            "columnName": "finished",
+            "fieldPath": "passed",
+            "columnName": "passed",
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "false"
@@ -350,7 +362,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2a1cd1b251496605b7415a51df10f94f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2a169b450cb3c7492ab00e891c3c0fc')"
     ]
   }
 }

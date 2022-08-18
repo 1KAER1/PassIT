@@ -6,6 +6,7 @@
         <entry key="..\:/PassIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/add_button.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/basic_button.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/curstom_button2.xml" value="0.5435" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/custom_input.xml" value="0.4945" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/high_importance_gradient.xml" value="0.4305" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/ic_custom_add.xml" value="0.5395" />
@@ -29,10 +30,14 @@
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_unselected.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_class.xml" value="0.5" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_subject.xml" value="0.33" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_task.xml" value="0.5" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_test.xml" value="0.4514749893116717" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_subject.xml" value="0.5" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_subject_information.xml" value="0.55" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_subjects_view.xml" value="0.33" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_tasks_view.xml" value="0.22" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_tests_view.xml" value="0.23934723481414324" />
         <entry key="..\:/PassIT/app/src/main/res/layout/custom_dropdown_spinner_layout.xml" value="0.55" />
         <entry key="..\:/PassIT/app/src/main/res/layout/custom_spinner_layout.xml" value="0.3109375" />
         <entry key="..\:/PassIT/app/src/main/res/layout/fragment_exercise_info.xml" value="0.18381112984822934" />
@@ -41,8 +46,10 @@
         <entry key="..\:/PassIT/app/src/main/res/layout/fragment_subject_info.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/fragment_subject_info_summary.xml" value="0.22" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_row.xml" value="0.5489583333333333" />
-        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_subject_row.xml" value="0.5" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_subject_row.xml" value="0.2124756335282651" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_summary_row.xml" value="0.5489583333333333" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_task_row.xml" value="0.33" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_test_row.xml" value="0.22" />
       </map>
     </option>
   </component>

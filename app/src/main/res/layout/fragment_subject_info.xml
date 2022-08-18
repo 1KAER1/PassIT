@@ -21,7 +21,7 @@
 
 
     <EditText
-        android:id="@+id/ectsPoints"
+        android:id="@+id/dateDueTV"
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_marginTop="36dp"
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ectsPoints" />
+        app:layout_constraintTop_toBottomOf="@+id/dateDueTV" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constLay"
@@ -99,7 +99,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lecturerName">
+        app:layout_constraintTop_toBottomOf="@+id/taskNameET">
 
         <CheckBox
             android:id="@+id/lectureCB"
@@ -180,7 +180,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/lecturerName"
+        android:id="@+id/taskNameET"
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_marginTop="36dp"

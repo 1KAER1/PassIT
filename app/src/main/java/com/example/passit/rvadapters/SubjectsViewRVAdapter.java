@@ -36,7 +36,6 @@ public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAd
     @Override
     public void onBindViewHolder(@NonNull SubjectsViewRVAdapter.ViewHolder holder, int position) {
         holder.subjectName.setText(subjectNameList1.get(position).getSubject_name());
-        System.out.println("ECTS: " + subjectNameList1.get(position).getEcts_points());
         holder.ectsPoints.setText(subjectNameList1.get(position).getEcts_points() + " ECTS");
         if (subjectNameList1.get(position).getImportance().equals("normal")) {
             holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);

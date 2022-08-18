@@ -363,7 +363,7 @@ public class SubjectInfoSummary extends Fragment {
 
                 }));
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), SubjectsView.class);
                 startActivity(intent);
 
             }

@@ -17,7 +17,6 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Profile;
-import com.example.passit.db.entities.Subject;
 
 
 public class SubjectInfo extends Fragment {
@@ -36,8 +35,8 @@ public class SubjectInfo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_subject_info, container, false);
 
         nextButton = view.findViewById(R.id.nextBtn);
-        subjectName = view.findViewById(R.id.lecturerName);
-        ectsPoints = view.findViewById(R.id.ectsPoints);
+        subjectName = view.findViewById(R.id.taskNameET);
+        ectsPoints = view.findViewById(R.id.dateDueTV);
         lectureCB = view.findViewById(R.id.lectureCB);
         exerciseCB = view.findViewById(R.id.exerciseCB);
         labCB = view.findViewById(R.id.labCB);

@@ -1,68 +1,65 @@
 package com.example.passit;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Subject;
+import com.example.passit.db.entities.Task;
 import com.example.passit.rvadapters.SubjectsViewRVAdapter;
+import com.example.passit.rvadapters.TasksViewRVAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectsView extends AppCompatActivity {
+public class TasksView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText searchBar;
-    Button addNewSubject;
+    Button addNewTask;
     private RadioButton normalImportance, mediumImportance, highImportance;
-    private SubjectsViewRVAdapter adapter;
-    private List<Subject> subjectNameList = new ArrayList<>();
-    private AppDatabase db;
+    private TasksViewRVAdapter adapter;
+    private List<Task> tasksNameList = new ArrayList<>();
+    Button addNewTaskButton;
+    AppDatabase db;
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subjects_view);
+        setContentView(R.layout.activity_tasks_view);
 
-        recyclerView = findViewById(R.id.subjectsRV);
-        searchBar = findViewById(R.id.searchBar);
+        addNewTask = findViewById(R.id.addNewTask);
+        recyclerView = findViewById(R.id.tasksRV);
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
-        addNewSubject = findViewById(R.id.addNewSubject);
+        searchBar = findViewById(R.id.searchBar);
 
         db = AppDatabase.getDbInstance(this);
 
-        subjectNameList = db.profileDao().getAllSubjects();
+        tasksNameList = db.profileDao().getAllTasks();
 
-        adapter = new SubjectsViewRVAdapter(subjectNameList);
+        adapter = new TasksViewRVAdapter(tasksNameList);
         recyclerView.setAdapter(adapter);
 
-        addNewSubject.setOnClickListener(view -> addNewSubject());
+        addNewTask.setOnClickListener(view -> openAddNewTask());
 
+    }
+
+    public void openAddNewTask() {
+        Intent intent = new Intent(this, AddTask.class);
+        startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        //super.onBackPressed();
-    }
-
-    public void addNewSubject() {
-        Intent intent = new Intent(this, SubjectInformation.class);
         startActivity(intent);
     }
 }

@@ -155,7 +155,7 @@
             app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2" />
 
         <Button
-            android:id="@+id/button11"
+            android:id="@+id/openTasksBtn"
             android:layout_width="170dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
@@ -168,7 +168,7 @@
             app:layout_constraintTop_toBottomOf="@+id/scheduleBtn" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/testsButton"
             android:layout_width="170dp"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
@@ -178,7 +178,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.654"
-            app:layout_constraintStart_toEndOf="@+id/button11"
+            app:layout_constraintStart_toEndOf="@+id/openTasksBtn"
             app:layout_constraintTop_toBottomOf="@+id/subjectsBtn" />
 
         <Button
@@ -192,7 +192,7 @@
             android:textColor="@color/textColor"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button11" />
+            app:layout_constraintTop_toBottomOf="@+id/openTasksBtn" />
 
         <Button
             android:id="@+id/alertBtn"
@@ -207,7 +207,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.627"
             app:layout_constraintStart_toEndOf="@+id/calendarBtn"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
+            app:layout_constraintTop_toBottomOf="@+id/testsButton" />
 
         <TextView
             android:id="@+id/textView4"

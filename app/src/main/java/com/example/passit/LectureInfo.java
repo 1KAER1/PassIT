@@ -74,12 +74,12 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
         timeButton = view.findViewById(R.id.timeButton);
         addDayButton = view.findViewById(R.id.addDayBtn);
         nextButton = view.findViewById(R.id.nextBtn);
-        lecturerName = view.findViewById(R.id.lecturerName);
+        lecturerName = view.findViewById(R.id.taskNameET);
         firstWeek = view.findViewById(R.id.firstWeeks);
         lastWeek = view.findViewById(R.id.secondWeeks);
         lessonPeriod = view.findViewById(R.id.lessonPeriod);
 
-        dayPicker = view.findViewById(R.id.dayPicker);
+        dayPicker = view.findViewById(R.id.spinnerPicker);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.days, R.layout.custom_spinner_layout);
         adapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
         dayPicker.setAdapter(adapter);
