@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="background">#232227</color>
+    <color name="background">#090909</color>
     <color name="darkPurple">#44475A</color>
     <color name="textColor">#F8F8F2</color>
     <color name="textColorDarken">#9C9C9C</color>
@@ -23,5 +23,6 @@
     <color name="unselectedButton">#43394C</color>
     <color name="unselectedEditText">#332A3C</color>
     <color name="selectedButton">#74299F</color>
-    <color name="removeButton">#B646F6</color>`
+    <color name="removeButton">#B646F6</color>
+    <color name="accentColor">#2A2B2C</color>
 </resources>

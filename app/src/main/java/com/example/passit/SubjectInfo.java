@@ -16,8 +16,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.passit.db.entities.Profile;
-
 
 public class SubjectInfo extends Fragment {
 
@@ -35,7 +33,7 @@ public class SubjectInfo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_subject_info, container, false);
 
         nextButton = view.findViewById(R.id.nextBtn);
-        subjectName = view.findViewById(R.id.taskNameET);
+        subjectName = view.findViewById(R.id.testNameTV);
         ectsPoints = view.findViewById(R.id.dateDueTV);
         lectureCB = view.findViewById(R.id.lectureCB);
         exerciseCB = view.findViewById(R.id.exerciseCB);
@@ -48,25 +46,6 @@ public class SubjectInfo extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AppDatabase db = AppDatabase.getDbInstance(getActivity());
-
-                /*Profile profile = new Profile();
-                profile.profile_name = "Informatyka";
-                profile.semester = 7;
-                db.profileDao().insertProfile(profile);*/
-
-                /*Profile profile2 = new Profile();
-                profile2.profile_name = "AiR";
-                profile2.semester = 5;
-                db.profileDao().insertProfile(profile2);*/
-
-                db.profileDao().deactivateProfiles();
-                db.profileDao().activateProfile("Informatyka");
-
-                int activeProfileId = db.profileDao().getActiveProfile();
-                Toast.makeText(getActivity(), "Aktywny profil: " + activeProfileId + " " + db.profileDao().getActiveProfileName(),
-                        Toast.LENGTH_SHORT).show();
 
                 String selectedImportance;
                 selectedImportance = checkImportanceSelection();

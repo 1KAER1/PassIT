@@ -76,12 +76,12 @@ public class LabInfo extends Fragment implements AdapterView.OnItemSelectedListe
         timeButton = view.findViewById(R.id.timeButton);
         addDayButton = view.findViewById(R.id.addDayBtn);
         nextButton = view.findViewById(R.id.nextBtn);
-        lecturerName = view.findViewById(R.id.taskNameET);
+        lecturerName = view.findViewById(R.id.testNameTV);
         firstWeek = view.findViewById(R.id.firstWeeks);
         lastWeek = view.findViewById(R.id.secondWeeks);
         lessonPeriod = view.findViewById(R.id.lessonPeriod);
 
-        dayPicker = view.findViewById(R.id.spinnerPicker);
+        dayPicker = view.findViewById(R.id.assignedSubjectTV);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.days, R.layout.custom_spinner_layout);
         adapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
         dayPicker.setAdapter(adapter);
@@ -96,15 +96,18 @@ public class LabInfo extends Fragment implements AdapterView.OnItemSelectedListe
         addDayButton.setOnClickListener(view2 -> {
             String pickedDay = dayPicker.getSelectedItem().toString();
             String pickedTime = timeButton.getText().toString();
-            int pickedPeriod = Integer.parseInt(lessonPeriod.getText().toString());
+            String pickedPeriod = lessonPeriod.getText().toString();
 
             if (TextUtils.isEmpty(pickedTime)) {
                 Toast.makeText(getActivity(), "Wybierz godzinę!",
                         Toast.LENGTH_LONG).show();
+            } else if (TextUtils.isEmpty(String.valueOf(pickedPeriod))) {
+                Toast.makeText(getActivity(), "Wybierz czas trwania przedmiotu!",
+                        Toast.LENGTH_LONG).show();
             } else {
                 if (classTimeRVAdapter.getItemCount() < 6) {
-                    if (checkIfContainsDate(pickedDay, pickedTime, pickedPeriod)) {
-                        addItem(pickedDay, pickedTime, pickedPeriod);
+                    if (checkIfContainsDate(pickedDay, pickedTime, Integer.parseInt(pickedPeriod))) {
+                        addItem(pickedDay, pickedTime, Integer.parseInt(pickedPeriod));
                     }
                 } else {
                     Toast.makeText(getActivity(), "Dodano już maksymalną liczbę dat!",

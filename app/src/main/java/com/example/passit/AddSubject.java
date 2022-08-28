@@ -31,7 +31,7 @@ public class AddSubject extends AppCompatActivity {
         setContentView(R.layout.activity_add_subject);
 
         nextButton = findViewById(R.id.nextBtn);
-        subjectName = findViewById(R.id.taskNameET);
+        subjectName = findViewById(R.id.testNameTV);
         ectsPoints = findViewById(R.id.dateDueTV);
         lectureCB = findViewById(R.id.lectureCB);
         exerciseCB = findViewById(R.id.exerciseCB);

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -26,8 +27,9 @@ public class TasksView extends AppCompatActivity {
     private RadioButton normalImportance, mediumImportance, highImportance;
     private TasksViewRVAdapter adapter;
     private List<Task> tasksNameList = new ArrayList<>();
-    Button addNewTaskButton;
-    AppDatabase db;
+    private Button addNewTaskButton;
+    private List<Subject> subjectList = new ArrayList<>();
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +46,21 @@ public class TasksView extends AppCompatActivity {
         db = AppDatabase.getDbInstance(this);
 
         tasksNameList = db.profileDao().getAllTasks();
+        subjectList = db.profileDao().getAllSubjects();
+
 
         adapter = new TasksViewRVAdapter(tasksNameList);
         recyclerView.setAdapter(adapter);
 
-        addNewTask.setOnClickListener(view -> openAddNewTask());
+        addNewTask.setOnClickListener(view -> {
+            if (subjectList.isEmpty()) {
+                Toast.makeText(getApplicationContext(),
+                        "Dodaj przedmioty, aby móc dodawać zadania!",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                openAddNewTask();
+            }
+        });
 
     }
 

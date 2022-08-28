@@ -6,14 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Profile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
-    private Button addSubjectButton, scheduleButton, tasksButton, testsButton;
+    private ImageButton tasksButton, addSubjectButton, testsButton;
     private long pressedTime;
+    private List<Profile> profilesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,19 +27,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         addSubjectButton = findViewById(R.id.subjectsBtn);
-        scheduleButton = findViewById(R.id.scheduleBtn);
-        tasksButton = findViewById(R.id.openTasksBtn);
+        tasksButton = findViewById(R.id.tasksViewBtn);
         testsButton = findViewById(R.id.testsButton);
 
         AppDatabase db = AppDatabase.getDbInstance(this);
 
-        /*Profile profile = new Profile();
-        profile.profile_name = "Informatyka";
-        profile.semester = 7;
-        db.profileDao().insertProfile(profile);*/
+        profilesList = db.profileDao().getAllProfiles();
+
+        if (profilesList.isEmpty()) {
+            addNewProfile();
+        }
 
         addSubjectButton.setOnClickListener(view -> openSubjects());
-        scheduleButton.setOnClickListener(view -> addNewSubject());
         tasksButton.setOnClickListener(view -> openTasksView());
         testsButton.setOnClickListener(view -> openTestsView());
 
@@ -45,17 +49,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void addNewSubject() {
-        Intent intent = new Intent(this, SubjectInformation.class);
+    public void addNewProfile() {
+        Intent intent = new Intent(this, AddNewProfile.class);
         startActivity(intent);
     }
 
-    public void openTasksView(){
+    public void openTasksView() {
         Intent intent = new Intent(this, TasksView.class);
         startActivity(intent);
     }
 
-    public void openTestsView(){
+    public void openTestsView() {
         Intent intent = new Intent(this, TestsView.class);
         startActivity(intent);
     }

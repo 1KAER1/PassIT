@@ -21,4 +21,35 @@ public class Lesson {
     public boolean passed;
     public int subject_id;
 
+    public int getLesson_id() {
+        return lesson_id;
+    }
+
+    public String getLesson_type() {
+        return lesson_type;
+    }
+
+    public String getLecturer_name() {
+        return lecturer_name;
+    }
+
+    public boolean isIs_even_lesson() {
+        return is_even_lesson;
+    }
+
+    public int getStarting_week() {
+        return starting_week;
+    }
+
+    public int getEnding_week() {
+        return ending_week;
+    }
+
+    public boolean isPassed() {
+        return passed;
+    }
+
+    public int getSubject_id() {
+        return subject_id;
+    }
 }

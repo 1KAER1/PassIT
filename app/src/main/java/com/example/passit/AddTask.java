@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Task;
@@ -52,9 +51,9 @@ public class AddTask extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
         importanceRadioGroup = findViewById(R.id.importanceRadioGroup);
-        taskName = findViewById(R.id.taskNameET);
-        taskDescription = findViewById(R.id.taskDescription);
-        subjectSpinner = findViewById(R.id.spinnerPicker);
+        taskName = findViewById(R.id.testNameTV);
+        taskDescription = findViewById(R.id.testDescription);
+        subjectSpinner = findViewById(R.id.assignedSubjectTV);
         datePickerButton = findViewById(R.id.datePicker);
         timeButton = findViewById(R.id.timePicker);
         nextButton = findViewById(R.id.nextBtn);

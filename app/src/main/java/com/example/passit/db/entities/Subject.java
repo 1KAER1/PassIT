@@ -23,6 +23,10 @@ public class Subject {
     public boolean is_lab;
     public int profile_id;
 
+    public int getSubject_id() {
+        return subject_id;
+    }
+
     public String getSubject_name() {
         return subject_name;
     }

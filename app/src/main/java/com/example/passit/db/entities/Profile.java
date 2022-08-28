@@ -17,6 +17,21 @@ public class Profile {
     public int profile_id;
     public String profile_name;
     public int semester;
-    @ColumnInfo(defaultValue = "false")
     public boolean isActive;
+
+    public int getProfile_id() {
+        return profile_id;
+    }
+
+    public String getProfile_name() {
+        return profile_name;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
 }

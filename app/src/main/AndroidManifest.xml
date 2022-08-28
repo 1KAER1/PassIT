@@ -14,6 +14,21 @@
         android:theme="@style/Theme.PassIT"
         tools:targetApi="31">
         <activity
+            android:name=".WeekCalendarView"
+            android:exported="false" />
+        <activity
+            android:name=".TaskInfo"
+            android:exported="false" />
+        <activity
+            android:name=".TestInfo"
+            android:exported="false" />
+        <activity
+            android:name=".SubjectDetails"
+            android:exported="false" />
+        <activity
+            android:name=".AddNewProfile"
+            android:exported="false" />
+        <activity
             android:name=".TestsView"
             android:exported="false" />
         <activity

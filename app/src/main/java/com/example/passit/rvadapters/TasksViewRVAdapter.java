@@ -1,5 +1,7 @@
 package com.example.passit.rvadapters;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.passit.AppDatabase;
 import com.example.passit.R;
+import com.example.passit.TaskInfo;
+import com.example.passit.TestInfo;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 
@@ -36,6 +40,7 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
     public void onBindViewHolder(@NonNull TasksViewRVAdapter.ViewHolder holder, int position) {
 
         db = AppDatabase.getDbInstance(holder.subjectName.getContext());
+        int taskId = taskList.get(position).getTask_id();
 
         holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
         holder.taskName.setText(taskList.get(position).getTask_name());
@@ -50,6 +55,14 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
         } else if (taskList.get(position).getImportance().equals("high")) {
             holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
         }
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), TaskInfo.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("taskId", taskId);
+            intent.putExtras(bundle);
+            view.getContext().startActivity(intent);
+        });
     }
 
     @Override

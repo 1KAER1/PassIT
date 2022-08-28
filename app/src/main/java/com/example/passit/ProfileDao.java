@@ -46,6 +46,9 @@ public interface ProfileDao {
     @Query("SELECT subject_name FROM subject WHERE subject_id = :subjectID")
     String getSubjectName(int subjectID);
 
+    @Query("SELECT * FROM subject WHERE subject_id = :subjectID")
+    List<Subject> getSubjectWithId(int subjectID);
+
     @Transaction
     @Query("SELECT subject_name FROM Subject")
     List<String> getAllSubjectsNames();
@@ -60,6 +63,9 @@ public interface ProfileDao {
     @Query("SELECT * FROM task")
     List<Task> getAllTasks();
 
+    @Query("SELECT * FROM Task WHERE task_id = :taskId")
+    List<Task> getTaskWithId(int taskId);
+
     //Test
     @Insert
     void insertTest(Test... tests);
@@ -70,12 +76,25 @@ public interface ProfileDao {
     @Query("SELECT * FROM Test")
     List<Test> getAllTests();
 
+    @Query("SELECT * FROM Test WHERE test_id = :testId")
+    List<Test> getTestWithId(int testId);
+
+    @Query("SELECT * FROM Test WHERE importance = :importance")
+    List<Test> getTestsWithImportance(String importance);
+
+    @Query("SELECT * FROM Test WHERE test_name LIKE :description")
+    String getSearchResults(String description);
+
+
     //Lesson
     @Insert
     void insertLesson(Lesson... lessons);
 
     @Delete
     void deleteLesson(Lesson... lesson);
+
+    @Query("SELECT * FROM Lesson WHERE subject_id = :subjectId AND lesson_type = :lessonType")
+    List<Lesson> getLessonWithId(int subjectId, String lessonType);
 
     @Query("SELECT lesson_id FROM Lesson WHERE lesson_type = :lessonType AND subject_id = :subjectId")
     int getLessonId(String lessonType, int subjectId);
@@ -91,8 +110,14 @@ public interface ProfileDao {
     @Query("SELECT * FROM Subject")
     List<SubjectWithLessons> getSubjectWithLessons();
 
+    //Lesson Date
+    @Query("SELECT * FROM LessonDate WHERE lesson_id = :lessonId")
+    List<LessonDate> getLessonDate(int lessonId);
 
     //Profile
+    @Query("SELECT * FROM Profile")
+    List<Profile> getAllProfiles();
+
     @Query("SELECT profile_id FROM profile WHERE isActive = 1")
     int getActiveProfile();
 
@@ -104,6 +129,10 @@ public interface ProfileDao {
 
     @Query("UPDATE profile SET isActive = 1 WHERE profile_name = :profileName")
     void activateProfile(String profileName);
+
+    @Transaction
+    @Query("SELECT profile_name FROM Profile")
+    List<String> getAllProfilesNames();
 
 
 }

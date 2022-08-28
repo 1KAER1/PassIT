@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/taskNameET"
+            android:id="@+id/testNameTV"
             android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_marginTop="60dp"
@@ -69,7 +69,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.108"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskNameET" />
+            app:layout_constraintTop_toBottomOf="@+id/testNameTV" />
 
         <EditText
             android:id="@+id/firstWeeks"
@@ -123,7 +123,7 @@
 
 
         <Spinner
-            android:id="@+id/spinnerPicker"
+            android:id="@+id/assignedSubjectTV"
             android:layout_width="178dp"
             android:layout_height="52dp"
             android:layout_marginStart="16dp"
@@ -152,20 +152,22 @@
             android:textColor="@color/textColor"
             android:textColorHint="@color/hintColor"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/spinnerPicker"
+            app:layout_constraintStart_toEndOf="@+id/assignedSubjectTV"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <Button
             android:id="@+id/addDayBtn"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
-            android:background="@drawable/ic_custom_add"
+            android:background="@drawable/next_button"
             android:gravity="center"
+            android:padding="15dp"
+            android:text="Dodaj dzień"
             android:textAllCaps="false"
             android:textColor="@color/textColor"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timeButton" />
@@ -192,7 +194,7 @@
             android:id="@+id/classesTimeRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/spinnerPicker"
+            android:layout_below="@id/assignedSubjectTV"
             android:layout_marginStart="20dp"
             android:layout_marginTop="52dp"
             android:layout_marginEnd="20dp"

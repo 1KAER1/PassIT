@@ -1,18 +1,14 @@
 package com.example.passit;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.example.passit.db.entities.Subject;
 import com.example.passit.rvadapters.SubjectsViewRVAdapter;
@@ -58,7 +54,6 @@ public class SubjectsView extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        //super.onBackPressed();
     }
 
     public void addNewSubject() {

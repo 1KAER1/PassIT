@@ -99,7 +99,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskNameET">
+        app:layout_constraintTop_toBottomOf="@+id/testNameTV">
 
         <CheckBox
             android:id="@+id/lectureCB"
@@ -180,7 +180,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/taskNameET"
+        android:id="@+id/testNameTV"
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_marginTop="36dp"

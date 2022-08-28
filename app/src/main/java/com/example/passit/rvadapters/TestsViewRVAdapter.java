@@ -1,5 +1,7 @@
-package com.example.passit;
+package com.example.passit.rvadapters;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.passit.AppDatabase;
+import com.example.passit.R;
+import com.example.passit.SubjectDetails;
+import com.example.passit.TestInfo;
 import com.example.passit.db.entities.Test;
 
 import java.util.List;
@@ -31,6 +37,7 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
     @Override
     public void onBindViewHolder(@NonNull TestsViewRVAdapter.VieHolder holder, int position) {
         db = AppDatabase.getDbInstance(holder.subjectName.getContext());
+        int testId = testsList.get(position).getTest_id();
 
         holder.subjectName.setText(db.profileDao().getSubjectName(testsList.get(position).getSubject_id()));
         holder.testName.setText(testsList.get(position).getTest_name());
@@ -45,6 +52,14 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
         } else if (testsList.get(position).getImportance().equals("high")) {
             holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
         }
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), TestInfo.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("testId", testId);
+            intent.putExtras(bundle);
+            view.getContext().startActivity(intent);
+        });
     }
 
     @Override

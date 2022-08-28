@@ -1,6 +1,8 @@
 package com.example.passit.rvadapters;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.passit.R;
+import com.example.passit.SubjectDetails;
+import com.example.passit.SubjectsView;
 import com.example.passit.db.entities.Subject;
 
 import java.util.ArrayList;
@@ -35,16 +39,33 @@ public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SubjectsViewRVAdapter.ViewHolder holder, int position) {
+        int subjectId = subjectNameList1.get(position).getSubject_id();
+
         holder.subjectName.setText(subjectNameList1.get(position).getSubject_name());
         holder.ectsPoints.setText(subjectNameList1.get(position).getEcts_points() + " ECTS");
-        if (subjectNameList1.get(position).getImportance().equals("normal")) {
-            holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);
-            //holder.subjectName.setTextColor(ContextCompat.getColor(this, R.color.background));
-        } else if (subjectNameList1.get(position).getImportance().equals("medium")) {
-            holder.rowLayout.setBackgroundResource(R.drawable.medium_importance_gradient);
-        } else if (subjectNameList1.get(position).getImportance().equals("high")) {
-            holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
+
+        switch (subjectNameList1.get(position).getImportance()) {
+            case "normal":
+                holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);
+                break;
+            case "medium":
+                holder.rowLayout.setBackgroundResource(R.drawable.medium_importance_gradient);
+                break;
+            case "high":
+                holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
+                break;
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), SubjectDetails.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("subjectId", subjectId);
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

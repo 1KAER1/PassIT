@@ -14,4 +14,23 @@ public class LessonDate {
     public int lesson_period;
     public int lesson_id;
 
+    public int getLesson_date_id() {
+        return lesson_date_id;
+    }
+
+    public String getDay_name() {
+        return day_name;
+    }
+
+    public String getLesson_time() {
+        return lesson_time;
+    }
+
+    public int getLesson_period() {
+        return lesson_period;
+    }
+
+    public int getLesson_id() {
+        return lesson_id;
+    }
 }
