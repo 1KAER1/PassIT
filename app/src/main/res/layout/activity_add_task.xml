@@ -42,6 +42,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
+        <Spinner
+            android:id="@+id/subjectTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="35dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:minHeight="48dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
         <Button
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"
@@ -188,13 +204,13 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="60dp"
             android:text="Termin oddania zadania"
             android:textColor="@color/textColorDarken"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.061"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/assignedSubjectTV" />
+            app:layout_constraintTop_toBottomOf="@+id/subjectTypeSpinner" />
 
         <TextView
             android:id="@+id/textView10"
@@ -207,6 +223,18 @@
             app:layout_constraintHorizontal_bias="0.057"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/testNameTV" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="Typ przedmiotu"
+            android:textColor="@color/textColorDarken"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.057"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignedSubjectTV" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

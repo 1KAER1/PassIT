@@ -15,6 +15,7 @@ public class Task {
     public String date_due;
     public String hour_due;
     public String description;
+    public String subject_type;
     @ColumnInfo(defaultValue = "false")
     public boolean finished;
     public int subject_id;
@@ -41,6 +42,10 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getSubject_type() {
+        return subject_type;
     }
 
     public boolean isFinished() {

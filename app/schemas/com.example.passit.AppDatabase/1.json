@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4abed47ca1f7f132ce30658436e476d2",
+    "identityHash": "a2324241bc68012daa5510ed091b9d00",
     "entities": [
       {
         "tableName": "Lesson",
@@ -161,7 +161,7 @@
       },
       {
         "tableName": "Subject",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`subject_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `subject_name` TEXT, `importance` TEXT, `ects_points` INTEGER NOT NULL, `is_lecture` INTEGER NOT NULL, `is_exercise` INTEGER NOT NULL, `is_lab` INTEGER NOT NULL, `profile_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`subject_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `subject_name` TEXT, `importance` TEXT, `ects_points` INTEGER NOT NULL, `is_lecture` INTEGER NOT NULL, `is_exercise` INTEGER NOT NULL, `is_lab` INTEGER NOT NULL, `passed` INTEGER NOT NULL DEFAULT false, `profile_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "subject_id",
@@ -206,6 +206,13 @@
             "notNull": true
           },
           {
+            "fieldPath": "passed",
+            "columnName": "passed",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
             "fieldPath": "profile_id",
             "columnName": "profile_id",
             "affinity": "INTEGER",
@@ -233,7 +240,7 @@
       },
       {
         "tableName": "Task",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `subject_type` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "task_id",
@@ -272,6 +279,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "subject_type",
+            "columnName": "subject_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "finished",
             "columnName": "finished",
             "affinity": "INTEGER",
@@ -296,7 +309,7 @@
       },
       {
         "tableName": "Test",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`test_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `test_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `passed` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`test_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `test_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `subject_type` TEXT, `passed` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "test_id",
@@ -335,6 +348,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "subject_type",
+            "columnName": "subject_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "passed",
             "columnName": "passed",
             "affinity": "INTEGER",
@@ -361,7 +380,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4abed47ca1f7f132ce30658436e476d2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2324241bc68012daa5510ed091b9d00')"
     ]
   }
 }

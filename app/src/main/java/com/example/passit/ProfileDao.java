@@ -53,6 +53,15 @@ public interface ProfileDao {
     @Query("SELECT subject_name FROM Subject")
     List<String> getAllSubjectsNames();
 
+    @Query("SELECT is_lecture FROM Subject WHERE subject_name = :subjectName")
+    boolean getSubjectLecture(String subjectName);
+
+    @Query("SELECT is_exercise FROM Subject WHERE subject_name = :subjectName")
+    boolean getSubjectExercise(String subjectName);
+
+    @Query("SELECT is_lab FROM Subject WHERE subject_name = :subjectName")
+    boolean getSubjectLab(String subjectName);
+
     //Task
     @Insert
     void insertTask(Task... tasks);
@@ -81,9 +90,6 @@ public interface ProfileDao {
 
     @Query("SELECT * FROM Test WHERE importance = :importance")
     List<Test> getTestsWithImportance(String importance);
-
-    @Query("SELECT * FROM Test WHERE test_name LIKE :description")
-    String getSearchResults(String description);
 
 
     //Lesson

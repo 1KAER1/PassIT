@@ -22,7 +22,6 @@ public class AddSubject extends AppCompatActivity {
     private EditText ectsPoints;
     private CheckBox lectureCB, exerciseCB, labCB;
     private RadioButton normalImportance, mediumImportance, highImportance;
-    private RadioGroup importanceRadioGroup;
 
 
     @Override
@@ -39,7 +38,6 @@ public class AddSubject extends AppCompatActivity {
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
-        importanceRadioGroup = findViewById(R.id.importanceRadioGroup);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,23 +45,6 @@ public class AddSubject extends AppCompatActivity {
 
 
                 AppDatabase db = AppDatabase.getDbInstance(getApplicationContext());
-
-                /*Profile profile = new Profile();
-                profile.profile_name = "Informatyka";
-                profile.semester = 7;
-                db.profileDao().insertProfile(profile);*/
-
-                /*Profile profile2 = new Profile();
-                profile2.profile_name = "AiR";
-                profile2.semester = 5;
-                db.profileDao().insertProfile(profile2);*/
-
-                db.profileDao().deactivateProfiles();
-                db.profileDao().activateProfile("Informatyka");
-
-                int activeProfileId = db.profileDao().getActiveProfile();
-                Toast.makeText(getApplicationContext(), "Aktywny profil: " + activeProfileId + " " + db.profileDao().getActiveProfileName(),
-                        Toast.LENGTH_SHORT).show();
 
                 String selectedImportance;
                 selectedImportance = checkImportanceSelection();
@@ -80,16 +61,15 @@ public class AddSubject extends AppCompatActivity {
                             Integer.parseInt(ectsPoints.getText().toString()),
                             selectedImportance
                     );
-                    nextSite();
+                    returnToSubjects();
                 }
-
             }
         });
     }
 
-    public void nextSite() {
+    public void returnToSubjects() {
 
-        Intent intent = new Intent(this, AddClass.class);
+        Intent intent = new Intent(this, SubjectsView.class);
         startActivity(intent);
     }
 

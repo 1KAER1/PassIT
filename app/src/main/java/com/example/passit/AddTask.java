@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,12 +30,13 @@ import java.util.Locale;
 public class AddTask extends AppCompatActivity {
 
     private EditText taskName, taskDescription;
-    private Spinner subjectSpinner;
+    private Spinner subjectSpinner, subjectTypeSpinner;
     private Button datePickerButton, nextButton, timeButton;
     private RadioButton normalImportance, mediumImportance, highImportance;
     private RadioGroup importanceRadioGroup;
     private int hour, minute;
     private List<String> subjectsList = new ArrayList<>();
+    private List<String> subjectTypeList = new ArrayList<>();
     private AppDatabase db;
     private DatePickerDialog datePickerDialog;
     private String selectedImportance = null;
@@ -54,6 +56,7 @@ public class AddTask extends AppCompatActivity {
         taskName = findViewById(R.id.testNameTV);
         taskDescription = findViewById(R.id.testDescription);
         subjectSpinner = findViewById(R.id.assignedSubjectTV);
+        subjectTypeSpinner = findViewById(R.id.subjectTypeSpinner);
         datePickerButton = findViewById(R.id.datePicker);
         timeButton = findViewById(R.id.timePicker);
         nextButton = findViewById(R.id.nextBtn);
@@ -66,13 +69,43 @@ public class AddTask extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
         subjectSpinner.setAdapter(adapter);
 
+        subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String newItem = subjectSpinner.getSelectedItem().toString();
+
+                subjectTypeList.clear();
+
+                if (db.profileDao().getSubjectLecture(newItem)) {
+                    subjectTypeList.add("WYKŁAD");
+                }
+
+                if (db.profileDao().getSubjectExercise(newItem)) {
+                    subjectTypeList.add("ĆWICZENIA");
+                }
+
+                if (db.profileDao().getSubjectLab(newItem)) {
+                    subjectTypeList.add("LABORATORIA");
+                }
+
+
+                ArrayAdapter<String> subjectTypeAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.custom_spinner_layout, subjectTypeList);
+                subjectTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
+                subjectTypeSpinner.setAdapter(subjectTypeAdapter);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         datePickerButton.setHint(getTodaysDate());
         timeButton.setHint(getCurrentTime());
 
         timeButton.setOnClickListener(view -> popTimePicker());
         datePickerButton.setOnClickListener(this::openDatePicker);
-
-        //selectedImportance = checkImportanceSelection();
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +133,7 @@ public class AddTask extends AppCompatActivity {
         task.date_due = datePickerButton.getText().toString();
         task.hour_due = timeButton.getText().toString();
         task.description = taskDescription.getText().toString();
+        task.subject_type = subjectTypeSpinner.getSelectedItem().toString();
         task.subject_id = db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString());
         db.profileDao().insertTask(task);
     }

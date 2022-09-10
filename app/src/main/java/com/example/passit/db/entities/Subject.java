@@ -1,6 +1,7 @@
 package com.example.passit.db.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -21,11 +22,15 @@ public class Subject {
     public boolean is_lecture;
     public boolean is_exercise;
     public boolean is_lab;
+    @Nullable
+    @ColumnInfo(defaultValue = "false")
+    public boolean passed;
     public int profile_id;
 
     public int getSubject_id() {
         return subject_id;
     }
+
 
     public String getSubject_name() {
         return subject_name;
@@ -49,6 +54,10 @@ public class Subject {
 
     public boolean isIs_lab() {
         return is_lab;
+    }
+
+    public boolean isPassed() {
+        return passed;
     }
 
     public int getProfile_id() {

@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="Dodaj nowe zaliczenie"
+            android:text="Dodaj nowe zadanie"
             android:textColor="@color/textColor"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +41,22 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <Spinner
+            android:id="@+id/subjectTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="35dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:minHeight="48dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
         <Button
             android:id="@+id/datePicker"
@@ -121,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
-            android:text="Ważność zaliczenia"
+            android:text="Ważność zadania"
             android:textColor="@color/textColorDarken"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.052"
@@ -151,7 +167,7 @@
             android:layout_marginTop="36dp"
             android:background="@drawable/custom_input"
             android:ems="10"
-            android:hint="Nazwa zaliczenia"
+            android:hint="Nazwa zadania"
             android:inputType="textPersonName"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
@@ -171,7 +187,7 @@
             android:layout_marginEnd="35dp"
             android:background="@drawable/custom_input"
             android:ems="10"
-            android:hint="Opis zaliczenia"
+            android:hint="Opis zadania"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="2000"
             android:padding="20dp"
@@ -188,13 +204,13 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:text="Data i godzina zaliczenia"
+            android:layout_marginTop="60dp"
+            android:text="Termin oddania zadania"
             android:textColor="@color/textColorDarken"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.061"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/assignedSubjectTV" />
+            app:layout_constraintTop_toBottomOf="@+id/subjectTypeSpinner" />
 
         <TextView
             android:id="@+id/textView10"
@@ -207,6 +223,18 @@
             app:layout_constraintHorizontal_bias="0.057"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/testNameTV" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="Typ przedmiotu"
+            android:textColor="@color/textColorDarken"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.057"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assignedSubjectTV" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

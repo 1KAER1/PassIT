@@ -57,7 +57,7 @@ public class SubjectsView extends AppCompatActivity {
     }
 
     public void addNewSubject() {
-        Intent intent = new Intent(this, SubjectInformation.class);
+        Intent intent = new Intent(this, AddSubject.class);
         startActivity(intent);
     }
 }
