@@ -16,11 +16,11 @@
         <TextView
             android:id="@+id/assignedSubjectTV"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="78dp"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/custom_input"
+            android:background="@drawable/menu_button"
             android:ems="10"
             android:gravity="center"
             android:hint="Przypisany przedmiot"
@@ -30,18 +30,18 @@
             android:textColorHint="@color/hintColor"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toBottomOf="@+id/testNameTV" />
 
         <TextView
             android:id="@+id/dateTV"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/custom_input"
+            android:background="@drawable/menu_button"
             android:ems="10"
             android:gravity="center"
             android:hint="29/12/2022    22:22"
@@ -51,18 +51,18 @@
             android:textColorHint="@color/hintColor"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/assignedSubjectTV" />
 
         <TextView
             android:id="@+id/testNameTV"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="64dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/custom_input"
+            android:background="@drawable/menu_button"
             android:ems="10"
             android:gravity="center"
             android:hint="Nazwa zadania"
@@ -72,18 +72,18 @@
             android:textColorHint="@color/hintColor"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/deleteBtn" />
 
         <EditText
             android:id="@+id/testDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/custom_input"
+            android:background="@drawable/menu_button"
             android:ems="10"
             android:hint="Opis zadania"
             android:inputType="textCapSentences|textMultiLine"
@@ -97,55 +97,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView91" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="Data zadania"
-            android:textColor="@color/textColorDarken"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.061"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/assignedSubjectTV" />
-
-        <TextView
-            android:id="@+id/textView91"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="Opis zadania"
-            android:textColor="@color/textColorDarken"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.061"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateTV" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:text="Przypisany przedmiot"
-            android:textColor="@color/textColorDarken"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.057"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/testNameTV" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="Nazwa zadania"
-            android:textColor="@color/textColorDarken"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/importanceTV"
@@ -155,6 +107,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/ic_delete_32"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/importanceTV" />
+
+        <Button
+            android:id="@+id/markFinishedBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/next_button"
+            android:text="Oznacz jako ukończone"
+            android:textColor="@color/textColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/testDescription"
+            app:layout_constraintVertical_bias="0.99" />
+
+        <Button
+            android:id="@+id/editBtn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_edit_32"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/importanceTV" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

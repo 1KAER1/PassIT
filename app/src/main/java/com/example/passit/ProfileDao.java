@@ -75,6 +75,12 @@ public interface ProfileDao {
     @Query("SELECT * FROM Task WHERE task_id = :taskId")
     List<Task> getTaskWithId(int taskId);
 
+    @Query("DELETE FROM Task WHERE task_id = :taskId")
+    void deleteTask(int taskId);
+
+    @Query("UPDATE Task SET finished = 1 WHERE task_id = :taskId")
+    void setFinishedTask(int taskId);
+
     //Test
     @Insert
     void insertTest(Test... tests);

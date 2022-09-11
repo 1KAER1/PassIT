@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Task;
@@ -30,6 +31,7 @@ import java.util.Locale;
 public class AddTask extends AppCompatActivity {
 
     private EditText taskName, taskDescription;
+    private TextView headlineTV;
     private Spinner subjectSpinner, subjectTypeSpinner;
     private Button datePickerButton, nextButton, timeButton;
     private RadioButton normalImportance, mediumImportance, highImportance;
@@ -37,15 +39,27 @@ public class AddTask extends AppCompatActivity {
     private int hour, minute;
     private List<String> subjectsList = new ArrayList<>();
     private List<String> subjectTypeList = new ArrayList<>();
+    private List<Task> taskList = new ArrayList<>();
     private AppDatabase db;
     private DatePickerDialog datePickerDialog;
     private String selectedImportance = null;
     private long pressedTime;
+    private int taskId;
+    private boolean isEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+        db = AppDatabase.getDbInstance(this);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            isEdit = true;
+            taskId = extras.getInt("taskId");
+            taskList = db.profileDao().getTaskWithId(taskId);
+        }
 
         initDatePicker();
 
@@ -60,14 +74,38 @@ public class AddTask extends AppCompatActivity {
         datePickerButton = findViewById(R.id.datePicker);
         timeButton = findViewById(R.id.timePicker);
         nextButton = findViewById(R.id.nextBtn);
+        headlineTV = findViewById(R.id.headlineTV);
 
-        db = AppDatabase.getDbInstance(this);
 
         subjectsList = db.profileDao().getAllSubjectsNames();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, subjectsList);
         adapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
         subjectSpinner.setAdapter(adapter);
+
+        if (isEdit) {
+            nextButton.setText("ZAKTUALIZUJ");
+            headlineTV.setText("Edytuj zadanie");
+            int selectionPosition = adapter.getPosition(db.profileDao().getSubjectName(taskList.get(0).getSubject_id()));
+            subjectSpinner.setSelection(selectionPosition);
+            taskName.setText(taskList.get(0).getTask_name());
+            datePickerButton.setText(taskList.get(0).getDate_due());
+            timeButton.setText(taskList.get(0).getHour_due());
+            taskDescription.setText(taskList.get(0).getDescription());
+
+            switch (taskList.get(0).getImportance()) {
+                case "normal":
+                    normalImportance.setChecked(true);
+                    break;
+                case "medium":
+                    mediumImportance.setChecked(true);
+                    break;
+                case "high":
+                    highImportance.setChecked(true);
+                    break;
+            }
+        }
+
 
         subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -93,6 +131,11 @@ public class AddTask extends AppCompatActivity {
                 subjectTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
                 subjectTypeSpinner.setAdapter(subjectTypeAdapter);
 
+                if (isEdit) {
+                    int selectionPosition2 = subjectTypeAdapter.getPosition(taskList.get(0).getSubject_type());
+                    subjectTypeSpinner.setSelection(selectionPosition2);
+                }
+
             }
 
             @Override
@@ -110,7 +153,11 @@ public class AddTask extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addTaskToDatabase();
+                if (isEdit) {
+                    updateTask();
+                } else {
+                    addTaskToDatabase();
+                }
             }
         });
 
@@ -124,6 +171,10 @@ public class AddTask extends AppCompatActivity {
             Toast.makeText(this, "Uzupełnij wszystkie dane!",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void updateTask() {
+
     }
 
     public void addDatabaseEntry() {
@@ -229,13 +280,22 @@ public class AddTask extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (pressedTime + 2000 > System.currentTimeMillis()) {
-            Intent intent = new Intent(this, TasksView.class);
+
+        if (isEdit) {
+            Intent intent = new Intent(getApplicationContext(), TaskInfo.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("taskId", taskId);
+            intent.putExtras(bundle);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Kliknij jeszcze raz, aby opuścić. Dane nie zostaną zapisane.", Toast.LENGTH_SHORT).show();
+            if (pressedTime + 2000 > System.currentTimeMillis()) {
+                Intent intent = new Intent(this, TasksView.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Kliknij jeszcze raz, aby opuścić. Dane nie zostaną zapisane.", Toast.LENGTH_SHORT).show();
+            }
+            pressedTime = System.currentTimeMillis();
         }
-        pressedTime = System.currentTimeMillis();
     }
 
     public void returnToTaskView() {
