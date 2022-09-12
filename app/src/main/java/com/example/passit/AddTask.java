@@ -174,10 +174,31 @@ public class AddTask extends AppCompatActivity {
     }
 
     public void updateTask() {
+        if (checkInput()) {
+            db.profileDao().updateTask(taskName.getText().toString(),
+                    checkImportanceSelection(),
+                    datePickerButton.getText().toString(),
+                    timeButton.getText().toString(),
+                    taskDescription.getText().toString(),
+                    subjectTypeSpinner.getSelectedItem().toString(),
+                    db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
+                    taskId);
+            Toast.makeText(this, "Task Name: " + taskName.getText().toString(),
+                    Toast.LENGTH_SHORT).show();
+            returnToTaskView();
+        } else {
+            Toast.makeText(this, "Uzupełnij wszystkie dane!",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     public void addDatabaseEntry() {
+        Task task = setupTask();
+        db.profileDao().insertTask(task);
+    }
+
+    public Task setupTask() {
         Task task = new Task();
         task.task_name = taskName.getText().toString();
         task.importance = checkImportanceSelection();
@@ -186,7 +207,7 @@ public class AddTask extends AppCompatActivity {
         task.description = taskDescription.getText().toString();
         task.subject_type = subjectTypeSpinner.getSelectedItem().toString();
         task.subject_id = db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString());
-        db.profileDao().insertTask(task);
+        return task;
     }
 
     public boolean checkInput() {

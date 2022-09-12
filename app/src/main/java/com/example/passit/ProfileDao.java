@@ -25,13 +25,13 @@ public interface ProfileDao {
     List<Subject> getAllSubjects();
 
 
-
     //Subject
     @Insert
     void insertProfile(Profile... profiles);
 
     @Delete
     void deleteProfile(Profile... profile);
+
 
     //Subject
     @Insert
@@ -66,8 +66,10 @@ public interface ProfileDao {
     @Insert
     void insertTask(Task... tasks);
 
-    @Delete
-    void deleteTask(Task... task);
+    @Query("UPDATE Task SET task_name=:taskName, importance=:importance, date_due=:dateDue, hour_due=:hourDue," +
+            " description=:description, subject_type=:subjectType, subject_id=:subjectId WHERE task_id=:taskId")
+    void updateTask(String taskName, String importance, String dateDue, String hourDue, String description, String subjectType,
+                    int subjectId, int taskId);
 
     @Query("SELECT * FROM task")
     List<Task> getAllTasks();
