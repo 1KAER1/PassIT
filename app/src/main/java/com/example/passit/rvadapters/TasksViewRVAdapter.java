@@ -47,17 +47,21 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
         holder.dateTV.setText(taskList.get(position).getDate_due());
         holder.timeTV.setText(taskList.get(position).getHour_due());
 
-        switch (taskList.get(position).getImportance()) {
-            case "normal":
-                holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);
-                //holder.subjectName.setTextColor(ContextCompat.getColor(this, R.color.background));
-                break;
-            case "medium":
-                holder.rowLayout.setBackgroundResource(R.drawable.medium_importance_gradient);
-                break;
-            case "high":
-                holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
-                break;
+        if (taskList.get(position).isFinished()) {
+            holder.rowLayout.setBackgroundResource(R.drawable.menu_button);
+        } else {
+            switch (taskList.get(position).getImportance()) {
+                case "normal":
+                    holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);
+                    //holder.subjectName.setTextColor(ContextCompat.getColor(this, R.color.background));
+                    break;
+                case "medium":
+                    holder.rowLayout.setBackgroundResource(R.drawable.medium_importance_gradient);
+                    break;
+                case "high":
+                    holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
+                    break;
+            }
         }
 
         holder.itemView.setOnClickListener(view -> {
