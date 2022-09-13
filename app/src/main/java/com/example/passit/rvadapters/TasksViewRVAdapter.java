@@ -64,7 +64,6 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
         }
 
 
-
         switch (taskList.get(position).getImportance()) {
             case "normal":
                 holder.importanceLabel.setBackgroundResource(R.color.normalImportance);
@@ -96,6 +95,16 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
             }
         });
 
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.profileDao().deleteTask(taskId);
+                taskList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, taskList.size());
+            }
+        });
+
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), TaskInfo.class);
             Bundle bundle = new Bundle();
@@ -113,13 +122,14 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView taskName;
         private final ConstraintLayout rowLayout;
-        private final Button markFinishedBtn;
+        private final Button markFinishedBtn, removeBtn;
         private final ImageView importanceLabel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             taskName = itemView.findViewById(R.id.taskName);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
+            removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);
             importanceLabel = itemView.findViewById(R.id.importanceLabel);
         }
