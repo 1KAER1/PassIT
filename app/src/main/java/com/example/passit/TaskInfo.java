@@ -58,6 +58,12 @@ public class TaskInfo extends AppCompatActivity {
                 break;
         }
 
+        if (db.profileDao().getTaskState(taskId)) {
+            finishBtn.setBackgroundResource(R.drawable.finish_button);
+        } else {
+            finishBtn.setBackgroundResource(R.drawable.unfinished_button);
+        }
+
         setText();
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +77,14 @@ public class TaskInfo extends AppCompatActivity {
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.profileDao().setFinishedTask(taskId);
-                returnToView();
+
+                if (db.profileDao().getTaskState(taskId)) {
+                    finishBtn.setBackgroundResource(R.drawable.unfinished_button);
+                    db.profileDao().setUnfinishedTask(taskId);
+                } else {
+                    finishBtn.setBackgroundResource(R.drawable.finish_button);
+                    db.profileDao().setFinishedTask(taskId);
+                }
             }
         });
 

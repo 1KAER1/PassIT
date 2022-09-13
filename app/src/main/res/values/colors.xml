@@ -13,9 +13,9 @@
     <color name="textColor">#F8F8F2</color>
     <color name="textColorDarken">#9C9C9C</color>
     <color name="lightPurple">#9585AC</color>
-    <color name="normalImportance">#30AA23</color>
-    <color name="mediumImportance">#F1D200</color>
-    <color name="highImportance">#C81C1C</color>
+    <color name="normalImportance">#66BB6A</color>
+    <color name="mediumImportance">#FFCA28</color>
+    <color name="highImportance">#EF5350</color>
     <color name="normalImportanceSelected">#116107</color>
     <color name="mediumImportanceSelected">#75670B</color>
     <color name="highImportanceSelected">#670909</color>
@@ -25,4 +25,6 @@
     <color name="selectedButton">#74299F</color>
     <color name="removeButton">#B646F6</color>
     <color name="accentColor">#2A2B2C</color>
+    <color name="cardBackground">#49474B</color>
+    <color name="cardBackgroundFinished">#171618</color>
 </resources>

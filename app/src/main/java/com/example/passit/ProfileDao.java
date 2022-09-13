@@ -83,6 +83,12 @@ public interface ProfileDao {
     @Query("UPDATE Task SET finished = 1 WHERE task_id = :taskId")
     void setFinishedTask(int taskId);
 
+    @Query("UPDATE Task SET finished = 0 WHERE task_id = :taskId")
+    void setUnfinishedTask(int taskId);
+
+    @Query("SELECT finished FROM Task WHERE task_id = :taskId")
+    boolean getTaskState(int taskId);
+
     //Test
     @Insert
     void insertTest(Test... tests);

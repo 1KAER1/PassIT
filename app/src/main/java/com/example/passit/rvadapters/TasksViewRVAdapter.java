@@ -1,10 +1,14 @@
 package com.example.passit.rvadapters;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,33 +40,61 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TasksViewRVAdapter.ViewHolder holder, int position) {
 
-        db = AppDatabase.getDbInstance(holder.subjectName.getContext());
+        db = AppDatabase.getDbInstance(holder.taskName.getContext());
         int taskId = taskList.get(position).getTask_id();
 
-        holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
-        holder.taskName.setText(taskList.get(position).getTask_name());
-        holder.dateTV.setText(taskList.get(position).getDate_due());
-        holder.timeTV.setText(taskList.get(position).getHour_due());
+        //holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
+        holder.taskName.setText(taskList.get(position).getTask_name() + "\n\n" + db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
+        holder.rowLayout.setBackgroundResource(R.color.cardBackground);
 
-        if (taskList.get(position).isFinished()) {
-            holder.rowLayout.setBackgroundResource(R.drawable.menu_button);
+        if (db.profileDao().getTaskState(taskId)) {
+            holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
+            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
         } else {
-            switch (taskList.get(position).getImportance()) {
-                case "normal":
-                    holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);
-                    //holder.subjectName.setTextColor(ContextCompat.getColor(this, R.color.background));
-                    break;
-                case "medium":
-                    holder.rowLayout.setBackgroundResource(R.drawable.medium_importance_gradient);
-                    break;
-                case "high":
-                    holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
-                    break;
-            }
+            holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
+            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.rowLayout.setBackgroundResource(R.color.cardBackground);
         }
+
+
+
+        switch (taskList.get(position).getImportance()) {
+            case "normal":
+                holder.importanceLabel.setBackgroundResource(R.color.normalImportance);
+                break;
+            case "medium":
+                holder.importanceLabel.setBackgroundResource(R.color.mediumImportance);
+                break;
+            case "high":
+                holder.importanceLabel.setBackgroundResource(R.color.highImportance);
+                break;
+        }
+
+        holder.markFinishedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (db.profileDao().getTaskState(taskId)) {
+                    holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
+                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+                    db.profileDao().setUnfinishedTask(taskId);
+                } else {
+                    holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
+                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
+                    db.profileDao().setFinishedTask(taskId);
+                }
+            }
+        });
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), TaskInfo.class);
@@ -79,16 +111,17 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView subjectName, taskName, dateTV, timeTV;
+        private final TextView taskName;
         private final ConstraintLayout rowLayout;
+        private final Button markFinishedBtn;
+        private final ImageView importanceLabel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            subjectName = itemView.findViewById(R.id.subjectName);
             taskName = itemView.findViewById(R.id.taskName);
-            dateTV = itemView.findViewById(R.id.dateTV);
-            timeTV = itemView.findViewById(R.id.timeTV);
+            markFinishedBtn = itemView.findViewById(R.id.markFinished);
             rowLayout = itemView.findViewById(R.id.rowLayout);
+            importanceLabel = itemView.findViewById(R.id.importanceLabel);
         }
     }
 }

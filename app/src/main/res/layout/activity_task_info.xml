@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="35dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="44dp"
             android:layout_marginEnd="35dp"
             android:background="@drawable/menu_button"
             android:ems="10"
@@ -74,7 +74,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deleteBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/importanceTV" />
 
         <EditText
             android:id="@+id/testDescription"
@@ -102,48 +102,83 @@
         <TextView
             android:id="@+id/importanceTV"
             android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:background="@color/highImportance"
+            android:layout_height="65dp"
+            android:background="@color/accentColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/accentColor"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/editBtn"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/ic_edit_32"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/deleteBtn"
+                app:layout_constraintHorizontal_bias="0.216"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="84dp"
+                android:background="@drawable/ic_delete_32"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/markFinishedBtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/markFinishedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/unfinished_button"
+                android:drawableStart="@drawable/ic_uncheck_24"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="Skończone"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.425" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Informacje o zadaniu"
+            android:textColor="@color/white"
+            android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/deleteBtn"
+            android:id="@+id/button2"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/ic_delete_32"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/importanceTV" />
-
-        <Button
-            android:id="@+id/markFinishedBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="2dp"
-            android:background="@drawable/next_button"
-            android:text="Oznacz jako ukończone"
-            android:textColor="@color/textColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            android:background="@drawable/ic_arrow_back_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/testDescription"
-            app:layout_constraintVertical_bias="0.99" />
-
-        <Button
-            android:id="@+id/editBtn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/ic_edit_32"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/importanceTV" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
