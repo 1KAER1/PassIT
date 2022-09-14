@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class SubjectDetails extends AppCompatActivity {
 
     private int subjectId;
     private AppDatabase db;
+    private CheckBox lectureCB, exerciseCB, labCB;
     private TextView importance, subjectName, ects,
             lectureLecturer, exerciseLecturer, labLecturer,
             lectureStartingWeek, exerciseStartingWeek, labStartingWeek,
@@ -55,7 +57,10 @@ public class SubjectDetails extends AppCompatActivity {
         importance = findViewById(R.id.importanceTV);
         subjectName = findViewById(R.id.subjectNameTV);
         ects = findViewById(R.id.ectsTV);
-        lectureLecturer = findViewById(R.id.lectureLecturerTV);
+        lectureCB = findViewById(R.id.lectureCB);
+        exerciseCB = findViewById(R.id.exerciseCB);
+        labCB = findViewById(R.id.labCB);
+        /*lectureLecturer = findViewById(R.id.lectureLecturerTV);
         exerciseLecturer = findViewById(R.id.exerciseLecturerTV);
         labLecturer = findViewById(R.id.labLecturerTV);
 
@@ -65,7 +70,7 @@ public class SubjectDetails extends AppCompatActivity {
 
         lectureEndWeek = findViewById(R.id.lastWeekTV);
         exerciseEndWeek = findViewById(R.id.lastWeekTV1);
-        labEndWeek = findViewById(R.id.lastWeekTV11);
+        labEndWeek = findViewById(R.id.lastWeekTV11);*/
 
         lectureRV = findViewById(R.id.lectureRV);
         exerciseRV = findViewById(R.id.exerciseRV);
@@ -92,9 +97,21 @@ public class SubjectDetails extends AppCompatActivity {
         subjectName.setText(subjectsList.get(0).getSubject_name());
         ects.setText(String.valueOf(subjectsList.get(0).getEcts_points()));
 
-        if (subjectsList.get(0).isIs_lecture()) {
+        if (subjectsList.get(0).isIs_lecture()){
+            lectureCB.setChecked(true);
+        }
+
+        if (subjectsList.get(0).isIs_exercise()){
+            exerciseCB.setChecked(true);
+        }
+
+        if (subjectsList.get(0).isIs_lab()){
+            labCB.setChecked(true);
+        }
+
+        /*if (subjectsList.get(0).isIs_lecture()) {
             lectureList = db.profileDao().getLessonWithId(subjectId, "Lecture");
-            lectureDatesList = db.profileDao().getLessonDate(lectureList.get(0).getLesson_id());
+            //lectureDatesList = db.profileDao().getLessonDate(lectureList.get(0).getLesson_id());
 
             lectureLecturer.setText(lectureList.get(0).getLecturer_name());
             lectureStartingWeek.setText(String.valueOf(lectureList.get(0).getStarting_week()));
@@ -126,7 +143,7 @@ public class SubjectDetails extends AppCompatActivity {
 
             labInfoRVAdapter = new LabInfoRVAdapter(labDatesList);
             labRV.setAdapter(labInfoRVAdapter);
-        }
+        }*/
 
     }
 

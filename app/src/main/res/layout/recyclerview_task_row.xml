@@ -24,7 +24,7 @@
             android:layout_marginEnd="1dp"
             android:gravity="start"
             android:padding="12dp"
-            android:text="Zadanie\n\nAnaliza matematyczna"
+            android:text="Zadanie\n\nPodstawy Programowania"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
