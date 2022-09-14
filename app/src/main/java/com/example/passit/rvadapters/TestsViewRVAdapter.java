@@ -1,10 +1,14 @@
 package com.example.passit.rvadapters;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.passit.AppDatabase;
 import com.example.passit.R;
-import com.example.passit.SubjectDetails;
 import com.example.passit.TestInfo;
 import com.example.passit.db.entities.Test;
 
@@ -34,24 +37,67 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
         return new VieHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TestsViewRVAdapter.VieHolder holder, int position) {
-        db = AppDatabase.getDbInstance(holder.subjectName.getContext());
-        int testId = testsList.get(position).getTest_id();
+        db = AppDatabase.getDbInstance(holder.testName.getContext());
+        int testId = testsList.get(holder.getAdapterPosition()).getTest_id();
 
-        holder.subjectName.setText(db.profileDao().getSubjectName(testsList.get(position).getSubject_id()));
-        holder.testName.setText(testsList.get(position).getTest_name());
-        holder.dateTV.setText(testsList.get(position).getDate_due());
-        holder.timeTV.setText(testsList.get(position).getHour_due());
+        holder.testName.setText(testsList.get(holder.getAdapterPosition()).getTest_name() + "\n\n" + db.profileDao().getSubjectName(testsList.get(position).getSubject_id()));
+        holder.rowLayout.setBackgroundResource(R.color.cardBackground);
 
-        if (testsList.get(position).getImportance().equals("normal")) {
-            holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);
-            //holder.subjectName.setTextColor(ContextCompat.getColor(this, R.color.background));
-        } else if (testsList.get(position).getImportance().equals("medium")) {
-            holder.rowLayout.setBackgroundResource(R.drawable.medium_importance_gradient);
-        } else if (testsList.get(position).getImportance().equals("high")) {
-            holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
+        if (db.profileDao().getTestState(testId)) {
+            holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
+            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.testName.setPaintFlags(holder.testName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
+        } else {
+            holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
+            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.testName.setPaintFlags(holder.testName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.rowLayout.setBackgroundResource(R.color.cardBackground);
         }
+
+        switch (testsList.get(holder.getAdapterPosition()).getImportance()) {
+            case "normal":
+                holder.importanceLabel.setBackgroundResource(R.color.normalImportance);
+                break;
+            case "medium":
+                holder.importanceLabel.setBackgroundResource(R.color.mediumImportance);
+                break;
+            case "high":
+                holder.importanceLabel.setBackgroundResource(R.color.highImportance);
+                break;
+        }
+
+        holder.markFinishedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (db.profileDao().getTestState(testId)) {
+                    holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
+                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    holder.testName.setPaintFlags(holder.testName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+                    db.profileDao().setUnfinishedTest(testId);
+                } else {
+                    holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
+                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.testName.setPaintFlags(holder.testName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
+                    db.profileDao().setPassedTest(testId);
+                }
+            }
+        });
+
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.profileDao().deleteTask(testId);
+                testsList.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+                notifyItemRangeChanged(holder.getAdapterPosition(), testsList.size());
+            }
+        });
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), TestInfo.class);
@@ -70,16 +116,18 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
 
     public class VieHolder extends RecyclerView.ViewHolder {
 
-        private final TextView subjectName, testName, dateTV, timeTV;
+        private final TextView testName;
         private final ConstraintLayout rowLayout;
+        private final Button markFinishedBtn, removeBtn;
+        private final ImageView importanceLabel;
 
         public VieHolder(@NonNull View itemView) {
             super(itemView);
-            subjectName = itemView.findViewById(R.id.subjectName);
             testName = itemView.findViewById(R.id.testName);
-            dateTV = itemView.findViewById(R.id.dateTV);
-            timeTV = itemView.findViewById(R.id.timeTV);
+            markFinishedBtn = itemView.findViewById(R.id.markFinished);
+            removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);
+            importanceLabel = itemView.findViewById(R.id.importanceLabel);
         }
     }
 }

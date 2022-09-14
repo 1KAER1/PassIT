@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.passit.AppDatabase;
 import com.example.passit.R;
 import com.example.passit.TaskInfo;
-import com.example.passit.TestInfo;
-import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 
 import java.util.List;
@@ -45,10 +43,10 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
     public void onBindViewHolder(@NonNull TasksViewRVAdapter.ViewHolder holder, int position) {
 
         db = AppDatabase.getDbInstance(holder.taskName.getContext());
-        int taskId = taskList.get(position).getTask_id();
+        int taskId = taskList.get(holder.getAdapterPosition()).getTask_id();
 
         //holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
-        holder.taskName.setText(taskList.get(position).getTask_name() + "\n\n" + db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
+        holder.taskName.setText(taskList.get(holder.getAdapterPosition()).getTask_name() + "\n\n" + db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
         holder.rowLayout.setBackgroundResource(R.color.cardBackground);
 
         if (db.profileDao().getTaskState(taskId)) {
@@ -64,7 +62,7 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
         }
 
 
-        switch (taskList.get(position).getImportance()) {
+        switch (taskList.get(holder.getAdapterPosition()).getImportance()) {
             case "normal":
                 holder.importanceLabel.setBackgroundResource(R.color.normalImportance);
                 break;
@@ -99,9 +97,9 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
             @Override
             public void onClick(View view) {
                 db.profileDao().deleteTask(taskId);
-                taskList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, taskList.size());
+                taskList.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+                notifyItemRangeChanged(holder.getAdapterPosition(), taskList.size());
             }
         });
 
@@ -127,7 +125,7 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            taskName = itemView.findViewById(R.id.taskName);
+            taskName = itemView.findViewById(R.id.testName);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
             removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);

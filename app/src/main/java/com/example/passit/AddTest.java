@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Test;
@@ -29,7 +30,8 @@ import java.util.Locale;
 
 public class AddTest extends AppCompatActivity {
 
-    private EditText taskName, taskDescription;
+    private EditText testName, taskDescription;
+    private TextView headlineTV;
     private Spinner subjectSpinner, subjectTypeSpinner;
     private Button datePickerButton, nextButton, timeButton;
     private RadioButton normalImportance, mediumImportance, highImportance;
@@ -37,15 +39,27 @@ public class AddTest extends AppCompatActivity {
     private int hour, minute;
     private List<String> subjectsList = new ArrayList<>();
     private List<String> subjectTypeList = new ArrayList<>();
+    private List<Test> testList = new ArrayList<>();
     private AppDatabase db;
     private DatePickerDialog datePickerDialog;
     private String selectedImportance = null;
     private long pressedTime;
+    private int testId;
+    private boolean isEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_test);
+
+        db = AppDatabase.getDbInstance(this);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            isEdit = true;
+            testId = extras.getInt("testId");
+            testList = db.profileDao().getTestWithId(testId);
+        }
 
         initDatePicker();
 
@@ -53,15 +67,14 @@ public class AddTest extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
         importanceRadioGroup = findViewById(R.id.importanceRadioGroup);
-        taskName = findViewById(R.id.testNameTV);
+        testName = findViewById(R.id.testNameTV);
         taskDescription = findViewById(R.id.testDescription);
         subjectSpinner = findViewById(R.id.assignedSubjectTV);
         subjectTypeSpinner = findViewById(R.id.subjectTypeSpinner);
         datePickerButton = findViewById(R.id.datePicker);
         timeButton = findViewById(R.id.timePicker);
         nextButton = findViewById(R.id.nextBtn);
-
-        db = AppDatabase.getDbInstance(this);
+        headlineTV = findViewById(R.id.headlineTV);
 
         subjectsList = db.profileDao().getAllSubjectsNames();
 
@@ -69,6 +82,29 @@ public class AddTest extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, subjectsList);
         adapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
         subjectSpinner.setAdapter(adapter);
+
+        if (isEdit) {
+            nextButton.setText("ZAKTUALIZUJ");
+            headlineTV.setText("Edytuj test");
+            int selectionPosition = adapter.getPosition(db.profileDao().getSubjectName(testList.get(0).getSubject_id()));
+            subjectSpinner.setSelection(selectionPosition);
+            testName.setText(testList.get(0).getTest_name());
+            datePickerButton.setText(testList.get(0).getDate_due());
+            timeButton.setText(testList.get(0).getHour_due());
+            taskDescription.setText(testList.get(0).getDescription());
+
+            switch (testList.get(0).getImportance()) {
+                case "normal":
+                    normalImportance.setChecked(true);
+                    break;
+                case "medium":
+                    mediumImportance.setChecked(true);
+                    break;
+                case "high":
+                    highImportance.setChecked(true);
+                    break;
+            }
+        }
 
         subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -94,6 +130,11 @@ public class AddTest extends AppCompatActivity {
                 subjectTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
                 subjectTypeSpinner.setAdapter(subjectTypeAdapter);
 
+                if (isEdit) {
+                    int selectionPosition2 = subjectTypeAdapter.getPosition(testList.get(0).getSubject_type());
+                    subjectTypeSpinner.setSelection(selectionPosition2);
+                }
+
             }
 
             @Override
@@ -111,7 +152,11 @@ public class AddTest extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addTestToDatabase();
+                if (isEdit) {
+                    updateTest();
+                } else {
+                    addTestToDatabase();
+                }
             }
         });
     }
@@ -126,9 +171,30 @@ public class AddTest extends AppCompatActivity {
         }
     }
 
+    public void updateTest() {
+        if (checkInput()) {
+            db.profileDao().updateTest(testName.getText().toString(),
+                    checkImportanceSelection(),
+                    datePickerButton.getText().toString(),
+                    timeButton.getText().toString(),
+                    taskDescription.getText().toString(),
+                    subjectTypeSpinner.getSelectedItem().toString(),
+                    db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
+                    testId);
+            Toast.makeText(this, "Test Name: " + testName.getText().toString(),
+                    Toast.LENGTH_SHORT).show();
+            returnToInfo();
+
+        } else {
+            Toast.makeText(this, "Uzupełnij wszystkie dane!",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     public void addDatabaseEntry() {
         Test test = new Test();
-        test.test_name = taskName.getText().toString();
+        test.test_name = testName.getText().toString();
         test.importance = checkImportanceSelection();
         test.date_due = datePickerButton.getText().toString();
         test.hour_due = timeButton.getText().toString();
@@ -138,17 +204,21 @@ public class AddTest extends AppCompatActivity {
         db.profileDao().insertTest(test);
     }
 
+    public void returnToInfo() {
+        Intent intent = new Intent(this, TestInfo.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("testId", testId);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     public boolean checkInput() {
         System.out.println("SELECTED IMPORTANCE: " + checkImportanceSelection());
-        if (!taskName.getText().toString().isEmpty()
+        return !testName.getText().toString().isEmpty()
                 && checkImportanceSelection() != null
                 && !taskDescription.getText().toString().isEmpty()
                 && !datePickerButton.getText().toString().isEmpty()
-                && !timeButton.getText().toString().isEmpty()) {
-            return true;
-        }
-
-        return false;
+                && !timeButton.getText().toString().isEmpty();
     }
 
     public String checkImportanceSelection() {

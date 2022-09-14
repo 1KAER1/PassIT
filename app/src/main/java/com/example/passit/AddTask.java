@@ -221,15 +221,11 @@ public class AddTask extends AppCompatActivity {
 
     public boolean checkInput() {
         System.out.println("SELECTED IMPORTANCE: " + checkImportanceSelection());
-        if (!taskName.getText().toString().isEmpty()
+        return !taskName.getText().toString().isEmpty()
                 && checkImportanceSelection() != null
                 && !taskDescription.getText().toString().isEmpty()
                 && !datePickerButton.getText().toString().isEmpty()
-                && !timeButton.getText().toString().isEmpty()) {
-            return true;
-        }
-
-        return false;
+                && !timeButton.getText().toString().isEmpty();
     }
 
     public String checkImportanceSelection() {

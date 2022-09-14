@@ -99,6 +99,23 @@ public interface ProfileDao {
     @Query("SELECT * FROM Test")
     List<Test> getAllTests();
 
+    @Query("UPDATE Test SET test_name=:testName, importance=:importance, date_due=:dateDue, hour_due=:hourDue," +
+            " description=:description, subject_type=:subjectType, subject_id=:subjectId WHERE test_id=:testId")
+    void updateTest(String testName, String importance, String dateDue, String hourDue, String description, String subjectType,
+                    int subjectId, int testId);
+
+    @Query("DELETE FROM Test WHERE test_id = :testId")
+    void deleteTest(int testId);
+
+    @Query("UPDATE Test SET passed = 1 WHERE test_id = :testId")
+    void setPassedTest(int testId);
+
+    @Query("UPDATE Test SET passed = 0 WHERE test_id = :testId")
+    void setUnfinishedTest(int testId);
+
+    @Query("SELECT passed FROM Test WHERE test_id = :testId")
+    boolean getTestState(int testId);
+
     @Query("SELECT * FROM Test WHERE test_id = :testId")
     List<Test> getTestWithId(int testId);
 
