@@ -185,7 +185,8 @@ public class AddTask extends AppCompatActivity {
                     taskId);
             Toast.makeText(this, "Task Name: " + taskName.getText().toString(),
                     Toast.LENGTH_SHORT).show();
-            returnToTaskView();
+            returnToInfo();
+
         } else {
             Toast.makeText(this, "Uzupełnij wszystkie dane!",
                     Toast.LENGTH_SHORT).show();
@@ -196,6 +197,14 @@ public class AddTask extends AppCompatActivity {
     public void addDatabaseEntry() {
         Task task = setupTask();
         db.profileDao().insertTask(task);
+    }
+
+    public void returnToInfo() {
+        Intent intent = new Intent(this, TaskInfo.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("taskId", taskId);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     public Task setupTask() {

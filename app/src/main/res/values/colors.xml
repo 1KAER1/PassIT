@@ -11,6 +11,7 @@
     <color name="background">#090909</color>
     <color name="darkPurple">#44475A</color>
     <color name="textColor">#F8F8F2</color>
+    <color name="textColor2">#9C8DBA</color>
     <color name="textColorDarken">#9C9C9C</color>
     <color name="lightPurple">#9585AC</color>
     <color name="normalImportance">#66BB6A</color>

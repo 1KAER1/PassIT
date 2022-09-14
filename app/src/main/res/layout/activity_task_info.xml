@@ -20,7 +20,7 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/menu_button"
+            android:background="@drawable/custom_textview"
             android:ems="10"
             android:gravity="center"
             android:hint="Przypisany przedmiot"
@@ -41,13 +41,13 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/menu_button"
+            android:background="@drawable/custom_textview"
             android:ems="10"
             android:gravity="center"
             android:hint="29/12/2022    22:22"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textColor="@color/textColor"
+            android:textColor="@color/textColor2"
             android:textColorHint="@color/hintColor"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="44dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/menu_button"
+            android:background="@drawable/custom_textview"
             android:ems="10"
             android:gravity="center"
             android:hint="Nazwa zadania"
@@ -76,14 +76,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/importanceTV" />
 
-        <EditText
+        <TextView
             android:id="@+id/testDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="35dp"
-            android:background="@drawable/menu_button"
+            android:background="@drawable/custom_textview"
             android:ems="10"
             android:hint="Opis zadania"
             android:inputType="textCapSentences|textMultiLine"
@@ -114,11 +114,13 @@
             android:layout_height="wrap_content"
             android:background="@color/accentColor"
             android:orientation="horizontal"
-            android:padding="20dp"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/testDescription"
+            app:layout_constraintVertical_bias="1.0">
 
             <Button
                 android:id="@+id/editBtn"
