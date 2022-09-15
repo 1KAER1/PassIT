@@ -47,18 +47,18 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
 
         //holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
         holder.taskName.setText(taskList.get(holder.getAdapterPosition()).getTask_name() + "\n\n" + db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
-        holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+        holder.taskName.setBackgroundResource(R.color.cardBackground);
 
         if (db.profileDao().getTaskState(taskId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
+            holder.taskName.setBackgroundResource(R.color.cardBackgroundFinished);
         } else {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+            holder.taskName.setBackgroundResource(R.color.cardBackground);
         }
 
 
@@ -81,13 +81,13 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                    holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+                    holder.taskName.setBackgroundResource(R.color.cardBackground);
                     db.profileDao().setUnfinishedTask(taskId);
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
+                    holder.taskName.setBackgroundResource(R.color.cardBackgroundFinished);
                     db.profileDao().setFinishedTask(taskId);
                 }
             }
@@ -125,7 +125,7 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            taskName = itemView.findViewById(R.id.testName);
+            taskName = itemView.findViewById(R.id.cv_subjectName);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
             removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);

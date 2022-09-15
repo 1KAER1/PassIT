@@ -67,7 +67,7 @@ public class AddTest extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
         importanceRadioGroup = findViewById(R.id.importanceRadioGroup);
-        testName = findViewById(R.id.testNameTV);
+        testName = findViewById(R.id.subjectTV);
         taskDescription = findViewById(R.id.testDescription);
         subjectSpinner = findViewById(R.id.assignedSubjectTV);
         subjectTypeSpinner = findViewById(R.id.subjectTypeSpinner);

@@ -69,8 +69,8 @@
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_row.xml" value="0.5489583333333333" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_subject_row.xml" value="0.2124756335282651" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_summary_row.xml" value="0.5489583333333333" />
-        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_task_row.xml" value="0.5" />
-        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_test_row.xml" value="0.22" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_task_row.xml" value="0.4249512670565302" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_test_row.xml" value="0.33" />
       </map>
     </option>
   </component>

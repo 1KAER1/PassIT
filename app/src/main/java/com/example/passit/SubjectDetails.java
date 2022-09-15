@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,24 +27,9 @@ public class SubjectDetails extends AppCompatActivity {
     private int subjectId;
     private AppDatabase db;
     private CheckBox lectureCB, exerciseCB, labCB;
-    private TextView importance, subjectName, ects,
-            lectureLecturer, exerciseLecturer, labLecturer,
-            lectureStartingWeek, exerciseStartingWeek, labStartingWeek,
-            lectureEndWeek, exerciseEndWeek, labEndWeek;
-    private RecyclerView lectureRV, exerciseRV, labRV;
+    private TextView importance, subjectName, ects;
     private List<Subject> subjectsList = new ArrayList<>();
-
-    private List<Lesson> lectureList = new ArrayList<>();
-    private List<LessonDate> lectureDatesList = new ArrayList<>();
-    private LectureInfoRVAdapter lectureInfoRVAdapter;
-
-    private List<Lesson> exerciseList = new ArrayList<>();
-    private List<LessonDate> exerciseDatesList = new ArrayList<>();
-    private ExerciseInfoRVAdapter exerciseInfoRVAdapter;
-
-    private List<Lesson> labList = new ArrayList<>();
-    private List<LessonDate> labDatesList = new ArrayList<>();
-    private LabInfoRVAdapter labInfoRVAdapter;
+    private Button deleteBtn, editBtn, finishBtn, returnBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +47,10 @@ public class SubjectDetails extends AppCompatActivity {
         lectureCB = findViewById(R.id.lectureCB);
         exerciseCB = findViewById(R.id.exerciseCB);
         labCB = findViewById(R.id.labCB);
-        /*lectureLecturer = findViewById(R.id.lectureLecturerTV);
-        exerciseLecturer = findViewById(R.id.exerciseLecturerTV);
-        labLecturer = findViewById(R.id.labLecturerTV);
-
-        lectureStartingWeek = findViewById(R.id.startingWeekTV);
-        exerciseStartingWeek = findViewById(R.id.startingWeekTV1);
-        labStartingWeek = findViewById(R.id.startingWeekTV11);
-
-        lectureEndWeek = findViewById(R.id.lastWeekTV);
-        exerciseEndWeek = findViewById(R.id.lastWeekTV1);
-        labEndWeek = findViewById(R.id.lastWeekTV11);*/
-
-        lectureRV = findViewById(R.id.lectureRV);
-        exerciseRV = findViewById(R.id.exerciseRV);
-        labRV = findViewById(R.id.labRV);
+        deleteBtn = findViewById(R.id.deleteBtn);
+        editBtn = findViewById(R.id.editBtn);
+        finishBtn = findViewById(R.id.markFinishedBtn);
+        returnBtn = findViewById(R.id.returnBtn);
 
         db = AppDatabase.getDbInstance(this);
 
@@ -94,61 +70,77 @@ public class SubjectDetails extends AppCompatActivity {
                 importance.setBackgroundResource(R.color.highImportance);
                 break;
         }
+
+        if (db.profileDao().getSubjectState(subjectId)) {
+            finishBtn.setBackgroundResource(R.drawable.finish_button);
+        } else {
+            finishBtn.setBackgroundResource(R.drawable.unfinished_button);
+        }
+
         subjectName.setText(subjectsList.get(0).getSubject_name());
         ects.setText(String.valueOf(subjectsList.get(0).getEcts_points()));
 
-        if (subjectsList.get(0).isIs_lecture()){
+        if (subjectsList.get(0).isIs_lecture()) {
             lectureCB.setChecked(true);
         }
 
-        if (subjectsList.get(0).isIs_exercise()){
+        if (subjectsList.get(0).isIs_exercise()) {
             exerciseCB.setChecked(true);
         }
 
-        if (subjectsList.get(0).isIs_lab()){
+        if (subjectsList.get(0).isIs_lab()) {
             labCB.setChecked(true);
         }
 
-        /*if (subjectsList.get(0).isIs_lecture()) {
-            lectureList = db.profileDao().getLessonWithId(subjectId, "Lecture");
-            //lectureDatesList = db.profileDao().getLessonDate(lectureList.get(0).getLesson_id());
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.profileDao().deleteSubject(subjectId);
+                returnToView();
+            }
+        });
 
-            lectureLecturer.setText(lectureList.get(0).getLecturer_name());
-            lectureStartingWeek.setText(String.valueOf(lectureList.get(0).getStarting_week()));
-            lectureEndWeek.setText(String.valueOf(lectureList.get(0).getEnding_week()));
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            lectureInfoRVAdapter = new LectureInfoRVAdapter(lectureDatesList);
-            lectureRV.setAdapter(lectureInfoRVAdapter);
-        }
+                if (db.profileDao().getSubjectState(subjectId)) {
+                    finishBtn.setBackgroundResource(R.drawable.unfinished_button);
+                    db.profileDao().setSubjectInProgress(subjectId);
+                } else {
+                    finishBtn.setBackgroundResource(R.drawable.finish_button);
+                    db.profileDao().setPassedSubject(subjectId);
+                }
+            }
+        });
 
-        if (subjectsList.get(0).isIs_exercise()) {
-            exerciseList = db.profileDao().getLessonWithId(subjectId, "Exercise");
-            exerciseDatesList = db.profileDao().getLessonDate(exerciseList.get(0).getLesson_id());
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddSubject.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("subjectId", subjectId);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
-            exerciseLecturer.setText(exerciseList.get(0).getLecturer_name());
-            exerciseStartingWeek.setText(String.valueOf(exerciseList.get(0).getStarting_week()));
-            exerciseEndWeek.setText(String.valueOf(exerciseList.get(0).getEnding_week()));
+        returnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                returnToView();
+            }
+        });
 
-            exerciseInfoRVAdapter = new ExerciseInfoRVAdapter(exerciseDatesList);
-            exerciseRV.setAdapter(exerciseInfoRVAdapter);
-        }
-
-        if (subjectsList.get(0).isIs_lab()) {
-            labList = db.profileDao().getLessonWithId(subjectId, "Lab");
-            labDatesList = db.profileDao().getLessonDate(labList.get(0).getLesson_id());
-
-            labLecturer.setText(labList.get(0).getLecturer_name());
-            labStartingWeek.setText(String.valueOf(labList.get(0).getStarting_week()));
-            labEndWeek.setText(String.valueOf(labList.get(0).getEnding_week()));
-
-            labInfoRVAdapter = new LabInfoRVAdapter(labDatesList);
-            labRV.setAdapter(labInfoRVAdapter);
-        }*/
 
     }
 
     @Override
     public void onBackPressed() {
+        returnToView();
+    }
+
+    public void returnToView() {
         Intent intent = new Intent(this, SubjectsView.class);
         startActivity(intent);
     }

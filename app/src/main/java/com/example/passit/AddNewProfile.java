@@ -26,7 +26,7 @@ public class AddNewProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_profile);
 
-        profileNameET = findViewById(R.id.testNameTV);
+        profileNameET = findViewById(R.id.subjectTV);
         semesterET = findViewById(R.id.semesterET);
         addProfileBtn = findViewById(R.id.addProfileBtn);
         db = AppDatabase.getDbInstance(this);

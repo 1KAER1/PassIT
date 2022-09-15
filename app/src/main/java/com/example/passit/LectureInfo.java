@@ -74,7 +74,7 @@ public class LectureInfo extends Fragment implements AdapterView.OnItemSelectedL
         timeButton = view.findViewById(R.id.timeButton);
         addDayButton = view.findViewById(R.id.addDayBtn);
         nextButton = view.findViewById(R.id.nextBtn);
-        lecturerName = view.findViewById(R.id.testNameTV);
+        lecturerName = view.findViewById(R.id.subjectTV);
         firstWeek = view.findViewById(R.id.firstWeeks);
         lastWeek = view.findViewById(R.id.secondWeeks);
         lessonPeriod = view.findViewById(R.id.lessonPeriod);

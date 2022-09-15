@@ -44,18 +44,18 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
         int testId = testsList.get(holder.getAdapterPosition()).getTest_id();
 
         holder.testName.setText(testsList.get(holder.getAdapterPosition()).getTest_name() + "\n\n" + db.profileDao().getSubjectName(testsList.get(position).getSubject_id()));
-        holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+        holder.testName.setBackgroundResource(R.color.cardBackground);
 
         if (db.profileDao().getTestState(testId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.testName.setPaintFlags(holder.testName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
+            holder.testName.setBackgroundResource(R.color.cardBackgroundFinished);
         } else {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.testName.setPaintFlags(holder.testName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+            holder.testName.setBackgroundResource(R.color.cardBackground);
         }
 
         switch (testsList.get(holder.getAdapterPosition()).getImportance()) {
@@ -77,13 +77,13 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.testName.setPaintFlags(holder.testName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                    holder.rowLayout.setBackgroundResource(R.color.cardBackground);
+                    holder.testName.setBackgroundResource(R.color.cardBackground);
                     db.profileDao().setUnfinishedTest(testId);
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.testName.setPaintFlags(holder.testName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.rowLayout.setBackgroundResource(R.color.cardBackgroundFinished);
+                    holder.testName.setBackgroundResource(R.color.cardBackgroundFinished);
                     db.profileDao().setPassedTest(testId);
                 }
             }
@@ -123,7 +123,7 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
 
         public VieHolder(@NonNull View itemView) {
             super(itemView);
-            testName = itemView.findViewById(R.id.testName);
+            testName = itemView.findViewById(R.id.cv_subjectName);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
             removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);

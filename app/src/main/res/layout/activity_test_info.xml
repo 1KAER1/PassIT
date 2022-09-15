@@ -32,7 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/testNameTV" />
+            app:layout_constraintTop_toBottomOf="@+id/subjectTV" />
 
         <TextView
             android:id="@+id/dateTV"
@@ -56,7 +56,7 @@
             app:layout_constraintTop_toBottomOf="@+id/assignedSubjectTV" />
 
         <TextView
-            android:id="@+id/testNameTV"
+            android:id="@+id/subjectTV"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="35dp"
@@ -173,7 +173,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/returnBtn"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="16dp"

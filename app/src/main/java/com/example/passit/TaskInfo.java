@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.passit.db.entities.Task;
-import com.example.passit.db.entities.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class TaskInfo extends AppCompatActivity {
     private TextView testNameTV, assignedSubjectTV, dateTV, testDescriptionTV, importanceTV;
     private AppDatabase db;
     private List<Task> tasksList = new ArrayList<>();
-    private Button deleteBtn, editBtn, finishBtn;
+    private Button deleteBtn, editBtn, finishBtn, returnBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +33,14 @@ public class TaskInfo extends AppCompatActivity {
         }
 
         importanceTV = findViewById(R.id.importanceTV);
-        testNameTV = findViewById(R.id.testNameTV);
+        testNameTV = findViewById(R.id.subjectTV);
         assignedSubjectTV = findViewById(R.id.assignedSubjectTV);
         dateTV = findViewById(R.id.dateTV);
         testDescriptionTV = findViewById(R.id.testDescription);
         deleteBtn = findViewById(R.id.deleteBtn);
         editBtn = findViewById(R.id.editBtn);
         finishBtn = findViewById(R.id.markFinishedBtn);
+        returnBtn = findViewById(R.id.returnBtn);
 
         db = AppDatabase.getDbInstance(this);
 
@@ -96,6 +96,13 @@ public class TaskInfo extends AppCompatActivity {
                 bundle.putInt("taskId", taskId);
                 intent.putExtras(bundle);
                 startActivity(intent);
+            }
+        });
+
+        returnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                returnToView();
             }
         });
 

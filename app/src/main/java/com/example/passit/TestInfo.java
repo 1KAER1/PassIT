@@ -33,7 +33,7 @@ public class TestInfo extends AppCompatActivity {
         }
 
         importanceTV = findViewById(R.id.importanceTV);
-        testNameTV = findViewById(R.id.testNameTV);
+        testNameTV = findViewById(R.id.subjectTV);
         assignedSubjectTV = findViewById(R.id.assignedSubjectTV);
         dateTV = findViewById(R.id.dateTV);
         testDescriptionTV = findViewById(R.id.testDescription);

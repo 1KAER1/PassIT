@@ -25,7 +25,7 @@ public interface ProfileDao {
     List<Subject> getAllSubjects();
 
 
-    //Subject
+    //Profile
     @Insert
     void insertProfile(Profile... profiles);
 
@@ -37,8 +37,8 @@ public interface ProfileDao {
     @Insert
     void insertSubject(Subject... subjects);
 
-    @Delete
-    void deleteSubject(Subject... subject);
+    @Query("DELETE FROM Subject WHERE subject_id = :subjectId")
+    void deleteSubject(int subjectId);
 
     @Query("SELECT subject_id FROM subject WHERE subject_name = :subjectName")
     int getSubjectId(String subjectName);
@@ -48,6 +48,9 @@ public interface ProfileDao {
 
     @Query("SELECT * FROM subject WHERE subject_id = :subjectID")
     List<Subject> getSubjectWithId(int subjectID);
+
+    @Query("SELECT passed FROM Subject WHERE subject_id = :subjectId")
+    boolean getSubjectState(int subjectId);
 
     @Transaction
     @Query("SELECT subject_name FROM Subject")
@@ -61,6 +64,18 @@ public interface ProfileDao {
 
     @Query("SELECT is_lab FROM Subject WHERE subject_name = :subjectName")
     boolean getSubjectLab(String subjectName);
+
+    @Query("UPDATE Subject SET passed = 1 WHERE subject_id = :subjectId")
+    void setPassedSubject(int subjectId);
+
+    @Query("UPDATE Subject SET passed = 0 WHERE subject_id = :subjectId")
+    void setSubjectInProgress(int subjectId);
+
+    @Query("UPDATE Subject SET subject_name=:subjectName, is_lecture=:isLecture, is_exercise=:isExercise," +
+            "is_lab=:isLab, importance=:importance, " +
+            "ects_points=:ectsPoints WHERE subject_id=:subjectId")
+    void updateSubject(String subjectName, String importance, String ectsPoints, boolean isLecture, boolean isExercise,
+                    boolean isLab, int subjectId);
 
     //Task
     @Insert

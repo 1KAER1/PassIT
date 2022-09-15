@@ -2,10 +2,13 @@ package com.example.passit.rvadapters;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.passit.AppDatabase;
 import com.example.passit.R;
 import com.example.passit.SubjectDetails;
 import com.example.passit.SubjectsView;
@@ -24,6 +28,7 @@ import java.util.List;
 public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAdapter.ViewHolder> {
 
     private final List<Subject> subjectNameList1;
+    private AppDatabase db;
 
     public SubjectsViewRVAdapter(List<Subject> subjectNameList1) {
         this.subjectNameList1 = subjectNameList1;
@@ -39,22 +44,61 @@ public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SubjectsViewRVAdapter.ViewHolder holder, int position) {
-        int subjectId = subjectNameList1.get(position).getSubject_id();
 
-        holder.subjectName.setText(subjectNameList1.get(position).getSubject_name());
-        holder.ectsPoints.setText(subjectNameList1.get(position).getEcts_points() + " ECTS");
+        db = AppDatabase.getDbInstance(holder.subjectName.getContext());
+        int subjectId = subjectNameList1.get(holder.getAdapterPosition()).getSubject_id();
 
-        switch (subjectNameList1.get(position).getImportance()) {
+        holder.subjectName.setText(subjectNameList1.get(holder.getAdapterPosition()).getSubject_name());
+        holder.subjectName.setBackgroundResource(R.color.cardBackground);
+
+        if (db.profileDao().getSubjectState(subjectId)) {
+            holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
+            holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.subjectName.setBackgroundResource(R.color.cardBackgroundFinished);
+        } else {
+            holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
+            holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.subjectName.setBackgroundResource(R.color.cardBackground);
+        }
+
+        switch (subjectNameList1.get(holder.getAdapterPosition()).getImportance()) {
             case "normal":
-                holder.rowLayout.setBackgroundResource(R.drawable.normal_importance_gradient);
+                holder.importanceLabel.setBackgroundResource(R.color.normalImportance);
                 break;
             case "medium":
-                holder.rowLayout.setBackgroundResource(R.drawable.medium_importance_gradient);
+                holder.importanceLabel.setBackgroundResource(R.color.mediumImportance);
                 break;
             case "high":
-                holder.rowLayout.setBackgroundResource(R.drawable.high_importance_gradient);
+                holder.importanceLabel.setBackgroundResource(R.color.highImportance);
                 break;
         }
+
+        holder.markFinishedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (db.profileDao().getSubjectState(subjectId)) {
+                    holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
+                    holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    holder.subjectName.setBackgroundResource(R.color.cardBackground);
+                    db.profileDao().setSubjectInProgress(subjectId);
+                } else {
+                    holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
+                    holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.subjectName.setBackgroundResource(R.color.cardBackgroundFinished);
+                    db.profileDao().setPassedSubject(subjectId);
+                }
+            }
+        });
+
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.profileDao().deleteSubject(subjectId);
+                subjectNameList1.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+                notifyItemRangeChanged(holder.getAdapterPosition(), subjectNameList1.size());
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,14 +119,17 @@ public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView subjectName;
-        private final TextView ectsPoints;
         private final ConstraintLayout rowLayout;
+        private final Button markFinishedBtn, removeBtn;
+        private final ImageView importanceLabel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            subjectName = itemView.findViewById(R.id.subjectName);
-            ectsPoints = itemView.findViewById(R.id.ectsTv);
+            subjectName = itemView.findViewById(R.id.cv_subjectName);
+            markFinishedBtn = itemView.findViewById(R.id.markFinished);
+            removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);
+            importanceLabel = itemView.findViewById(R.id.importanceLabel);
         }
     }
 }
