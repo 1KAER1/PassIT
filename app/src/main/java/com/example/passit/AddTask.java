@@ -67,8 +67,8 @@ public class AddTask extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
         importanceRadioGroup = findViewById(R.id.importanceRadioGroup);
-        taskName = findViewById(R.id.subjectTV);
-        taskDescription = findViewById(R.id.testDescription);
+        taskName = findViewById(R.id.noteTitle);
+        taskDescription = findViewById(R.id.noteDescription);
         subjectSpinner = findViewById(R.id.assignedSubjectTV);
         subjectTypeSpinner = findViewById(R.id.subjectTypeSpinner);
         datePickerButton = findViewById(R.id.datePicker);

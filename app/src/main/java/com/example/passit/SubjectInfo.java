@@ -33,7 +33,7 @@ public class SubjectInfo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_subject_info, container, false);
 
         nextButton = view.findViewById(R.id.nextBtn);
-        subjectName = view.findViewById(R.id.subjectTV);
+        subjectName = view.findViewById(R.id.noteTitle);
         ectsPoints = view.findViewById(R.id.ectsPointsTV);
         lectureCB = view.findViewById(R.id.lectureCB);
         exerciseCB = view.findViewById(R.id.exerciseCB);

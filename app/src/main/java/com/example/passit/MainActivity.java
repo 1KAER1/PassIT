@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton tasksButton, addSubjectButton, testsButton;
+    private ImageButton tasksButton, addSubjectButton, testsButton, notesButton;
     private long pressedTime;
     private List<Profile> profilesList = new ArrayList<>();
 
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         addSubjectButton = findViewById(R.id.subjectsBtn);
         tasksButton = findViewById(R.id.tasksViewBtn);
         testsButton = findViewById(R.id.testsButton);
+        notesButton = findViewById(R.id.notesViewBtn);
 
         AppDatabase db = AppDatabase.getDbInstance(this);
 
@@ -38,15 +39,11 @@ public class MainActivity extends AppCompatActivity {
             addNewProfile();
         }
 
-        addSubjectButton.setOnClickListener(view -> openSubjects());
-        tasksButton.setOnClickListener(view -> openTasksView());
-        testsButton.setOnClickListener(view -> openTestsView());
+        addSubjectButton.setOnClickListener(view -> openView(SubjectsView.class));
+        tasksButton.setOnClickListener(view -> openView(TasksView.class));
+        testsButton.setOnClickListener(view -> openView(TestsView.class));
+        notesButton.setOnClickListener(view -> openView(NotesView.class));
 
-    }
-
-    public void openSubjects() {
-        Intent intent = new Intent(this, SubjectsView.class);
-        startActivity(intent);
     }
 
     public void addNewProfile() {
@@ -54,13 +51,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openTasksView() {
-        Intent intent = new Intent(this, TasksView.class);
-        startActivity(intent);
-    }
-
-    public void openTestsView() {
-        Intent intent = new Intent(this, TestsView.class);
+    public void openView(Class<?> viewClass) {
+        Intent intent = new Intent(this, viewClass);
         startActivity(intent);
     }
 

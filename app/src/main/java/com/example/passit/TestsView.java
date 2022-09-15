@@ -34,7 +34,7 @@ public class TestsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tests_view);
 
-        addNewTest = findViewById(R.id.addNewTask);
+        addNewTest = findViewById(R.id.addNewNote);
         recyclerView = findViewById(R.id.tasksRV);
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);

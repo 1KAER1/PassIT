@@ -157,10 +157,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/testDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/noteDescription" />
 
         <EditText
-            android:id="@+id/subjectTV"
+            android:id="@+id/noteTitle"
             android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_marginTop="36dp"
@@ -178,7 +178,7 @@
             app:layout_constraintTop_toBottomOf="@+id/headlineTV" />
 
         <EditText
-            android:id="@+id/testDescription"
+            android:id="@+id/noteDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
@@ -221,7 +221,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.057"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subjectTV" />
+            app:layout_constraintTop_toBottomOf="@+id/noteTitle" />
 
         <TextView
             android:id="@+id/textView13"

@@ -46,7 +46,7 @@ public class AddSubject extends AppCompatActivity {
         }
 
         nextButton = findViewById(R.id.nextBtn);
-        subjectName = findViewById(R.id.subjectTV);
+        subjectName = findViewById(R.id.noteTitle);
         ectsPointsET = findViewById(R.id.ectsPointsTV);
         lectureCB = findViewById(R.id.lectureCB);
         exerciseCB = findViewById(R.id.exerciseCB);

@@ -396,6 +396,38 @@
                         android:textSize="17sp"
                         android:textStyle="bold" />
                 </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/idFrame5"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/menu_button"
+                    android:paddingBottom="15dp">
+
+                    <ImageButton
+                        android:id="@+id/notesViewBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/menu_button"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_baseline_notes_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="65dp"
+                        android:layout_marginBottom="10dp"
+                        android:clickable="false"
+                        android:text="Notatki"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
             </LinearLayout>
         </HorizontalScrollView>
 

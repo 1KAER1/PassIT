@@ -76,7 +76,7 @@ public class LabInfo extends Fragment implements AdapterView.OnItemSelectedListe
         timeButton = view.findViewById(R.id.timeButton);
         addDayButton = view.findViewById(R.id.addDayBtn);
         nextButton = view.findViewById(R.id.nextBtn);
-        lecturerName = view.findViewById(R.id.subjectTV);
+        lecturerName = view.findViewById(R.id.noteTitle);
         firstWeek = view.findViewById(R.id.firstWeeks);
         lastWeek = view.findViewById(R.id.secondWeeks);
         lessonPeriod = view.findViewById(R.id.lessonPeriod);

@@ -5,17 +5,16 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
-import androidx.room.Update;
 
 import com.example.passit.db.entities.Lesson;
 import com.example.passit.db.entities.LessonDate;
+import com.example.passit.db.entities.Note;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 import com.example.passit.db.entities.Test;
 import com.example.passit.db.relations.SubjectWithLessons;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -31,6 +30,19 @@ public interface ProfileDao {
 
     @Delete
     void deleteProfile(Profile... profile);
+
+    //Note
+    @Query("SELECT * FROM Note")
+    List<Note> getAllNotes();
+
+    @Insert
+    void insertNote(Note... notes);
+
+    @Query("SELECT * FROM Note WHERE note_id = :noteId")
+    List<Note> getNoteWithId(int noteId);
+
+    @Query("UPDATE Note SET note_title=:noteTitle, note_description=:noteDescription  WHERE note_id=:noteId")
+    void updateNote(String noteTitle, String noteDescription, int noteId);
 
 
     //Subject
@@ -75,7 +87,7 @@ public interface ProfileDao {
             "is_lab=:isLab, importance=:importance, " +
             "ects_points=:ectsPoints WHERE subject_id=:subjectId")
     void updateSubject(String subjectName, String importance, String ectsPoints, boolean isLecture, boolean isExercise,
-                    boolean isLab, int subjectId);
+                       boolean isLab, int subjectId);
 
     //Task
     @Insert

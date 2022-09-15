@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.passit.AppDatabase;
@@ -47,18 +48,24 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
 
         //holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
         holder.taskName.setText(taskList.get(holder.getAdapterPosition()).getTask_name() + "\n\n" + db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
-        holder.taskName.setBackgroundResource(R.color.cardBackground);
+        holder.taskName.setBackgroundResource(R.color.cardBackground2);
+        holder.progressTV.setText("W trakcie");
+        holder.progressTV.setTextColor(ContextCompat.getColor(holder.taskName.getContext(), R.color.white));
 
         if (db.profileDao().getTaskState(taskId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.taskName.setBackgroundResource(R.color.cardBackgroundFinished);
+            holder.progressTV.setText("Ukończone");
+            holder.progressTV.setTextColor(ContextCompat.getColor(holder.taskName.getContext(), R.color.normalImportance));
         } else {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.taskName.setBackgroundResource(R.color.cardBackground);
+            holder.taskName.setBackgroundResource(R.color.cardBackground2);
+            holder.progressTV.setText("W trakcie");
+            holder.progressTV.setTextColor(ContextCompat.getColor(holder.taskName.getContext(), R.color.white));
         }
 
 
@@ -81,13 +88,17 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                    holder.taskName.setBackgroundResource(R.color.cardBackground);
+                    holder.taskName.setBackgroundResource(R.color.cardBackground2);
+                    holder.progressTV.setText("W trakcie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.taskName.getContext(), R.color.white));
                     db.profileDao().setUnfinishedTask(taskId);
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.taskName.setPaintFlags(holder.taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.taskName.setBackgroundResource(R.color.cardBackgroundFinished);
+                    holder.progressTV.setText("Ukończone");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.taskName.getContext(), R.color.normalImportance));
                     db.profileDao().setFinishedTask(taskId);
                 }
             }
@@ -118,18 +129,19 @@ public class TasksViewRVAdapter extends RecyclerView.Adapter<TasksViewRVAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView taskName;
+        private final TextView taskName, progressTV;
         private final ConstraintLayout rowLayout;
         private final Button markFinishedBtn, removeBtn;
         private final ImageView importanceLabel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            taskName = itemView.findViewById(R.id.cv_subjectName);
+            taskName = itemView.findViewById(R.id.cv_noteInfo);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
             removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);
             importanceLabel = itemView.findViewById(R.id.importanceLabel);
+            progressTV = itemView.findViewById(R.id.progressTV);
         }
     }
 }

@@ -27,5 +27,7 @@
     <color name="removeButton">#B646F6</color>
     <color name="accentColor">#2A2B2C</color>
     <color name="cardBackground">#49474B</color>
+    <color name="cardBackground2">#383739</color>
     <color name="cardBackgroundFinished">#171618</color>
+    <color name="lightButtons">#8AFFFFFF</color>
 </resources>

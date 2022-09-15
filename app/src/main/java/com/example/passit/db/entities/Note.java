@@ -10,13 +10,26 @@ import androidx.room.PrimaryKey;
 public class Note {
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    public int test_id;
+    public int note_id;
     public String note_title;
+    @Nullable
     public String note_description;
+    public int profile_id;
+
+    public int getNote_id() {
+        return note_id;
+    }
+
+    public String getNote_title() {
+        return note_title;
+    }
+
     @Nullable
-    @ColumnInfo(defaultValue = "null")
-    public String subject_type;
-    @Nullable
-    @ColumnInfo(defaultValue = "null")
-    public int subject_id;
+    public String getNote_description() {
+        return note_description;
+    }
+
+    public int getProfile_id() {
+        return profile_id;
+    }
 }

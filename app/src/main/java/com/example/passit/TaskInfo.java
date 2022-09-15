@@ -33,10 +33,10 @@ public class TaskInfo extends AppCompatActivity {
         }
 
         importanceTV = findViewById(R.id.importanceTV);
-        testNameTV = findViewById(R.id.subjectTV);
+        testNameTV = findViewById(R.id.noteTitle);
         assignedSubjectTV = findViewById(R.id.assignedSubjectTV);
         dateTV = findViewById(R.id.dateTV);
-        testDescriptionTV = findViewById(R.id.testDescription);
+        testDescriptionTV = findViewById(R.id.noteDescription);
         deleteBtn = findViewById(R.id.deleteBtn);
         editBtn = findViewById(R.id.editBtn);
         finishBtn = findViewById(R.id.markFinishedBtn);

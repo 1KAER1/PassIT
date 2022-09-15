@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
-import com.example.passit.rvadapters.SubjectsViewRVAdapter;
 import com.example.passit.rvadapters.TasksViewRVAdapter;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class TasksView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks_view);
 
-        addNewTask = findViewById(R.id.addNewTask);
+        addNewTask = findViewById(R.id.addNewNote);
         recyclerView = findViewById(R.id.tasksRV);
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);

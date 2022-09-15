@@ -67,8 +67,8 @@ public class AddTest extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
         importanceRadioGroup = findViewById(R.id.importanceRadioGroup);
-        testName = findViewById(R.id.subjectTV);
-        taskDescription = findViewById(R.id.testDescription);
+        testName = findViewById(R.id.noteTitle);
+        taskDescription = findViewById(R.id.noteDescription);
         subjectSpinner = findViewById(R.id.assignedSubjectTV);
         subjectTypeSpinner = findViewById(R.id.subjectTypeSpinner);
         datePickerButton = findViewById(R.id.datePicker);
@@ -213,7 +213,6 @@ public class AddTest extends AppCompatActivity {
     }
 
     public boolean checkInput() {
-        System.out.println("SELECTED IMPORTANCE: " + checkImportanceSelection());
         return !testName.getText().toString().isEmpty()
                 && checkImportanceSelection() != null
                 && !taskDescription.getText().toString().isEmpty()
@@ -300,8 +299,7 @@ public class AddTest extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (pressedTime + 2000 > System.currentTimeMillis()) {
-            Intent intent = new Intent(this, TestsView.class);
-            startActivity(intent);
+            returnToTestView();
         } else {
             Toast.makeText(this, "Kliknij jeszcze raz, aby opuścić. Dane nie zostaną zapisane.", Toast.LENGTH_SHORT).show();
         }

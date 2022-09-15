@@ -19,10 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.passit.AppDatabase;
 import com.example.passit.R;
 import com.example.passit.SubjectDetails;
-import com.example.passit.SubjectsView;
 import com.example.passit.db.entities.Subject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAdapter.ViewHolder> {
@@ -50,15 +48,21 @@ public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAd
 
         holder.subjectName.setText(subjectNameList1.get(holder.getAdapterPosition()).getSubject_name());
         holder.subjectName.setBackgroundResource(R.color.cardBackground);
+        holder.progressTV.setText("W trakcie");
+        holder.progressTV.setTextColor(ContextCompat.getColor(holder.subjectName.getContext(), R.color.white));
 
         if (db.profileDao().getSubjectState(subjectId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
             holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.subjectName.setBackgroundResource(R.color.cardBackgroundFinished);
+            holder.progressTV.setText("Zaliczony");
+            holder.progressTV.setTextColor(ContextCompat.getColor(holder.subjectName.getContext(), R.color.normalImportance));
         } else {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
             holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.subjectName.setBackgroundResource(R.color.cardBackground);
+            holder.progressTV.setText("W trakcie");
+            holder.progressTV.setTextColor(ContextCompat.getColor(holder.subjectName.getContext(), R.color.white));
         }
 
         switch (subjectNameList1.get(holder.getAdapterPosition()).getImportance()) {
@@ -80,11 +84,15 @@ public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAd
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
                     holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.subjectName.setBackgroundResource(R.color.cardBackground);
+                    holder.progressTV.setText("W trakcie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.subjectName.getContext(), R.color.white));
                     db.profileDao().setSubjectInProgress(subjectId);
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
                     holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.subjectName.setBackgroundResource(R.color.cardBackgroundFinished);
+                    holder.progressTV.setText("Zaliczony");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.subjectName.getContext(), R.color.normalImportance));
                     db.profileDao().setPassedSubject(subjectId);
                 }
             }
@@ -118,18 +126,19 @@ public class SubjectsViewRVAdapter extends RecyclerView.Adapter<SubjectsViewRVAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView subjectName;
+        private final TextView subjectName, progressTV;
         private final ConstraintLayout rowLayout;
         private final Button markFinishedBtn, removeBtn;
         private final ImageView importanceLabel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            subjectName = itemView.findViewById(R.id.cv_subjectName);
+            subjectName = itemView.findViewById(R.id.cv_noteInfo);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
             removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);
             importanceLabel = itemView.findViewById(R.id.importanceLabel);
+            progressTV = itemView.findViewById(R.id.progressTV);
         }
     }
 }

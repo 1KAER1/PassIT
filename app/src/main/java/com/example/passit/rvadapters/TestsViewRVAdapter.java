@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.passit.AppDatabase;
@@ -45,17 +46,23 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
 
         holder.testName.setText(testsList.get(holder.getAdapterPosition()).getTest_name() + "\n\n" + db.profileDao().getSubjectName(testsList.get(position).getSubject_id()));
         holder.testName.setBackgroundResource(R.color.cardBackground);
+        holder.progressTV.setText("Niezaliczone");
+        holder.progressTV.setTextColor(ContextCompat.getColor(holder.testName.getContext(), R.color.white));
 
         if (db.profileDao().getTestState(testId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.testName.setPaintFlags(holder.testName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.testName.setBackgroundResource(R.color.cardBackgroundFinished);
+            holder.progressTV.setText("Zaliczone");
+            holder.progressTV.setTextColor(ContextCompat.getColor(holder.testName.getContext(), R.color.normalImportance));
         } else {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
             //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.testName.setPaintFlags(holder.testName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.testName.setBackgroundResource(R.color.cardBackground);
+            holder.progressTV.setText("Niezaliczone");
+            holder.progressTV.setTextColor(ContextCompat.getColor(holder.testName.getContext(), R.color.white));
         }
 
         switch (testsList.get(holder.getAdapterPosition()).getImportance()) {
@@ -78,12 +85,16 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.testName.setPaintFlags(holder.testName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.testName.setBackgroundResource(R.color.cardBackground);
+                    holder.progressTV.setText("Niezaliczone");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.testName.getContext(), R.color.white));
                     db.profileDao().setUnfinishedTest(testId);
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
                     //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.testName.setPaintFlags(holder.testName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.testName.setBackgroundResource(R.color.cardBackgroundFinished);
+                    holder.progressTV.setText("Zaliczone");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.testName.getContext(), R.color.normalImportance));
                     db.profileDao().setPassedTest(testId);
                 }
             }
@@ -116,18 +127,19 @@ public class TestsViewRVAdapter extends RecyclerView.Adapter<TestsViewRVAdapter.
 
     public class VieHolder extends RecyclerView.ViewHolder {
 
-        private final TextView testName;
+        private final TextView testName, progressTV;
         private final ConstraintLayout rowLayout;
         private final Button markFinishedBtn, removeBtn;
         private final ImageView importanceLabel;
 
         public VieHolder(@NonNull View itemView) {
             super(itemView);
-            testName = itemView.findViewById(R.id.cv_subjectName);
+            testName = itemView.findViewById(R.id.cv_noteInfo);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
             removeBtn = itemView.findViewById(R.id.removeBtn);
             rowLayout = itemView.findViewById(R.id.rowLayout);
             importanceLabel = itemView.findViewById(R.id.importanceLabel);
+            progressTV = itemView.findViewById(R.id.progressTV);
         }
     }
 }
