@@ -29,8 +29,8 @@ public class NotesView extends AppCompatActivity {
 
         db = AppDatabase.getDbInstance(this);
 
-        addNewNoteBtn = findViewById(R.id.addNewNote);
-        recyclerView = findViewById(R.id.tasksRV);
+        addNewNoteBtn = findViewById(R.id.addNewBtn);
+        recyclerView = findViewById(R.id.responsibilitiesRV);
 
         noteList = db.profileDao().getAllNotes();
 

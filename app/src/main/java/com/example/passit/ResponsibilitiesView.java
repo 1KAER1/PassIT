@@ -10,31 +10,32 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
+import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;
 import com.example.passit.rvadapters.TasksViewRVAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TasksView extends AppCompatActivity {
+public class ResponsibilitiesView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText searchBar;
-    Button addNewTask;
+    private Button addNewBtn;
     private RadioButton normalImportance, mediumImportance, highImportance;
-    private TasksViewRVAdapter adapter;
-    private List<Task> tasksNameList = new ArrayList<>();
-    private Button addNewTaskButton;
+    private ResponsibilitiesRVAdapter adapter;
+    private List<Responsibility> responsibilitiesList = new ArrayList<>();
     private List<Subject> subjectList = new ArrayList<>();
     private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasks_view);
+        setContentView(R.layout.activity_responsibilities_view);
 
-        addNewTask = findViewById(R.id.addNewBtn);
+        addNewBtn = findViewById(R.id.addNewBtn);
         recyclerView = findViewById(R.id.responsibilitiesRV);
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
@@ -43,14 +44,13 @@ public class TasksView extends AppCompatActivity {
 
         db = AppDatabase.getDbInstance(this);
 
-        tasksNameList = db.profileDao().getAllTasks();
+        responsibilitiesList = db.profileDao().getAllResponsibilities();
         subjectList = db.profileDao().getAllSubjects();
 
-
-        adapter = new TasksViewRVAdapter(tasksNameList);
+        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
         recyclerView.setAdapter(adapter);
 
-        addNewTask.setOnClickListener(view -> {
+        addNewBtn.setOnClickListener(view -> {
             if (subjectList.isEmpty()) {
                 Toast.makeText(getApplicationContext(),
                         "Dodaj przedmioty, aby móc dodawać zadania!",
@@ -59,11 +59,10 @@ public class TasksView extends AppCompatActivity {
                 openAddNewTask();
             }
         });
-
     }
 
     public void openAddNewTask() {
-        Intent intent = new Intent(this, AddTask.class);
+        Intent intent = new Intent(this, AddResponsibility.class);
         startActivity(intent);
     }
 

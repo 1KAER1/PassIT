@@ -75,7 +75,7 @@
         </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tasksRV"
+            android:id="@+id/responsibilitiesRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -86,7 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addNewNote"
+            app:layout_constraintTop_toBottomOf="@+id/addNewBtn"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -103,7 +103,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/addNewNote"
+            android:id="@+id/addNewBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"

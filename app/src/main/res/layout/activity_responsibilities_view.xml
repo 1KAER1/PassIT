@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/custom_input"
             android:ems="10"
@@ -33,7 +33,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
             android:id="@+id/importanceRadioGroup"
@@ -89,19 +89,6 @@
             app:layout_constraintTop_toBottomOf="@+id/addNewBtn"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:text="MOJE ZADANIA"
-            android:textColor="@color/textColor"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <Button
             android:id="@+id/addNewBtn"
             android:layout_width="wrap_content"
@@ -109,7 +96,7 @@
             android:layout_marginTop="32dp"
             android:background="@drawable/next_button"
             android:padding="15dp"
-            android:text="Dodaj nowe zadanie"
+            android:text="Dodaj"
             android:textColor="@color/textColor"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"

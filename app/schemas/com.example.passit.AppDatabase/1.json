@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "273239dfc921121b6444b9c6aaa9c687",
+    "identityHash": "8f5af833c8974e0a6b175c513e0a469b",
     "entities": [
       {
         "tableName": "Lesson",
@@ -239,6 +239,81 @@
         "foreignKeys": []
       },
       {
+        "tableName": "Responsibility",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`resp_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `resp_name` TEXT, `responsibility_type` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `subject_type` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "resp_id",
+            "columnName": "resp_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resp_name",
+            "columnName": "resp_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "responsibility_type",
+            "columnName": "responsibility_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "importance",
+            "columnName": "importance",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "date_due",
+            "columnName": "date_due",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hour_due",
+            "columnName": "hour_due",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "subject_type",
+            "columnName": "subject_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "finished",
+            "columnName": "finished",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "subject_id",
+            "columnName": "subject_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "resp_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "Task",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `subject_type` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
@@ -418,7 +493,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '273239dfc921121b6444b9c6aaa9c687')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8f5af833c8974e0a6b175c513e0a469b')"
     ]
   }
 }

@@ -10,6 +10,7 @@ import com.example.passit.db.entities.LessonDate;
 import com.example.passit.db.entities.Lesson;
 import com.example.passit.db.entities.Note;
 import com.example.passit.db.entities.Profile;
+import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 import com.example.passit.db.entities.Test;
@@ -20,6 +21,7 @@ import com.example.passit.db.entities.Test;
                 LessonDate.class,
                 Profile.class,
                 Subject.class,
+                Responsibility.class,
                 Task.class,
                 Test.class,
                 Note.class

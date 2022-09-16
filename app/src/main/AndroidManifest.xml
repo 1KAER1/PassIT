@@ -14,13 +14,22 @@
         android:theme="@style/Theme.PassIT"
         tools:targetApi="31">
         <activity
+            android:name=".ResponsibilityInfo"
+            android:exported="false" />
+        <activity
+            android:name=".ResponsibilitiesView"
+            android:exported="false" />
+        <activity
+            android:name=".AddResponsibility"
+            android:exported="false" />
+        <activity
             android:name=".NotesView"
             android:exported="false" />
         <activity
             android:name=".NoteInfo"
             android:exported="false" />
         <activity
-            android:name=".WeekCalendarView"
+            android:name=".CalendarActivity"
             android:exported="false" />
         <activity
             android:name=".TaskInfo"

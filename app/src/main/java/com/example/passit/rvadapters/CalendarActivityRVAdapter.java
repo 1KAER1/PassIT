@@ -1,0 +1,43 @@
+package com.example.passit.rvadapters;
+
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.passit.db.entities.Responsibility;
+
+import java.util.List;
+
+public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActivityRVAdapter.ViewHolder> {
+
+    private final List<Responsibility> responsibilitiesList;
+
+    public CalendarActivityRVAdapter(List<Responsibility> responsibilitiesList) {
+        this.responsibilitiesList = responsibilitiesList;
+    }
+
+    @NonNull
+    @Override
+    public CalendarActivityRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CalendarActivityRVAdapter.ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+}

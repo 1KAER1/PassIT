@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -16,7 +14,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton tasksButton, addSubjectButton, testsButton, notesButton;
+    private ImageButton addSubjectButton, respButton, notesButton, calendarButton;
     private long pressedTime;
     private List<Profile> profilesList = new ArrayList<>();
 
@@ -27,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         addSubjectButton = findViewById(R.id.subjectsBtn);
-        tasksButton = findViewById(R.id.tasksViewBtn);
-        testsButton = findViewById(R.id.testsButton);
+        respButton = findViewById(R.id.respButton);
         notesButton = findViewById(R.id.notesViewBtn);
+        calendarButton = findViewById(R.id.calendarViewBtn);
 
         AppDatabase db = AppDatabase.getDbInstance(this);
 
@@ -40,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         addSubjectButton.setOnClickListener(view -> openView(SubjectsView.class));
-        tasksButton.setOnClickListener(view -> openView(TasksView.class));
-        testsButton.setOnClickListener(view -> openView(TestsView.class));
+        respButton.setOnClickListener(view -> openView(ResponsibilitiesView.class));
         notesButton.setOnClickListener(view -> openView(NotesView.class));
+        calendarButton.setOnClickListener(view -> openView(CalendarActivity.class));
 
     }
 

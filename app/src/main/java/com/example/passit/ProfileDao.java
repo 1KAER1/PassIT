@@ -10,6 +10,7 @@ import com.example.passit.db.entities.Lesson;
 import com.example.passit.db.entities.LessonDate;
 import com.example.passit.db.entities.Note;
 import com.example.passit.db.entities.Profile;
+import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 import com.example.passit.db.entities.Test;
@@ -148,6 +149,36 @@ public interface ProfileDao {
 
     @Query("SELECT * FROM Test WHERE importance = :importance")
     List<Test> getTestsWithImportance(String importance);
+
+    //RESPONSIBILITY
+    @Insert
+    void insertResponsibility(Responsibility... responsibilities);
+
+    @Query("SELECT * FROM Responsibility")
+    List<Responsibility> getAllResponsibilities();
+
+    @Query("UPDATE Responsibility SET resp_name=:respName, responsibility_type=:respType,importance=:importance, date_due=:dateDue, hour_due=:hourDue," +
+            " description=:description, subject_type=:subjectType, subject_id=:subjectId WHERE resp_id=:respId")
+    void updateResponsibility(String respName, String respType, String importance, String dateDue, String hourDue, String description, String subjectType,
+                              int subjectId, int respId);
+
+    @Query("DELETE FROM Responsibility WHERE resp_id = :respId")
+    void deleteResponsibility(int respId);
+
+    @Query("UPDATE Responsibility SET finished = 1 WHERE resp_id = :respId")
+    void setFinishedResponsibility(int respId);
+
+    @Query("UPDATE Responsibility SET finished = 0 WHERE resp_id = :respId")
+    void setUnfinishedResponsibility(int respId);
+
+    @Query("SELECT finished FROM Responsibility WHERE resp_id = :respId")
+    boolean getResponsibilityState(int respId);
+
+    @Query("SELECT * FROM Responsibility WHERE resp_id = :respId")
+    List<Responsibility> getResponsibilityWithId(int respId);
+
+    @Query("SELECT * FROM Responsibility WHERE importance = :importance")
+    List<Responsibility> getResponsibilitiesWithImportance(String importance);
 
 
     //Lesson

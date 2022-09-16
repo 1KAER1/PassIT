@@ -20,12 +20,13 @@
     <color name="normalImportanceSelected">#116107</color>
     <color name="mediumImportanceSelected">#75670B</color>
     <color name="highImportanceSelected">#670909</color>
-    <color name="hintColor">#5C595E</color>
+    <color name="hintColor">#949296</color>
     <color name="unselectedButton">#43394C</color>
     <color name="unselectedEditText">#332A3C</color>
     <color name="selectedButton">#74299F</color>
     <color name="removeButton">#B646F6</color>
     <color name="accentColor">#2A2B2C</color>
+    <color name="selectedResponsibility">#52528A</color>
     <color name="cardBackground">#49474B</color>
     <color name="cardBackground2">#383739</color>
     <color name="cardBackgroundFinished">#171618</color>

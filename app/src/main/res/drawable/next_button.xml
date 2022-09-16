@@ -3,10 +3,10 @@
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
             <corners android:radius="7dp" />
-            <solid android:color="#67428C" />
+            <solid android:color="@color/selectedResponsibility" />
             <stroke
                 android:width="2dip"
-                android:color="#393442" />
+                android:color="@color/selectedResponsibility" />
             <padding
                 android:bottom="4dp"
                 android:left="4dp"
