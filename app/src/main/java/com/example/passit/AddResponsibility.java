@@ -45,7 +45,7 @@ public class AddResponsibility extends AppCompatActivity {
     private String selectedImportance = null;
     private long pressedTime;
     private int respId;
-    private boolean isEdit = false;
+    private boolean isEdit, fromCalendar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,9 @@ public class AddResponsibility extends AppCompatActivity {
         if (extras != null) {
             isEdit = true;
             respId = extras.getInt("respId");
+            if (extras.getString("calendar") != null) {
+                fromCalendar = true;
+            }
             respList = db.profileDao().getResponsibilityWithId(respId);
         }
 
@@ -77,6 +80,9 @@ public class AddResponsibility extends AppCompatActivity {
         headlineTV = findViewById(R.id.headlineTV);
         taskRB = findViewById(R.id.taskRB);
         testRB = findViewById(R.id.testRB);
+
+        datePickerButton.setText(getTodaysDate());
+        timeButton.setText(getCurrentTime());
 
 
         subjectsList = db.profileDao().getAllSubjectsNames();
@@ -154,9 +160,6 @@ public class AddResponsibility extends AppCompatActivity {
             }
         });
 
-        datePickerButton.setText(getTodaysDate());
-        timeButton.setText(getCurrentTime());
-
         timeButton.setOnClickListener(view -> popTimePicker());
         datePickerButton.setOnClickListener(this::openDatePicker);
 
@@ -213,6 +216,14 @@ public class AddResponsibility extends AppCompatActivity {
         Intent intent = new Intent(this, ResponsibilityInfo.class);
         Bundle bundle = new Bundle();
         bundle.putInt("respId", respId);
+        if (fromCalendar) {
+            bundle.getString("calendar", "isCalendar");
+            if (fromCalendar) {
+                bundle.putString("calendar", "isCalendar");
+                Toast.makeText(getApplicationContext(), "From calendar in Add",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -334,7 +345,7 @@ public class AddResponsibility extends AppCompatActivity {
     public void onBackPressed() {
 
         if (isEdit) {
-            Intent intent = new Intent(getApplicationContext(), ResponsibilityInfo.class);
+            Intent intent = new Intent(this, ResponsibilityInfo.class);
             Bundle bundle = new Bundle();
             bundle.putInt("respId", respId);
             intent.putExtras(bundle);

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Task;
@@ -19,11 +20,13 @@ import java.util.List;
 public class ResponsibilityInfo extends AppCompatActivity {
 
     private int respId;
+    private boolean fromCalendar = false;
     private MaterialAutoCompleteTextView respNameTV, respTypeTV, dateTV, respDescriptionTV, assignedSubjectTV;
     private AppDatabase db;
     private ImageView importanceCircle;
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
     private Button deleteBtn, editBtn, finishBtn, returnBtn;
+    private boolean editedDate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,9 @@ public class ResponsibilityInfo extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             respId = extras.getInt("respId");
+            if (extras.getString("calendar") != null) {
+                fromCalendar = true;
+            }
         }
 
         respNameTV = findViewById(R.id.respNameET);
@@ -86,6 +92,9 @@ public class ResponsibilityInfo extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AddResponsibility.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("respId", respId);
+                if (fromCalendar) {
+                    bundle.putString("calendar", "isCalendar");
+                }
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -94,7 +103,11 @@ public class ResponsibilityInfo extends AppCompatActivity {
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                returnToView();
+                if (fromCalendar) {
+                    returnToCalendar();
+                } else {
+                    returnToView();
+                }
             }
         });
 
@@ -133,11 +146,23 @@ public class ResponsibilityInfo extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        returnToView();
+        if (fromCalendar) {
+            returnToCalendar();
+        } else {
+            returnToView();
+        }
     }
 
     public void returnToView() {
         Intent intent = new Intent(this, ResponsibilitiesView.class);
+        startActivity(intent);
+    }
+
+    public void returnToCalendar() {
+        Intent intent = new Intent(this, CalendarActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("editedDate", responsibilitiesList.get(0).getDate_due());
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }
