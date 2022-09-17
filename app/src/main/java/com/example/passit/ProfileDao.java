@@ -177,6 +177,9 @@ public interface ProfileDao {
     @Query("SELECT * FROM Responsibility WHERE resp_id = :respId")
     List<Responsibility> getResponsibilityWithId(int respId);
 
+    @Query("SELECT * FROM Responsibility WHERE date_due = :dateDue")
+    List<Responsibility> getResponsibilityWithDate(String dateDue);
+
     @Query("SELECT * FROM Responsibility WHERE importance = :importance")
     List<Responsibility> getResponsibilitiesWithImportance(String importance);
 

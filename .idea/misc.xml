@@ -60,11 +60,12 @@
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_subject.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_task.xml" value="0.5" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_test.xml" value="0.1" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_calendar_activity.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_calendar_view.xml" value="0.5" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_note_info.xml" value="0.25" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_notes_view.xml" value="0.2206435436690347" />
-        <entry key="..\:/PassIT/app/src/main/res/layout/activity_responsibilities_view.xml" value="0.21500208942749688" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/activity_responsibilities_view.xml" value="0.1" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_responsibility_info.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_subject.xml" value="0.5" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_subject_details.xml" value="0.5" />
