@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8f5af833c8974e0a6b175c513e0a469b",
+    "identityHash": "a7b33dc1cdbb382df05e0884832d572e",
     "entities": [
       {
         "tableName": "Lesson",
@@ -240,7 +240,7 @@
       },
       {
         "tableName": "Responsibility",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`resp_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `resp_name` TEXT, `responsibility_type` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `subject_type` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`resp_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `resp_name` TEXT, `responsibility_type` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `subject_type` TEXT, `delayed` INTEGER NOT NULL, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "resp_id",
@@ -289,6 +289,12 @@
             "columnName": "subject_type",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "delayed",
+            "columnName": "delayed",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "finished",
@@ -493,7 +499,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8f5af833c8974e0a6b175c513e0a469b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7b33dc1cdbb382df05e0884832d572e')"
     ]
   }
 }

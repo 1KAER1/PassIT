@@ -19,6 +19,7 @@ public class Responsibility {
     @Nullable
     public String description;
     public String subject_type;
+    public boolean delayed;
     @ColumnInfo(defaultValue = "false")
     public boolean finished;
     public int subject_id;
@@ -45,6 +46,10 @@ public class Responsibility {
 
     public String getHour_due() {
         return hour_due;
+    }
+
+    public boolean isDelayed() {
+        return delayed;
     }
 
     @Nullable

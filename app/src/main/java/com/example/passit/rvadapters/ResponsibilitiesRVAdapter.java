@@ -74,7 +74,12 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
             holder.respName.setPaintFlags(holder.respName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.respName.setBackgroundResource(R.color.cardBackground2);
             //holder.progressTV.setText("W trakcie");
-            holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+            if (responsibilitiesList.get(pos).isDelayed()) {
+                holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
+            } else {
+                holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+            }
+
         }
 
 
@@ -100,6 +105,11 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                     holder.respName.setBackgroundResource(R.color.cardBackground2);
                     //holder.progressTV.setText("W trakcie");
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+                    if (responsibilitiesList.get(pos).isDelayed()) {
+                        holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
+                    } else {
+                        holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+                    }
                     db.profileDao().setUnfinishedResponsibility(respId);
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);

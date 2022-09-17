@@ -171,6 +171,9 @@ public interface ProfileDao {
     @Query("UPDATE Responsibility SET finished = 0 WHERE resp_id = :respId")
     void setUnfinishedResponsibility(int respId);
 
+    @Query("UPDATE Responsibility SET delayed = 1 WHERE resp_id = :respId")
+    void markDelayedResp(int respId);
+
     @Query("SELECT finished FROM Responsibility WHERE resp_id = :respId")
     boolean getResponsibilityState(int respId);
 
@@ -179,6 +182,9 @@ public interface ProfileDao {
 
     @Query("SELECT * FROM Responsibility WHERE date_due = :dateDue")
     List<Responsibility> getResponsibilityWithDate(String dateDue);
+
+    @Query("SELECT date_due FROM Responsibility")
+    List<String> getResponsibilitiesDates();
 
     @Query("SELECT * FROM Responsibility WHERE importance = :importance")
     List<Responsibility> getResponsibilitiesWithImportance(String importance);
