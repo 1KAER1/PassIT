@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 
 import com.example.passit.db.entities.Subject;
 import com.example.passit.rvadapters.SubjectsViewRVAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class SubjectsView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText searchBar;
-    Button addNewSubject;
+    private FloatingActionButton addNewSubject;
     private RadioButton normalImportance, mediumImportance, highImportance;
     private SubjectsViewRVAdapter adapter;
     private List<Subject> subjectNameList = new ArrayList<>();

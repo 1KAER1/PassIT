@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Task;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class ResponsibilityInfo extends AppCompatActivity {
     private int respId;
     private boolean fromCalendar = false;
     private MaterialAutoCompleteTextView respNameTV, respTypeTV, dateTV, respDescriptionTV, assignedSubjectTV;
+    private TextInputLayout dateDueTIL;
     private AppDatabase db;
     private ImageView importanceCircle;
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
@@ -51,6 +53,7 @@ public class ResponsibilityInfo extends AppCompatActivity {
         finishBtn = findViewById(R.id.markFinishedBtn);
         returnBtn = findViewById(R.id.returnBtn);
         importanceCircle = findViewById(R.id.importanceCircle);
+        dateDueTIL = findViewById(R.id.dateDueId);
 
         db = AppDatabase.getDbInstance(this);
 
@@ -122,9 +125,11 @@ public class ResponsibilityInfo extends AppCompatActivity {
         switch (responsibilitiesList.get(0).getResponsibility_type()) {
             case "Task":
                 respTypeTV.setText("Zadanie");
+                dateDueTIL.setHint("Termin oddania zadania");
                 break;
             case "Test":
                 respTypeTV.setText("Zaliczenie");
+                dateDueTIL.setHint("Data zaliczenia");
                 break;
         }
 

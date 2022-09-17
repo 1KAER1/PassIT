@@ -20,6 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Responsibility;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +33,8 @@ import java.util.Locale;
 
 public class AddResponsibility extends AppCompatActivity {
 
-    private EditText respName, description;
+    private TextInputLayout respName, description;
+    private TextInputEditText respNameET, descET;
     private TextView headlineTV;
     private Spinner subjectSpinner, subjectTypeSpinner;
     private Button datePickerButton, nextButton, timeButton;
@@ -72,6 +76,8 @@ public class AddResponsibility extends AppCompatActivity {
         importanceRadioGroup = findViewById(R.id.importanceRadioGroup);
         respName = findViewById(R.id.noteTitle);
         description = findViewById(R.id.noteDescription);
+        respNameET = findViewById(R.id.respName);
+        descET = findViewById(R.id.respDesc);
         subjectSpinner = findViewById(R.id.assignedSubjectTV);
         subjectTypeSpinner = findViewById(R.id.subjectTypeSpinner);
         datePickerButton = findViewById(R.id.datePicker);
@@ -95,10 +101,10 @@ public class AddResponsibility extends AppCompatActivity {
             nextButton.setText("ZAKTUALIZUJ");
             int selectionPosition = adapter.getPosition(db.profileDao().getSubjectName(respList.get(0).getSubject_id()));
             subjectSpinner.setSelection(selectionPosition);
-            respName.setText(respList.get(0).getResp_name());
+            respNameET.setText(respList.get(0).getResp_name());
             datePickerButton.setText(respList.get(0).getDate_due());
             timeButton.setText(respList.get(0).getHour_due());
-            description.setText(respList.get(0).getDescription());
+            descET.setText(respList.get(0).getDescription());
 
             switch (respList.get(0).getImportance()) {
                 case "normal":
@@ -187,16 +193,16 @@ public class AddResponsibility extends AppCompatActivity {
 
     public void updateResponsibility() {
         if (checkInput()) {
-            db.profileDao().updateResponsibility(respName.getText().toString(),
+            db.profileDao().updateResponsibility(respNameET.getText().toString(),
                     checkResponsibilityType(),
                     checkImportanceSelection(),
                     datePickerButton.getText().toString(),
                     timeButton.getText().toString(),
-                    description.getText().toString(),
+                    descET.getText().toString(),
                     subjectTypeSpinner.getSelectedItem().toString(),
                     db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
                     respId);
-            Toast.makeText(this, "Task Name: " + respName.getText().toString(),
+            Toast.makeText(this, "Task Name: " + respNameET.getText().toString(),
                     Toast.LENGTH_SHORT).show();
             returnToInfo();
 
@@ -230,12 +236,12 @@ public class AddResponsibility extends AppCompatActivity {
 
     public Responsibility setupResponsibility() {
         Responsibility responsibility = new Responsibility();
-        responsibility.resp_name = respName.getText().toString();
+        responsibility.resp_name = respNameET.getText().toString();
         responsibility.responsibility_type = checkResponsibilityType();
         responsibility.importance = checkImportanceSelection();
         responsibility.date_due = datePickerButton.getText().toString();
         responsibility.hour_due = timeButton.getText().toString();
-        responsibility.description = description.getText().toString();
+        responsibility.description = descET.getText().toString();
         responsibility.subject_type = subjectTypeSpinner.getSelectedItem().toString();
         responsibility.subject_id = db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString());
         return responsibility;
@@ -243,10 +249,9 @@ public class AddResponsibility extends AppCompatActivity {
 
     public boolean checkInput() {
         System.out.println("SELECTED IMPORTANCE: " + checkImportanceSelection());
-        return !respName.getText().toString().isEmpty()
+        return !respNameET.getText().toString().isEmpty()
                 && checkResponsibilityType() != null
                 && checkImportanceSelection() != null
-                && !description.getText().toString().isEmpty()
                 && !datePickerButton.getText().toString().isEmpty()
                 && !timeButton.getText().toString().isEmpty();
     }

@@ -15,6 +15,7 @@ import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;
 import com.example.passit.rvadapters.TasksViewRVAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ResponsibilitiesView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText searchBar;
-    private Button addNewBtn;
+    private FloatingActionButton addNewBtn;
     private RadioButton normalImportance, mediumImportance, highImportance;
     private ResponsibilitiesRVAdapter adapter;
     private List<Responsibility> responsibilitiesList = new ArrayList<>();

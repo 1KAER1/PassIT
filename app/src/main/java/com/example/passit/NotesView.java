@@ -10,13 +10,14 @@ import android.widget.Button;
 
 import com.example.passit.db.entities.Note;
 import com.example.passit.rvadapters.NotesViewRVAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotesView extends AppCompatActivity {
 
-    private Button addNewNoteBtn;
+    private FloatingActionButton addNewNoteBtn;
     private AppDatabase db;
     private List<Note> noteList = new ArrayList<>();
     private NotesViewRVAdapter adapter;

@@ -1,6 +1,7 @@
 package com.example.passit.db.entities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -15,6 +16,7 @@ public class Responsibility {
     public String importance;
     public String date_due;
     public String hour_due;
+    @Nullable
     public String description;
     public String subject_type;
     @ColumnInfo(defaultValue = "false")
@@ -45,6 +47,7 @@ public class Responsibility {
         return hour_due;
     }
 
+    @Nullable
     public String getDescription() {
         return description;
     }
