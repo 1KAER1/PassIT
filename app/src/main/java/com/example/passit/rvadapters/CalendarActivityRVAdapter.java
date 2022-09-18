@@ -1,5 +1,6 @@
 package com.example.passit.rvadapters;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -38,40 +39,54 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CalendarActivityRVAdapter.ViewHolder holder, int position) {
         db = AppDatabase.getDbInstance(holder.respName.getContext());
         int pos = holder.getAdapterPosition();
         int respId = responsibilitiesList.get(pos).getResp_id();
 
-        //holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
-        holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n\n" + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()));
+        holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n"
+                + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()) +
+                "\n\n\nTermin: " + responsibilitiesList.get(pos).getDate_due());
         holder.respName.setBackgroundResource(R.color.cardBackground2);
 
         switch (responsibilitiesList.get(pos).getResponsibility_type()) {
             case "Task":
-                holder.progressTV.setText("Zadanie");
+                if (responsibilitiesList.get(pos).isDelayed()) {
+                    holder.progressTV.setText("Zaległe zadanie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
+                } else {
+                    holder.progressTV.setText("Zadanie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+                }
                 break;
             case "Test":
-                holder.progressTV.setText("Zaliczenie");
+                if (responsibilitiesList.get(pos).isDelayed()) {
+                    holder.progressTV.setText("Zaległe zaliczenie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
+                } else {
+                    holder.progressTV.setText("Zaliczenie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+                }
                 break;
         }
-        holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
 
         if (db.profileDao().getResponsibilityState(respId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
-            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.respName.setPaintFlags(holder.respName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.respName.setBackgroundResource(R.color.cardBackgroundFinished);
-            //holder.progressTV.setText("Ukończone");
             holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
         } else {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
-            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.respName.setPaintFlags(holder.respName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.respName.setBackgroundResource(R.color.cardBackground2);
-            //holder.progressTV.setText("W trakcie");
-            holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+            if (responsibilitiesList.get(pos).isDelayed()) {
+                holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
+            } else {
+                holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+            }
+
         }
 
 

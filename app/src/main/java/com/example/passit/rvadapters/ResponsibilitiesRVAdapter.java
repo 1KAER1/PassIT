@@ -47,8 +47,9 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
         int pos = holder.getAdapterPosition();
         int respId = responsibilitiesList.get(pos).getResp_id();
 
-        //holder.subjectName.setText(db.profileDao().getSubjectName(taskList.get(position).getSubject_id()));
-        holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n\n" + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()));
+        holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n"
+                + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()) +
+                "\n\n\nTermin: " + responsibilitiesList.get(pos).getDate_due());
         holder.respName.setBackgroundResource(R.color.cardBackground2);
 
         switch (responsibilitiesList.get(pos).getResponsibility_type()) {
@@ -71,7 +72,6 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                 }
                 break;
         }
-        holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
 
         if (db.profileDao().getResponsibilityState(respId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
