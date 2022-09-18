@@ -54,6 +54,7 @@
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_test_selector.xml" value="0.54" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_text_color.xml" value="0.4885" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/radio_unselected.xml" value="0.4885" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/recyclerview_scrollbar_color.xml" value="0.443" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/unfinished_button.xml" value="0.54" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_class.xml" value="0.5" />
         <entry key="..\:/PassIT/app/src/main/res/layout/activity_add_new_profile.xml" value="0.21855411617216883" />
@@ -84,11 +85,12 @@
         <entry key="..\:/PassIT/app/src/main/res/layout/fragment_lecture_info.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/fragment_subject_info.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/fragment_subject_info_summary.xml" value="0.22" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_horizontal_row.xml" value="0.33" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_note_row.xml" value="0.25" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_row.xml" value="0.5489583333333333" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_subject_row.xml" value="0.2124756335282651" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_summary_row.xml" value="0.5489583333333333" />
-        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_task_row.xml" value="0.4249512670565302" />
+        <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_task_row.xml" value="0.2775229357798165" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_test_row.xml" value="0.33" />
       </map>
     </option>

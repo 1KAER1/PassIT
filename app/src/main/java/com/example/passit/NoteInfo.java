@@ -59,7 +59,7 @@ public class NoteInfo extends AppCompatActivity {
             public void onClick(View view) {
                 if (isAdd) {
                     addNoteToDatabase();
-                    returnToView();
+
                 } else if (isEdit) {
                     updateNote();
                     isEdit = false;
@@ -101,6 +101,7 @@ public class NoteInfo extends AppCompatActivity {
             note.note_description = noteDescription.getText().toString();
             note.profile_id = db.profileDao().getActiveProfile();
             db.profileDao().insertNote(note);
+            returnToView();
         } else {
             Toast.makeText(this, "Podaj tytuł notatki!",
                     Toast.LENGTH_SHORT).show();

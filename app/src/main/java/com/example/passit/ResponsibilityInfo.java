@@ -21,7 +21,7 @@ import java.util.List;
 public class ResponsibilityInfo extends AppCompatActivity {
 
     private int respId;
-    private boolean fromCalendar = false;
+    private boolean fromCalendar, fromMenu = false;
     private MaterialAutoCompleteTextView respNameTV, respTypeTV, dateTV, respDescriptionTV, assignedSubjectTV;
     private TextInputLayout dateDueTIL;
     private AppDatabase db;
@@ -40,6 +40,9 @@ public class ResponsibilityInfo extends AppCompatActivity {
             respId = extras.getInt("respId");
             if (extras.getString("calendar") != null) {
                 fromCalendar = true;
+            }
+            if (extras.getString("menu") != null) {
+                fromMenu = true;
             }
         }
 
@@ -97,6 +100,8 @@ public class ResponsibilityInfo extends AppCompatActivity {
                 bundle.putInt("respId", respId);
                 if (fromCalendar) {
                     bundle.putString("calendar", "isCalendar");
+                } else if(fromMenu){
+                    bundle.putString("menu", "isMenu");
                 }
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -108,6 +113,8 @@ public class ResponsibilityInfo extends AppCompatActivity {
             public void onClick(View view) {
                 if (fromCalendar) {
                     returnToCalendar();
+                } else if (fromMenu) {
+                    returnToMenu();
                 } else {
                     returnToView();
                 }
@@ -153,6 +160,8 @@ public class ResponsibilityInfo extends AppCompatActivity {
     public void onBackPressed() {
         if (fromCalendar) {
             returnToCalendar();
+        } else if (fromMenu) {
+            returnToMenu();
         } else {
             returnToView();
         }
@@ -168,6 +177,11 @@ public class ResponsibilityInfo extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("editedDate", responsibilitiesList.get(0).getDate_due());
         intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    public void returnToMenu() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

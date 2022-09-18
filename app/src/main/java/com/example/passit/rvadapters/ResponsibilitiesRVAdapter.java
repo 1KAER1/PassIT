@@ -53,27 +53,35 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
 
         switch (responsibilitiesList.get(pos).getResponsibility_type()) {
             case "Task":
-                holder.progressTV.setText("Zadanie");
+                if (responsibilitiesList.get(pos).isDelayed()) {
+                    holder.progressTV.setText("Zaległe zadanie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
+                } else {
+                    holder.progressTV.setText("Zadanie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+                }
                 break;
             case "Test":
-                holder.progressTV.setText("Zaliczenie");
+                if (responsibilitiesList.get(pos).isDelayed()) {
+                    holder.progressTV.setText("Zaległe zaliczenie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
+                } else {
+                    holder.progressTV.setText("Zaliczenie");
+                    holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
+                }
                 break;
         }
         holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
 
         if (db.profileDao().getResponsibilityState(respId)) {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
-            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.respName.setPaintFlags(holder.respName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.respName.setBackgroundResource(R.color.cardBackgroundFinished);
-            //holder.progressTV.setText("Ukończone");
             holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
         } else {
             holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
-            //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.respName.setPaintFlags(holder.respName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             holder.respName.setBackgroundResource(R.color.cardBackground2);
-            //holder.progressTV.setText("W trakcie");
             if (responsibilitiesList.get(pos).isDelayed()) {
                 holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
             } else {
@@ -100,10 +108,8 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
             public void onClick(View view) {
                 if (db.profileDao().getResponsibilityState(respId)) {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
-                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.respName.setPaintFlags(holder.respName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.respName.setBackgroundResource(R.color.cardBackground2);
-                    //holder.progressTV.setText("W trakcie");
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
                     if (responsibilitiesList.get(pos).isDelayed()) {
                         holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.highImportance));
@@ -113,10 +119,8 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                     db.profileDao().setUnfinishedResponsibility(respId);
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
-                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.respName.setPaintFlags(holder.respName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.respName.setBackgroundResource(R.color.cardBackgroundFinished);
-                    //holder.progressTV.setText("Ukończone");
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
                     db.profileDao().setFinishedResponsibility(respId);
                 }

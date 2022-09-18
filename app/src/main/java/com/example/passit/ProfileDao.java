@@ -186,6 +186,15 @@ public interface ProfileDao {
     @Query("SELECT date_due FROM Responsibility")
     List<String> getResponsibilitiesDates();
 
+    @Query("SELECT date_due FROM Responsibility WHERE delayed = 0 AND finished = 0")
+    List<String> getUndelayedResponsibilitiesDates();
+
+    @Query("SELECT * FROM Responsibility WHERE delayed = 1 AND finished = 0")
+    List<Responsibility> getOverdueResponsibilities();
+
+    @Query("SELECT * FROM Responsibility WHERE date_due=:date")
+    List<Responsibility> getRespWithDate(String date);
+
     @Query("SELECT * FROM Responsibility WHERE importance = :importance")
     List<Responsibility> getResponsibilitiesWithImportance(String importance);
 

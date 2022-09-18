@@ -49,7 +49,7 @@ public class AddResponsibility extends AppCompatActivity {
     private String selectedImportance = null;
     private long pressedTime;
     private int respId;
-    private boolean isEdit, fromCalendar = false;
+    private boolean isEdit, fromCalendar, fromMenu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,9 @@ public class AddResponsibility extends AppCompatActivity {
             respId = extras.getInt("respId");
             if (extras.getString("calendar") != null) {
                 fromCalendar = true;
+            }
+            if (extras.getString("menu") != null) {
+                fromMenu = true;
             }
             respList = db.profileDao().getResponsibilityWithId(respId);
         }
@@ -202,8 +205,6 @@ public class AddResponsibility extends AppCompatActivity {
                     subjectTypeSpinner.getSelectedItem().toString(),
                     db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
                     respId);
-            Toast.makeText(this, "Task Name: " + respNameET.getText().toString(),
-                    Toast.LENGTH_SHORT).show();
             returnToInfo();
 
         } else {
@@ -223,12 +224,10 @@ public class AddResponsibility extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("respId", respId);
         if (fromCalendar) {
-            bundle.getString("calendar", "isCalendar");
-            if (fromCalendar) {
-                bundle.putString("calendar", "isCalendar");
-                Toast.makeText(getApplicationContext(), "From calendar in Add",
-                        Toast.LENGTH_SHORT).show();
-            }
+            bundle.putString("calendar", "isCalendar");
+        }
+        if (fromMenu) {
+            bundle.putString("menu", "isMenu");
         }
         intent.putExtras(bundle);
         startActivity(intent);

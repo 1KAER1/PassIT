@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
+import com.example.passit.rvadapters.ResponsibilitiesMainRVAdapter;
 import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;
 
 import java.text.DateFormat;
@@ -22,21 +23,24 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton addSubjectButton, respButton, notesButton, calendarButton;
-    private RecyclerView importantRespRV;
-    private ResponsibilitiesRVAdapter adapter;
+    private RecyclerView importantRespRV, overdueRespRV;
+    private ResponsibilitiesMainRVAdapter adapter, adapter2;
     private long pressedTime;
     private AppDatabase db;
     private List<Profile> profilesList = new ArrayList<>();
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
     private List<String> responsibilitiesDates = new ArrayList<>();
     private List<Responsibility> responsibilitiesRV = new ArrayList<>();
+    private List<Responsibility> earliestDate = new ArrayList<>();
+    private List<Responsibility> overdueResponsibilities = new ArrayList<>();
+    @SuppressLint("SimpleDateFormat")
+    final DateFormat format = new SimpleDateFormat("d/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +52,29 @@ public class MainActivity extends AppCompatActivity {
         respButton = findViewById(R.id.respButton);
         notesButton = findViewById(R.id.notesViewBtn);
         calendarButton = findViewById(R.id.calendarViewBtn);
-        importantRespRV = findViewById(R.id.importantResp);
+        importantRespRV = findViewById(R.id.importantRespRV);
+        overdueRespRV = findViewById(R.id.overdueRespRV);
 
         db = AppDatabase.getDbInstance(this);
 
         profilesList = db.profileDao().getAllProfiles();
-        responsibilitiesDates = db.profileDao().getResponsibilitiesDates();
+
         responsibilitiesList = db.profileDao().getAllResponsibilities();
+
         if (responsibilitiesList != null) {
             checkResponsibilitiesDelay();
         }
 
+        responsibilitiesDates = db.profileDao().getUndelayedResponsibilitiesDates();
         sortRespDates();
+        earliestDate = db.profileDao().getRespWithDate(responsibilitiesDates.get(0));
+        overdueResponsibilities = db.profileDao().getOverdueResponsibilities();
+
+        adapter = new ResponsibilitiesMainRVAdapter(earliestDate);
+        importantRespRV.setAdapter(adapter);
+
+        adapter2 = new ResponsibilitiesMainRVAdapter(overdueResponsibilities);
+        overdueRespRV.setAdapter(adapter2);
 
         if (profilesList.isEmpty()) {
             addNewProfile();
@@ -73,18 +88,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sortRespDates() {
-        responsibilitiesDates.sort(new Comparator<String>() {
-            @SuppressLint("SimpleDateFormat")
-            final
-            DateFormat format = new SimpleDateFormat("d/MM/yyyy");
-
-            @Override
-            public int compare(String o1, String o2) {
-                try {
-                    return Objects.requireNonNull(format.parse(o1)).compareTo(format.parse(o2));
-                } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
-                }
+        responsibilitiesDates.sort((o1, o2) -> {
+            try {
+                return Objects.requireNonNull(format.parse(o1)).compareTo(format.parse(o2));
+            } catch (ParseException e) {
+                throw new IllegalArgumentException(e);
             }
         });
     }
