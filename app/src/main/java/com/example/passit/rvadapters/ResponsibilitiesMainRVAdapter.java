@@ -1,17 +1,15 @@
 package com.example.passit.rvadapters;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +36,7 @@ public class ResponsibilitiesMainRVAdapter extends RecyclerView.Adapter<Responsi
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ResponsibilitiesMainRVAdapter.ViewHolder holder, int position) {
         db = AppDatabase.getDbInstance(holder.respName.getContext());
@@ -96,16 +95,14 @@ public class ResponsibilitiesMainRVAdapter extends RecyclerView.Adapter<Responsi
         return responsibilitiesList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView respName, progressTV;
-        private final ConstraintLayout rowLayout;
         private final ImageView importanceLabel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             respName = itemView.findViewById(R.id.cv_noteInfo);
-            rowLayout = itemView.findViewById(R.id.rowLayout);
             importanceLabel = itemView.findViewById(R.id.importanceLabel);
             progressTV = itemView.findViewById(R.id.progressTV);
         }

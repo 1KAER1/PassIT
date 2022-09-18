@@ -32,6 +32,28 @@ public interface ProfileDao {
     @Delete
     void deleteProfile(Profile... profile);
 
+    @Query("SELECT * FROM Profile")
+    List<Profile> getAllProfiles();
+
+    @Query("SELECT profile_id FROM profile WHERE isActive = 1")
+    int getActiveProfile();
+
+    @Query("SELECT profile_name FROM profile WHERE isActive = 1")
+    String getActiveProfileName();
+
+    @Query("SELECT semester FROM profile WHERE isActive = 1")
+    int getActiveProfileSemester();
+
+    @Query("UPDATE profile SET isActive = 0 WHERE isActive = 1")
+    void deactivateProfiles();
+
+    @Query("UPDATE profile SET isActive = 1 WHERE profile_name = :profileName")
+    void activateProfile(String profileName);
+
+    @Transaction
+    @Query("SELECT profile_name FROM Profile")
+    List<String> getAllProfilesNames();
+
     //Note
     @Query("SELECT * FROM Note")
     List<Note> getAllNotes();
@@ -192,7 +214,7 @@ public interface ProfileDao {
     @Query("SELECT * FROM Responsibility WHERE delayed = 1 AND finished = 0")
     List<Responsibility> getOverdueResponsibilities();
 
-    @Query("SELECT * FROM Responsibility WHERE date_due=:date")
+    @Query("SELECT * FROM Responsibility WHERE date_due=:date AND finished = 0")
     List<Responsibility> getRespWithDate(String date);
 
     @Query("SELECT * FROM Responsibility WHERE importance = :importance")
@@ -227,25 +249,7 @@ public interface ProfileDao {
     @Query("SELECT * FROM LessonDate WHERE lesson_id = :lessonId")
     List<LessonDate> getLessonDate(int lessonId);
 
-    //Profile
-    @Query("SELECT * FROM Profile")
-    List<Profile> getAllProfiles();
 
-    @Query("SELECT profile_id FROM profile WHERE isActive = 1")
-    int getActiveProfile();
-
-    @Query("SELECT profile_name FROM profile WHERE isActive = 1")
-    String getActiveProfileName();
-
-    @Query("UPDATE profile SET isActive = 0 WHERE isActive = 1")
-    void deactivateProfiles();
-
-    @Query("UPDATE profile SET isActive = 1 WHERE profile_name = :profileName")
-    void activateProfile(String profileName);
-
-    @Transaction
-    @Query("SELECT profile_name FROM Profile")
-    List<String> getAllProfilesNames();
 
 
 }

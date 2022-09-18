@@ -150,9 +150,8 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
         return responsibilitiesList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView respName, progressTV;
-        private final ConstraintLayout rowLayout;
         private final Button markFinishedBtn, removeBtn;
         private final ImageView importanceLabel;
 
@@ -161,7 +160,6 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
             respName = itemView.findViewById(R.id.cv_noteInfo);
             markFinishedBtn = itemView.findViewById(R.id.markFinished);
             removeBtn = itemView.findViewById(R.id.removeBtn);
-            rowLayout = itemView.findViewById(R.id.rowLayout);
             importanceLabel = itemView.findViewById(R.id.importanceLabel);
             progressTV = itemView.findViewById(R.id.progressTV);
         }

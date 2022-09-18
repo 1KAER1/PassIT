@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.passit.AppDatabase;
 import com.example.passit.R;
 import com.example.passit.ResponsibilityInfo;
-import com.example.passit.TaskInfo;
 import com.example.passit.db.entities.Responsibility;
 
 import java.util.List;

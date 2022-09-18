@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Profile;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton addSubjectButton, respButton, notesButton, calendarButton;
     private RecyclerView importantRespRV, overdueRespRV;
     private ResponsibilitiesMainRVAdapter adapter, adapter2;
+    private TextView profileNameTV;
     private long pressedTime;
     private AppDatabase db;
     private List<Profile> profilesList = new ArrayList<>();
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SimpleDateFormat")
     final DateFormat format = new SimpleDateFormat("d/MM/yyyy");
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
         calendarButton = findViewById(R.id.calendarViewBtn);
         importantRespRV = findViewById(R.id.importantRespRV);
         overdueRespRV = findViewById(R.id.overdueRespRV);
+        profileNameTV = findViewById(R.id.profileNameTV);
 
         db = AppDatabase.getDbInstance(this);
 
         profilesList = db.profileDao().getAllProfiles();
+        profileNameTV.setText(db.profileDao().getActiveProfileName() + " " + db.profileDao().getActiveProfileSemester());
 
         responsibilitiesList = db.profileDao().getAllResponsibilities();
 
@@ -66,15 +71,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         responsibilitiesDates = db.profileDao().getUndelayedResponsibilitiesDates();
-        sortRespDates();
-        earliestDate = db.profileDao().getRespWithDate(responsibilitiesDates.get(0));
+        if (!responsibilitiesDates.isEmpty()) {
+            sortRespDates();
+            earliestDate = db.profileDao().getRespWithDate(responsibilitiesDates.get(0));
+
+
+            adapter = new ResponsibilitiesMainRVAdapter(earliestDate);
+            importantRespRV.setAdapter(adapter);
+
+
+        }
+
         overdueResponsibilities = db.profileDao().getOverdueResponsibilities();
 
-        adapter = new ResponsibilitiesMainRVAdapter(earliestDate);
-        importantRespRV.setAdapter(adapter);
-
-        adapter2 = new ResponsibilitiesMainRVAdapter(overdueResponsibilities);
-        overdueRespRV.setAdapter(adapter2);
+        if (!overdueResponsibilities.isEmpty()) {
+            adapter2 = new ResponsibilitiesMainRVAdapter(overdueResponsibilities);
+            overdueRespRV.setAdapter(adapter2);
+        }
 
         if (profilesList.isEmpty()) {
             addNewProfile();
