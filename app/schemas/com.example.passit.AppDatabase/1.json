@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a7b33dc1cdbb382df05e0884832d572e",
+    "identityHash": "a95d68aac06a59c24e632271df4e9dae",
     "entities": [
       {
         "tableName": "Lesson",
@@ -320,6 +320,32 @@
         "foreignKeys": []
       },
       {
+        "tableName": "User",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_name` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "user_id",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user_name",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "user_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "Task",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_name` TEXT, `importance` TEXT, `date_due` TEXT, `hour_due` TEXT, `description` TEXT, `subject_type` TEXT, `finished` INTEGER NOT NULL DEFAULT false, `subject_id` INTEGER NOT NULL)",
         "fields": [
@@ -499,7 +525,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7b33dc1cdbb382df05e0884832d572e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a95d68aac06a59c24e632271df4e9dae')"
     ]
   }
 }

@@ -14,6 +14,7 @@ import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 import com.example.passit.db.entities.Test;
+import com.example.passit.db.entities.User;
 
 @Database(
         entities = {
@@ -22,6 +23,7 @@ import com.example.passit.db.entities.Test;
                 Profile.class,
                 Subject.class,
                 Responsibility.class,
+                User.class,
                 Task.class,
                 Test.class,
                 Note.class

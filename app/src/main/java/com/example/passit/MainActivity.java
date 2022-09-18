@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.rvadapters.ResponsibilitiesMainRVAdapter;
-import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,7 +21,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton addSubjectButton, respButton, notesButton, calendarButton;
     private RecyclerView importantRespRV, overdueRespRV;
     private ResponsibilitiesMainRVAdapter adapter, adapter2;
-    private TextView profileNameTV;
+    private TextView profileNameTV, userNameTV;
     private long pressedTime;
     private AppDatabase db;
     private List<Profile> profilesList = new ArrayList<>();
@@ -58,11 +56,18 @@ public class MainActivity extends AppCompatActivity {
         importantRespRV = findViewById(R.id.importantRespRV);
         overdueRespRV = findViewById(R.id.overdueRespRV);
         profileNameTV = findViewById(R.id.profileNameTV);
+        userNameTV = findViewById(R.id.userNameTV);
 
         db = AppDatabase.getDbInstance(this);
 
         profilesList = db.profileDao().getAllProfiles();
-        profileNameTV.setText(db.profileDao().getActiveProfileName() + " " + db.profileDao().getActiveProfileSemester());
+
+        if (profilesList.isEmpty()) {
+            addNewUser();
+        }
+
+        userNameTV.setText("Cześć " + db.profileDao().getUserName() + "!");
+        profileNameTV.setText(db.profileDao().getActiveProfileName() + " semestr " + db.profileDao().getActiveProfileSemester());
 
         responsibilitiesList = db.profileDao().getAllResponsibilities();
 
@@ -89,9 +94,7 @@ public class MainActivity extends AppCompatActivity {
             overdueRespRV.setAdapter(adapter2);
         }
 
-        if (profilesList.isEmpty()) {
-            addNewProfile();
-        }
+
 
         addSubjectButton.setOnClickListener(view -> openView(SubjectsView.class));
         respButton.setOnClickListener(view -> openView(ResponsibilitiesView.class));
@@ -155,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
         return day + "/" + month + "/" + year;
     }
 
-    public void addNewProfile() {
-        Intent intent = new Intent(this, AddNewProfile.class);
+    public void addNewUser() {
+        Intent intent = new Intent(this, AddNewUser.class);
         startActivity(intent);
     }
 

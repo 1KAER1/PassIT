@@ -14,6 +14,7 @@ import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.Task;
 import com.example.passit.db.entities.Test;
+import com.example.passit.db.entities.User;
 import com.example.passit.db.relations.SubjectWithLessons;
 
 import java.util.List;
@@ -24,6 +25,13 @@ public interface ProfileDao {
     @Query("SELECT * FROM subject")
     List<Subject> getAllSubjects();
 
+
+    //USER
+    @Insert
+    void insertUser(User... users);
+
+    @Query("SELECT user_name FROM User")
+    String getUserName();
 
     //Profile
     @Insert

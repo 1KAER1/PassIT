@@ -43,7 +43,9 @@ public class ResponsibilitiesMainRVAdapter extends RecyclerView.Adapter<Responsi
         int pos = holder.getAdapterPosition();
         int respId = responsibilitiesList.get(pos).getResp_id();
 
-        holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n" + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()));
+        holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n"
+                + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id())
+                + "\nTermin: " + responsibilitiesList.get(pos).getDate_due());
         holder.respName.setBackgroundResource(R.color.cardBackground2);
 
         switch (responsibilitiesList.get(pos).getResponsibility_type()) {

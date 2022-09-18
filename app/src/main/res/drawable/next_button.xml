@@ -3,10 +3,10 @@
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
             <corners android:radius="7dp" />
-            <solid android:color="@color/selectedResponsibility" />
+            <solid android:color="@color/buttonColor" />
             <stroke
                 android:width="2dip"
-                android:color="@color/selectedResponsibility" />
+                android:color="@color/buttonColor" />
             <padding
                 android:bottom="4dp"
                 android:left="4dp"
@@ -17,10 +17,10 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <corners android:radius="7dp" />
-            <solid android:color="#412A65" />
+            <solid android:color="@color/buttonColorPressed" />
             <stroke
                 android:width="2dip"
-                android:color="#312A3A" />
+                android:color="@color/buttonColorPressed" />
             <padding
                 android:bottom="4dp"
                 android:left="4dp"

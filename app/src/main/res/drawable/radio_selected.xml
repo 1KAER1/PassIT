@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
 
-    <solid android:color="#7F628F" />
+    <solid android:color="@color/selectedResponsibility" />
     <corners android:radius="5dp" />
-    <stroke android:width="5px" android:color="#8A7298"/>
+    <stroke
+        android:width="5px"
+        android:color="@color/selectedResponsibility" />
 
 </shape>
