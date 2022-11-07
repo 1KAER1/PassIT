@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.rvadapters.ResponsibilitiesMainRVAdapter;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton addSubjectButton, respButton, notesButton, calendarButton;
     private RecyclerView importantRespRV, overdueRespRV;
     private ResponsibilitiesMainRVAdapter adapter, adapter2;
+    private MaterialAutoCompleteTextView noOfSubjectsTV, passedTV, taskNo, testNo;
     private TextView profileNameTV, userNameTV;
     private long pressedTime;
     private AppDatabase db;
@@ -57,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         overdueRespRV = findViewById(R.id.overdueRespRV);
         profileNameTV = findViewById(R.id.profileNameTV);
         userNameTV = findViewById(R.id.userNameTV);
+        noOfSubjectsTV = findViewById(R.id.noOfSubjectsTV);
+        passedTV = findViewById(R.id.passedTV);
+        taskNo = findViewById(R.id.taskNo);
+        testNo = findViewById(R.id.testNo);
 
         db = AppDatabase.getDbInstance(this);
 
@@ -80,11 +86,8 @@ public class MainActivity extends AppCompatActivity {
             sortRespDates();
             earliestDate = db.profileDao().getRespWithDate(responsibilitiesDates.get(0));
 
-
             adapter = new ResponsibilitiesMainRVAdapter(earliestDate);
             importantRespRV.setAdapter(adapter);
-
-
         }
 
         overdueResponsibilities = db.profileDao().getOverdueResponsibilities();
@@ -94,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
             overdueRespRV.setAdapter(adapter2);
         }
 
+        noOfSubjectsTV.setText(String.valueOf(db.profileDao().getSubjectCount()));
+        passedTV.setText(String.valueOf(db.profileDao().getPassedSubjectCount()));
+        taskNo.setText(String.valueOf(db.profileDao().getTaskCount()));
+        testNo.setText(String.valueOf(db.profileDao().getTestCount()));
 
 
         addSubjectButton.setOnClickListener(view -> openView(SubjectsView.class));

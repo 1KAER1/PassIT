@@ -10,6 +10,16 @@
         <item>SOBOTA</item>
         <item>NIEDZIELA</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string-array name="responsibilitiesSortArray">
+        <item>Sortowanie domyślne</item>
+        <item>Od najważniejszych</item>
+        <item>Od najmniej ważnych</item>
+        <item>Od najpilniejszych</item>
+        <item>Od najmniej pilnych</item>
+        <item>Tylko ważne</item>
+        <item>Tylko średnio ważne</item>
+        <item>Tylko mało ważne</item>
+    </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

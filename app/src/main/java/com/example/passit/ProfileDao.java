@@ -80,6 +80,12 @@ public interface ProfileDao {
     @Insert
     void insertSubject(Subject... subjects);
 
+    @Query("SELECT COUNT(subject_id) FROM Subject")
+    int getSubjectCount();
+
+    @Query("SELECT COUNT(subject_id) FROM Subject WHERE passed = 1")
+    int getPassedSubjectCount();
+
     @Query("DELETE FROM Subject WHERE subject_id = :subjectId")
     void deleteSubject(int subjectId);
 
@@ -187,6 +193,24 @@ public interface ProfileDao {
     @Query("SELECT * FROM Responsibility")
     List<Responsibility> getAllResponsibilities();
 
+    @Query("SELECT * FROM Responsibility WHERE finished = 0")
+    List<Responsibility> getAllUnfinishedResponsibilities();
+
+    @Query("SELECT * FROM Responsibility WHERE importance = 'high' AND finished = 0")
+    List<Responsibility> getHighImportanceResponsibilities();
+
+    @Query("SELECT * FROM Responsibility WHERE importance = 'medium' AND finished = 0")
+    List<Responsibility> getMediumImportanceResponsibilities();
+
+    @Query("SELECT * FROM Responsibility WHERE importance = 'normal' AND finished = 0")
+    List<Responsibility> getNormalImportanceResponsibilities();
+
+    @Query("SELECT COUNT(resp_id) FROM Responsibility WHERE responsibility_type = 'Task'")
+    int getTaskCount();
+
+    @Query("SELECT COUNT(resp_id) FROM Responsibility WHERE responsibility_type = 'Test'")
+    int getTestCount();
+
     @Query("UPDATE Responsibility SET resp_name=:respName, responsibility_type=:respType,importance=:importance, date_due=:dateDue, hour_due=:hourDue," +
             " description=:description, subject_type=:subjectType, subject_id=:subjectId WHERE resp_id=:respId")
     void updateResponsibility(String respName, String respType, String importance, String dateDue, String hourDue, String description, String subjectType,
@@ -204,6 +228,9 @@ public interface ProfileDao {
     @Query("UPDATE Responsibility SET delayed = 1 WHERE resp_id = :respId")
     void markDelayedResp(int respId);
 
+    @Query("UPDATE Responsibility SET delayed = 0 WHERE resp_id = :respId")
+    void markUndelayedResp(int respId);
+
     @Query("SELECT finished FROM Responsibility WHERE resp_id = :respId")
     boolean getResponsibilityState(int respId);
 
@@ -215,6 +242,7 @@ public interface ProfileDao {
 
     @Query("SELECT date_due FROM Responsibility")
     List<String> getResponsibilitiesDates();
+
 
     @Query("SELECT date_due FROM Responsibility WHERE delayed = 0 AND finished = 0")
     List<String> getUndelayedResponsibilitiesDates();

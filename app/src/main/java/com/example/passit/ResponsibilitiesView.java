@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Responsibility;
@@ -18,25 +22,31 @@ import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;
 import com.example.passit.rvadapters.TasksViewRVAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class ResponsibilitiesView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText searchBar;
     private FloatingActionButton addNewBtn;
+    private Spinner sortSpinner;
     private RadioButton normalImportance, mediumImportance, highImportance;
     private ResponsibilitiesRVAdapter adapter;
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
     private List<Subject> subjectList = new ArrayList<>();
     private AppDatabase db;
+    @SuppressLint("SimpleDateFormat")
+    final DateFormat format = new SimpleDateFormat("d/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +59,95 @@ public class ResponsibilitiesView extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
         searchBar = findViewById(R.id.searchBar);
+        sortSpinner = findViewById(R.id.sortSpinner);
 
         db = AppDatabase.getDbInstance(this);
 
-        responsibilitiesList = db.profileDao().getAllResponsibilities();
-        checkResponsibilitiesDelay();
+        /*responsibilitiesList = db.profileDao().getAllResponsibilities();
+        checkResponsibilitiesDelay();*/
 
         subjectList = db.profileDao().getAllSubjects();
 
-        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
-        recyclerView.setAdapter(adapter);
+        /*adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+        recyclerView.setAdapter(adapter);*/
+
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.responsibilitiesSortArray, R.layout.custom_spinner_layout);
+        arrayAdapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
+        sortSpinner.setAdapter(arrayAdapter);
+
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String sortType = sortSpinner.getSelectedItem().toString();
+
+                responsibilitiesList.clear();
+
+                switch (position) {
+                    case 0:
+                        responsibilitiesList = db.profileDao().getAllUnfinishedResponsibilities();
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 1:
+                        responsibilitiesList = db.profileDao().getHighImportanceResponsibilities();
+                        responsibilitiesList.addAll(db.profileDao().getMediumImportanceResponsibilities());
+                        responsibilitiesList.addAll(db.profileDao().getNormalImportanceResponsibilities());
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 2:
+                        responsibilitiesList = db.profileDao().getNormalImportanceResponsibilities();
+                        responsibilitiesList.addAll(db.profileDao().getMediumImportanceResponsibilities());
+                        responsibilitiesList.addAll(db.profileDao().getHighImportanceResponsibilities());
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 3:
+                        responsibilitiesList = db.profileDao().getAllUnfinishedResponsibilities();
+                        sortRespDates(responsibilitiesList);
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 4:
+                        responsibilitiesList = db.profileDao().getAllUnfinishedResponsibilities();
+                        sortRespDates(responsibilitiesList);
+                        Collections.reverse(responsibilitiesList);
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 5:
+                        responsibilitiesList = db.profileDao().getHighImportanceResponsibilities();
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 6:
+                        responsibilitiesList = db.profileDao().getMediumImportanceResponsibilities();
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+                    case 7:
+                        responsibilitiesList = db.profileDao().getNormal
+                    ImportanceResponsibilities();
+                        checkResponsibilitiesDelay();
+                        adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
+                        recyclerView.setAdapter(adapter);
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         addNewBtn.setOnClickListener(view -> {
             if (subjectList.isEmpty()) {
@@ -67,6 +156,16 @@ public class ResponsibilitiesView extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             } else {
                 openAddNewTask();
+            }
+        });
+    }
+
+    public void sortRespDates(List<Responsibility> responsibilityLisT) {
+        responsibilityLisT.sort((o1, o2) -> {
+            try {
+                return Objects.requireNonNull(format.parse(o1.date_due)).compareTo(format.parse(o2.date_due));
+            } catch (ParseException e) {
+                throw new IllegalArgumentException(e);
             }
         });
     }

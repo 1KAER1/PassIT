@@ -2,7 +2,6 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -33,7 +32,7 @@
             android:layout_marginTop="12dp"
             android:gravity="start"
             android:text="Informatyka Semestr 8"
-            android:textColor="@color/textColor"
+            android:textColor="@color/statsColor"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.091"
@@ -92,149 +91,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="#4BA8A8A8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menuScroll">
-
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:background="@color/accentColor"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.571"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Liczba przedmiotów:"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:id="@+id/subjectsNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="70dp"
-                    android:text="10"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/accentColor"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="Liczba zaliczonych przedmiotów:"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:id="@+id/passedSubjectsNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
-                    android:layout_marginTop="10dp"
-                    android:text="10"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/accentColor"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-                tools:layout_editor_absoluteX="3dp">
-
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="Liczba aktywnych zadań:"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:id="@+id/activeTasksTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
-                    android:layout_marginTop="10dp"
-                    android:text="10"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout21"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/accentColor"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-                <TextView
-                    android:id="@+id/textView171"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="Liczba nadchodzących zaliczeń:"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:id="@+id/activeTasksTV1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70dp"
-                    android:layout_marginTop="25dp"
-                    android:text="10"
-                    android:textColor="@color/textColor"
-                    android:textSize="22sp" />
-
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <HorizontalScrollView
             android:id="@+id/menuScroll"
@@ -381,10 +237,141 @@
                         android:textSize="17sp"
                         android:textStyle="bold" />
                 </FrameLayout>
-
-
             </LinearLayout>
         </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Statystyki"
+            android:textColor="@color/textColorDarken"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuScroll" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/noOfSubjects"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/menu_button"
+            android:hint="Liczba przedmiotów"
+            android:textColorHint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView23">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/noOfSubjectsTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="6"
+                android:textColor="@color/statsColor"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:theme="@style/custom_underline" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/noOfPassedSubjects"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/menu_button"
+            android:hint="Liczba zaliczonych przedmiotów"
+            android:textColorHint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toEndOf="@+id/noOfSubjects"
+            app:layout_constraintTop_toBottomOf="@+id/textView23">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/passedTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="1"
+                android:textColor="@color/statsColor"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:theme="@style/custom_underline" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/noOfTasks"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/menu_button"
+            android:hint="Liczba zadań"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noOfSubjects"
+            app:layout_constraintVertical_bias="0.0">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/taskNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="4"
+                android:textColor="@color/statsColor"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:theme="@style/custom_underline" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/noOfTests"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/menu_button"
+            android:hint="Liczba zaliczeń"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toEndOf="@+id/noOfTasks"
+            app:layout_constraintTop_toBottomOf="@+id/noOfPassedSubjects"
+            app:layout_constraintVertical_bias="0.0">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/testNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="2"
+                android:textColor="@color/statsColor"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:theme="@style/custom_underline" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

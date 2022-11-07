@@ -2,6 +2,7 @@ package com.example.passit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -24,10 +25,13 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -205,6 +209,8 @@ public class AddResponsibility extends AppCompatActivity {
                     subjectTypeSpinner.getSelectedItem().toString(),
                     db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
                     respId);
+            checkResponsibilitiesDelay();
+
             returnToInfo();
 
         } else {
@@ -212,6 +218,29 @@ public class AddResponsibility extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void checkResponsibilitiesDelay() {
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d/MM/yyyy");
+            Date date1 = sdf.parse(datePickerButton.getText().toString());
+            Date date2 = sdf.parse(getTodaysDate());
+
+            assert date1 != null;
+            if (date1.before(date2)) {
+                db.profileDao().markDelayedResp(respId);
+            } else if (date1.equals(date2)) {
+                LocalTime hourDue = LocalTime.parse(timeButton.getText().toString());
+                LocalTime currentTime = LocalTime.parse(getCurrentTime());
+                if (currentTime.isAfter(hourDue)) {
+                    db.profileDao().markDelayedResp(respId);
+                }
+            } else {
+                db.profileDao().markUndelayedResp(respId);
+            }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void addDatabaseEntry() {

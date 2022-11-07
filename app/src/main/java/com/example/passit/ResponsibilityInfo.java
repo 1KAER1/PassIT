@@ -7,11 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.passit.db.entities.Responsibility;
-import com.example.passit.db.entities.Task;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -50,7 +47,7 @@ public class ResponsibilityInfo extends AppCompatActivity {
         respTypeTV = findViewById(R.id.respTypeET);
         assignedSubjectTV = findViewById(R.id.assignedSubjectET);
         dateTV = findViewById(R.id.dateDueET);
-        respDescriptionTV = findViewById(R.id.descriptionET);
+        respDescriptionTV = findViewById(R.id.noOfSubjectsTV);
         deleteBtn = findViewById(R.id.deleteBtn);
         editBtn = findViewById(R.id.editBtn);
         finishBtn = findViewById(R.id.markFinishedBtn);
