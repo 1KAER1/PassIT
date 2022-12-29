@@ -133,8 +133,7 @@ public class ResponsibilitiesView extends AppCompatActivity {
                         recyclerView.setAdapter(adapter);
                         break;
                     case 7:
-                        responsibilitiesList = db.profileDao().getNormal
-                    ImportanceResponsibilities();
+                        responsibilitiesList = db.profileDao().getNormalImportanceResponsibilities();
                         checkResponsibilitiesDelay();
                         adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
                         recyclerView.setAdapter(adapter);
