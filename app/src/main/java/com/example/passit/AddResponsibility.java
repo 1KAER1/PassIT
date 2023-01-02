@@ -1,13 +1,23 @@
 package com.example.passit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +47,8 @@ import java.util.Locale;
 
 public class AddResponsibility extends AppCompatActivity {
 
+    public static String NOTIFICATION_CHANNEL_ID = "777";
+    public static String default_notification_id = "default";
     private TextInputLayout respName, description;
     private TextInputEditText respNameET, descET;
     private TextView headlineTV;
@@ -191,11 +203,36 @@ public class AddResponsibility extends AppCompatActivity {
     public void addResponsibilityToDatabase() {
         if (checkInput()) {
             addDatabaseEntry();
+            String notificationText = "Dodano nowe zadanie \"" + respNameET.getText().toString() + "\"";
+            createNotification(getNotification(notificationText), 5000);
             returnToView();
         } else {
             Toast.makeText(this, "Uzupełnij wszystkie dane!",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void createNotification(Notification notification, int delay) {
+        Intent notificationIntent = new Intent(this, ReminderBroadcast.class);
+        notificationIntent.putExtra(ReminderBroadcast.NOTIFICATIONID, 1);
+        notificationIntent.putExtra(ReminderBroadcast.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        long futureMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureMillis, pendingIntent);
+    }
+
+    private Notification getNotification(String content) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_id);
+
+        builder.setContentTitle("Zobacz co Cię ominęło!");
+        builder.setContentTitle(content);
+        builder.setSmallIcon(R.drawable.ic_baseline_notes_24);
+        builder.setAutoCancel(true);
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+
+        return builder.build();
     }
 
     public void updateResponsibility() {
@@ -234,6 +271,8 @@ public class AddResponsibility extends AppCompatActivity {
                 LocalTime currentTime = LocalTime.parse(getCurrentTime());
                 if (currentTime.isAfter(hourDue)) {
                     db.profileDao().markDelayedResp(respId);
+                } else {
+                    db.profileDao().markUndelayedResp(respId);
                 }
             } else {
                 db.profileDao().markUndelayedResp(respId);
