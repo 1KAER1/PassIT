@@ -1,8 +1,12 @@
 package com.example.passit;
 
+import static com.example.passit.ReminderBroadcast.channelID;
+import static com.example.passit.ReminderBroadcast.notificationID;
+import static com.example.passit.ReminderBroadcast.notificationText;
+import static com.example.passit.ReminderBroadcast.notificationTitle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -15,15 +19,14 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -31,10 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Responsibility;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -88,6 +91,7 @@ public class AddResponsibility extends AppCompatActivity {
         }
 
         initDatePicker();
+        createNotificationChannel();
 
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
@@ -204,7 +208,7 @@ public class AddResponsibility extends AppCompatActivity {
         if (checkInput()) {
             addDatabaseEntry();
             String notificationText = "Dodano nowe zadanie \"" + respNameET.getText().toString() + "\"";
-            createNotification(getNotification(notificationText), 5000);
+            createNotification();
             returnToView();
         } else {
             Toast.makeText(this, "Uzupełnij wszystkie dane!",
@@ -212,27 +216,70 @@ public class AddResponsibility extends AppCompatActivity {
         }
     }
 
-    public void createNotification(Notification notification, int delay) {
-        Intent notificationIntent = new Intent(this, ReminderBroadcast.class);
-        notificationIntent.putExtra(ReminderBroadcast.NOTIFICATIONID, 1);
-        notificationIntent.putExtra(ReminderBroadcast.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
-        long futureMillis = SystemClock.elapsedRealtime() + delay;
+    public void createNotification() {
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+
+        String title = "Zbliża się termin oddania";
+        String message = "Ostateczny termin na oddanie " + respNameET.getText().toString() + ":\n";
+        intent.putExtra(notificationTitle, title);
+        intent.putExtra(notificationText, message);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getApplicationContext(),
+                notificationID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        assert alarmManager != null;
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureMillis, pendingIntent);
+        long time = getNotificationTime();
+
+        long diff = time - System.currentTimeMillis();
+
+        Log.d("myTag", "Czas podany: " + time
+                + " Czas teraz: " + System.currentTimeMillis()
+                + " Roznica: " + diff);
+
+        alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                time,
+                pendingIntent
+        );
     }
 
-    private Notification getNotification(String content) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_id);
+    private long getNotificationTime() {
+        String[] dateParts = datePickerButton.getText().toString().split("/");
+        int day = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+        int year = Integer.parseInt(dateParts[2]);
+        String[] time = timeButton.getText().toString().split(":");
+        int hour = Integer.parseInt(time[0].trim());
+        int minute = Integer.parseInt(time[1].trim());
 
-        builder.setContentTitle("Zobacz co Cię ominęło!");
-        builder.setContentTitle(content);
-        builder.setSmallIcon(R.drawable.ic_baseline_notes_24);
-        builder.setAutoCancel(true);
-        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
 
-        return builder.build();
+        Calendar calendar = Calendar.getInstance();
+        //calendar.set(year, month, day, hour, minute);
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        Log.d("myTag1", "DATA: " + calendar.get(Calendar.DAY_OF_MONTH) + calendar.get(Calendar.MONTH) + calendar.get(Calendar.YEAR) + calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE));
+        return calendar.getTimeInMillis();
+    }
+
+    private void createNotificationChannel() {
+        CharSequence name = "NotificationChannel";
+        String desc = "Notification Channel description";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(channelID, name, importance);
+        channel.setDescription(desc);
+
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     public void updateResponsibility() {
@@ -259,7 +306,7 @@ public class AddResponsibility extends AppCompatActivity {
 
     public void checkResponsibilitiesDelay() {
         try {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d/MM/yyyy");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
             Date date1 = sdf.parse(datePickerButton.getText().toString());
             Date date2 = sdf.parse(getTodaysDate());
 
@@ -371,13 +418,11 @@ public class AddResponsibility extends AppCompatActivity {
     }
 
     private void initDatePicker() {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
-                datePickerButton.setText(date);
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            month = month + 1;
+
+            String date = makeDateString(day, month, year);
+            datePickerButton.setText(date);
         };
 
         Calendar cal = Calendar.getInstance();
