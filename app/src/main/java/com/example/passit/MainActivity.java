@@ -1,17 +1,29 @@
 package com.example.passit;
 
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayChannelID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
+import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 import com.example.passit.rvadapters.ResponsibilitiesMainRVAdapter;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
@@ -63,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         passedTV = findViewById(R.id.passedTV);
         taskNo = findViewById(R.id.taskNo);
         testNo = findViewById(R.id.testNo);
+        createNotificationChannel();
 
         db = AppDatabase.getDbInstance(this);
 
@@ -79,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (responsibilitiesList != null) {
             checkResponsibilitiesDelay();
+            createNotification();
         }
 
         responsibilitiesDates = db.profileDao().getUndelayedResponsibilitiesDates();
@@ -130,17 +144,68 @@ public class MainActivity extends AppCompatActivity {
                 assert date1 != null;
                 if (date1.before(date2)) {
                     db.profileDao().markDelayedResp(resp.getResp_id());
+                    //TODO send notification about delayed responsibility
                 } else if (date1.equals(date2)) {
                     LocalTime hourDue = LocalTime.parse(resp.getHour_due());
                     LocalTime currentTime = LocalTime.parse(getCurrentTime());
                     if (currentTime.isAfter(hourDue)) {
                         db.profileDao().markDelayedResp(resp.getResp_id());
+                        //TODO send notification about delayed responsibility
                     }
                 }
             }
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void createNotification() {
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+
+        List<Responsibility> responsibilities = db.profileDao().getOverdueResponsibilities();
+
+        String title, message;
+        title = "Masz zaległości!";
+        message = "Masz " + responsibilities.size() + " zaległych zadań. Sprawdź je teraz!";
+        intent.putExtra(notificationTitle, title);
+        intent.putExtra(notificationText, message);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getApplicationContext(),
+                delayNotificationID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+
+        Toast.makeText(this, "Delayed Notifications",
+                Toast.LENGTH_SHORT).show();
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Log.d("myTag32", "Time: " + calendar.getTimeInMillis());
+        alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+        );
+    }
+
+    private void createNotificationChannel() {
+        CharSequence name = "Delayed Responsibilities";
+        String desc = "Used for reminding about delayed responsibilities";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(delayChannelID, name, importance);
+        channel.setDescription(desc);
+
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     private String getCurrentTime() {

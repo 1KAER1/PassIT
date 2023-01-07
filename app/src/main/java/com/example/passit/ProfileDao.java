@@ -286,6 +286,4 @@ public interface ProfileDao {
     List<LessonDate> getLessonDate(int lessonId);
 
 
-
-
 }

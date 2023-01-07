@@ -1,18 +1,17 @@
 package com.example.passit;
 
-import static com.example.passit.ReminderBroadcast.channelID;
-import static com.example.passit.ReminderBroadcast.notificationID;
-import static com.example.passit.ReminderBroadcast.notificationText;
-import static com.example.passit.ReminderBroadcast.notificationTitle;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.channelID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,13 +19,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -34,10 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Responsibility;
+import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -205,13 +202,14 @@ public class AddResponsibility extends AppCompatActivity {
     }
 
     public void addResponsibilityToDatabase() {
-        if (checkInput()) {
+        if (checkInput() && checkDate()) {
             addDatabaseEntry();
             String notificationText = "Dodano nowe zadanie \"" + respNameET.getText().toString() + "\"";
             createNotification();
+            createDelayNotification();
             returnToView();
         } else {
-            Toast.makeText(this, "Uzupełnij wszystkie dane!",
+            Toast.makeText(this, "Niepoprawne dane!",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -219,8 +217,18 @@ public class AddResponsibility extends AppCompatActivity {
     public void createNotification() {
         Intent intent = new Intent(this, ReminderBroadcast.class);
 
-        String title = "Zbliża się termin oddania";
-        String message = "Ostateczny termin na oddanie " + respNameET.getText().toString() + ":\n";
+        long time = getNotificationTime();
+        Log.d("myTag2", "Time time time: " + time);
+
+        String title, message;
+
+        if (time == 2) {
+            title = "Minął termin!";
+            message = "Minął termin na oddanie: \"" + respNameET.getText().toString() + "\":\nTermin na oddanie: " + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
+        } else {
+            title = "Zbliża się termin oddania";
+            message = "Ostateczny termin na oddanie \"" + respNameET.getText().toString() + "\":\n" + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
+        }
         intent.putExtra(notificationTitle, title);
         intent.putExtra(notificationText, message);
 
@@ -232,17 +240,51 @@ public class AddResponsibility extends AppCompatActivity {
         );
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        long time = getNotificationTime();
-
-        long diff = time - System.currentTimeMillis();
-
-        Log.d("myTag", "Czas podany: " + time
-                + " Czas teraz: " + System.currentTimeMillis()
-                + " Roznica: " + diff);
 
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 time,
+                pendingIntent
+        );
+    }
+
+    public void createDelayNotification() {
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+
+        String title, message;
+        title = "Minął termin!";
+        message = "Minął termin na oddanie: \"" + respNameET.getText().toString() + "\":\nTermin na oddanie: " + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
+        intent.putExtra(notificationTitle, title);
+        intent.putExtra(notificationText, message);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getApplicationContext(),
+                delayNotificationID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        String[] dateParts = datePickerButton.getText().toString().split("/");
+        int day = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+        int year = Integer.parseInt(dateParts[2]);
+        String[] time = timeButton.getText().toString().split(":");
+        int hour = Integer.parseInt(time[0].trim());
+        int minute = Integer.parseInt(time[1].trim());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour - 1);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
                 pendingIntent
         );
     }
@@ -256,24 +298,44 @@ public class AddResponsibility extends AppCompatActivity {
         int hour = Integer.parseInt(time[0].trim());
         int minute = Integer.parseInt(time[1].trim());
 
-
         Calendar calendar = Calendar.getInstance();
-        //calendar.set(year, month, day, hour, minute);
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
 
-        Log.d("myTag1", "DATA: " + calendar.get(Calendar.DAY_OF_MONTH) + calendar.get(Calendar.MONTH) + calendar.get(Calendar.YEAR) + calendar.get(Calendar.HOUR_OF_DAY) + calendar.get(Calendar.MINUTE));
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+            Date date1 = sdf.parse(datePickerButton.getText().toString());
+            Date date2 = sdf.parse(getTodaysDate());
+            LocalTime hourDue = LocalTime.parse(timeButton.getText().toString());
+            LocalTime currentTime = LocalTime.parse(getCurrentTime());
+
+            assert date1 != null;
+
+            if (date1.equals(date2) && hourDue.isBefore(currentTime)) {
+                return 2;
+            }
+
+            if (date1.equals(date2) && hourDue.isAfter(currentTime.minusHours(1)) && hourDue.isBefore(currentTime)) {
+                Toast.makeText(this, "HEH",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month - 1);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                calendar.set(Calendar.HOUR_OF_DAY, hour - 1);
+                calendar.set(Calendar.MINUTE, minute);
+                calendar.set(Calendar.SECOND, 0);
+            }
+            return calendar.getTimeInMillis();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+
         return calendar.getTimeInMillis();
     }
 
     private void createNotificationChannel() {
-        CharSequence name = "NotificationChannel";
-        String desc = "Notification Channel description";
+        CharSequence name = "Responsibilities to do";
+        String desc = "Used for reminding about responsibilities";
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         NotificationChannel channel = new NotificationChannel(channelID, name, importance);
         channel.setDescription(desc);
@@ -294,6 +356,8 @@ public class AddResponsibility extends AppCompatActivity {
                     db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
                     respId);
             checkResponsibilitiesDelay();
+            createNotification();
+            createDelayNotification();
 
             returnToInfo();
 
@@ -327,6 +391,29 @@ public class AddResponsibility extends AppCompatActivity {
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public Boolean checkDate() {
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+            Date date1 = sdf.parse(datePickerButton.getText().toString());
+            Date date2 = sdf.parse(getTodaysDate());
+
+            assert date1 != null;
+            if (date1.before(date2)) {
+                return false;
+            } else if (date1.equals(date2)) {
+                LocalTime hourDue = LocalTime.parse(timeButton.getText().toString());
+                LocalTime currentTime = LocalTime.parse(getCurrentTime());
+                return !currentTime.isAfter(hourDue);
+            } else {
+                return true;
+            }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        return false;
     }
 
     public void addDatabaseEntry() {

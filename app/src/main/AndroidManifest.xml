@@ -84,7 +84,7 @@
         </activity>
 
         <receiver
-            android:name=".ReminderBroadcast"
+            android:name=".notificationbrodcasts.ReminderBroadcast"
             android:enabled="true" />
     </application>
 
