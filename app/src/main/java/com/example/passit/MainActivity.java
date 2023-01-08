@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.notificationbrodcasts.ReminderBroadcast;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialAutoCompleteTextView noOfSubjectsTV, passedTV, taskNo, testNo;
     private TextView profileNameTV, userNameTV;
     private long pressedTime;
+    private String notificationType = "Daily";
     private AppDatabase db;
     private List<Profile> profilesList = new ArrayList<>();
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
@@ -85,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
             addNewUser();
         }
 
+        if (db.profileDao().getDailyNotification(notificationType) < 1) {
+            createDailyNotification();
+        }
+
         userNameTV.setText("Cześć " + db.profileDao().getUserName() + "!");
         profileNameTV.setText(db.profileDao().getActiveProfileName() + " semestr " + db.profileDao().getActiveProfileSemester());
 
@@ -92,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (responsibilitiesList != null) {
             checkResponsibilitiesDelay();
-            createNotification();
         }
 
         responsibilitiesDates = db.profileDao().getUndelayedResponsibilitiesDates();
@@ -144,13 +149,11 @@ public class MainActivity extends AppCompatActivity {
                 assert date1 != null;
                 if (date1.before(date2)) {
                     db.profileDao().markDelayedResp(resp.getResp_id());
-                    //TODO send notification about delayed responsibility
                 } else if (date1.equals(date2)) {
                     LocalTime hourDue = LocalTime.parse(resp.getHour_due());
                     LocalTime currentTime = LocalTime.parse(getCurrentTime());
                     if (currentTime.isAfter(hourDue)) {
                         db.profileDao().markDelayedResp(resp.getResp_id());
-                        //TODO send notification about delayed responsibility
                     }
                 }
             }
@@ -159,22 +162,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void createNotification() {
+    public void createDailyNotification() {
         Intent intent = new Intent(this, ReminderBroadcast.class);
 
-        List<Responsibility> responsibilities = db.profileDao().getOverdueResponsibilities();
-
         String title, message;
-        title = "Masz zaległości!";
-        message = "Masz " + responsibilities.size() + " zaległych zadań. Sprawdź je teraz!";
-        intent.putExtra(notificationTitle, title);
-        intent.putExtra(notificationText, message);
+        title = "Coś do dodania?";
+        message = "Dodaj nowe zadania lub notatki, żeby o nich nie zapomnieć!";
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+
+        addNotificationToDatabase(title, message, calendar.getTimeInMillis(), notificationType);
+
+        int notificationId = db.profileDao().getDailyNotification(notificationType);
+        intent.putExtra(String.valueOf(notificationId), notificationId);
+        intent.putExtra(notificationTitle, title);
+        intent.putExtra(notificationText, message);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 getApplicationContext(),
@@ -183,18 +189,24 @@ public class MainActivity extends AppCompatActivity {
                 PendingIntent.FLAG_IMMUTABLE
         );
 
-        Toast.makeText(this, "Delayed Notifications",
-                Toast.LENGTH_SHORT).show();
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Log.d("myTag32", "Time: " + calendar.getTimeInMillis());
         alarmManager.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY,
                 pendingIntent
         );
+    }
+
+    public void addNotificationToDatabase(String title, String message, long time, String notificationType) {
+        Notification notification = new Notification();
+        notification.notification_type = notificationType;
+        notification.notification_title = title;
+        notification.notification_text = message;
+        notification.time_to_trigger = time;
+        System.out.println("Last added ID: " + db.profileDao().getLastRespId());
+        db.profileDao().insertNotification(notification);
     }
 
     private void createNotificationChannel() {

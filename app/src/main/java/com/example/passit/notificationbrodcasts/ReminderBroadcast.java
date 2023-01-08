@@ -5,15 +5,19 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
 import com.example.passit.R;
 
+import java.util.Date;
+
 public class ReminderBroadcast extends BroadcastReceiver {
 
 
     public static int delayedRespID = 3;
+    public static int summary_id = 0;
 
     //1 HOUR BEFORE DEADLINE NOTIFICATION
     public static int notificationID = 1;
@@ -35,6 +39,8 @@ public class ReminderBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        int id = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+
         Notification builder = new NotificationCompat.Builder(context, channelID)
                 .setSmallIcon(R.drawable.ic_baseline_notes_24)
                 .setContentTitle(intent.getStringExtra(notificationTitle))
@@ -47,9 +53,8 @@ public class ReminderBroadcast extends BroadcastReceiver {
                 .setContentText(intent.getStringExtra(delayNotificationText))
                 .build();
 
-
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(notificationID, builder);
-        notificationManager.notify(delaysNotificationID, delayNotification);
+        notificationManager.notify(intent.getIntExtra(String.valueOf(notificationID), notificationID), builder);
+
     }
 }

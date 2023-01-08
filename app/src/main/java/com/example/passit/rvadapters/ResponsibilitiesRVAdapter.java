@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.passit.AddResponsibility;
 import com.example.passit.AppDatabase;
 import com.example.passit.R;
 import com.example.passit.ResponsibilityInfo;
@@ -116,12 +117,16 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                         holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
                     }
                     db.profileDao().setUnfinishedResponsibility(respId);
+
+                    //TODO ADD NOTIFICATIONS
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
                     holder.respName.setPaintFlags(holder.respName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.respName.setBackgroundResource(R.color.cardBackgroundFinished);
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
                     db.profileDao().setFinishedResponsibility(respId);
+
+                    //TODO CANCEL NOTIFICATIONS
                 }
             }
         });
@@ -129,6 +134,10 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int reminderId = db.profileDao().getNotificationId(respId, "Reminder");
+                int delayId = db.profileDao().getNotificationId(respId, "Delay");
+                db.profileDao().deleteNotificationById(reminderId);
+                db.profileDao().deleteNotificationById(delayId);
                 db.profileDao().deleteResponsibility(respId);
                 responsibilitiesList.remove(pos);
                 notifyItemRemoved(pos);

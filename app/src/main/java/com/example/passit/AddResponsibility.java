@@ -21,6 +21,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 import com.google.android.material.textfield.TextInputEditText;
@@ -91,8 +93,7 @@ public class AddResponsibility extends AppCompatActivity {
         }
 
         initDatePicker();
-        createNotificationChannel();
-        createDelayNotificationChannel();
+        createNotificationChannels();
 
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
@@ -208,9 +209,8 @@ public class AddResponsibility extends AppCompatActivity {
     public void addResponsibilityToDatabase() {
         if (checkInput() && checkDate()) {
             addDatabaseEntry();
-            String notificationText = "Dodano nowe zadanie \"" + respNameET.getText().toString() + "\"";
-            createNotification();
-            createDelayNotification();
+            createDelayNotification(db.profileDao().getLastRespId());
+            createNotification(db.profileDao().getLastRespId());
             returnToView();
         } else {
             Toast.makeText(this, "Niepoprawne dane!",
@@ -218,13 +218,13 @@ public class AddResponsibility extends AppCompatActivity {
         }
     }
 
-    public void createNotification() {
+    public void createNotification(int responsibilityId) {
         Intent intent = new Intent(this, ReminderBroadcast.class);
 
         long time = getNotificationTime();
+        String title, message, notificationType;
+        notificationType = "Reminder";
         Log.d("myTag2", "Time time time: " + time);
-
-        String title, message;
 
         if (time == 2) {
             title = "Minął termin!";
@@ -233,6 +233,11 @@ public class AddResponsibility extends AppCompatActivity {
             title = "Zbliża się termin oddania";
             message = "Ostateczny termin na oddanie \"" + respNameET.getText().toString() + "\":\n" + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
         }
+
+        addNotificationToDatabase(title, message, time, notificationType);
+        int notificationId = db.profileDao().getNotificationId(responsibilityId, notificationType);
+
+        intent.putExtra(String.valueOf(notificationID), notificationId);
         intent.putExtra(notificationTitle, title);
         intent.putExtra(notificationText, message);
 
@@ -252,23 +257,11 @@ public class AddResponsibility extends AppCompatActivity {
         );
     }
 
-    public void createDelayNotification() {
+    public void createDelayNotification(int responsibilityId) {
         Intent intent = new Intent(this, ReminderBroadcast.class);
 
-        String title, message;
-        title = "Minął termin!";
-        message = "Minął termin na oddanie: \"" + respNameET.getText().toString() + "\":\nTermin na oddanie: " + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
-        intent.putExtra(delayNotificationTitle, title);
-        intent.putExtra(delayNotificationText, message);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getApplicationContext(),
-                delayNotificationID,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
-        );
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        String title, message, notificationType;
+        notificationType = "Delay";
 
         String[] dateParts = datePickerButton.getText().toString().split("/");
         int day = Integer.parseInt(dateParts[0]);
@@ -286,11 +279,42 @@ public class AddResponsibility extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
+        title = "Minął termin!";
+        message = "Minął termin na oddanie: \"" + respNameET.getText().toString() + "\":\nTermin na oddanie: " + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
+
+        addNotificationToDatabase(title, message, calendar.getTimeInMillis(), notificationType);
+
+        int notificationId = db.profileDao().getNotificationId(responsibilityId, notificationType);
+        intent.putExtra(String.valueOf(notificationId), notificationId);
+        intent.putExtra(delayNotificationTitle, title);
+        intent.putExtra(delayNotificationText, message);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getApplicationContext(),
+                delayNotificationID,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
                 pendingIntent
         );
+    }
+
+    public void addNotificationToDatabase(String title, String message, long time, String notificationType) {
+        Notification notification = new Notification();
+        notification.notification_type = notificationType;
+        notification.notification_title = title;
+        notification.notification_text = message;
+        notification.time_to_trigger = time;
+        notification.resp_id = db.profileDao().getLastRespId();
+        System.out.println("Last added ID: " + db.profileDao().getLastRespId());
+        db.profileDao().insertNotification(notification);
     }
 
     private long getNotificationTime() {
@@ -319,8 +343,7 @@ public class AddResponsibility extends AppCompatActivity {
             }
 
             if (date1.equals(date2) && hourDue.isAfter(currentTime.minusHours(1)) && hourDue.isBefore(currentTime)) {
-                Toast.makeText(this, "HEH",
-                        Toast.LENGTH_SHORT).show();
+                calendar.setTimeInMillis(System.currentTimeMillis());
             } else {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month - 1);
@@ -337,26 +360,26 @@ public class AddResponsibility extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
-    private void createNotificationChannel() {
-        CharSequence name = "Responsibilities to do";
-        String desc = "Used for reminding about responsibilities";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(channelID, name, importance);
-        channel.setDescription(desc);
+    private void createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Responsibilities to do";
+            String desc = "Used for reminding about responsibilities";
 
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-    }
+            CharSequence name2 = "Zaległe obowiązki";
+            String desc2 = "Używane do powiadamiania o zaległych obowiązkach";
 
-    private void createDelayNotificationChannel() {
-        CharSequence name = "Zaległe obowiązki";
-        String desc = "Używane do powiadamiania o zaległyvh obowiązkach";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(delayChannelID, name, importance);
-        channel.setDescription(desc);
 
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelID, name, importance);
+            channel.setDescription(desc);
+
+            NotificationChannel channel2 = new NotificationChannel(delayChannelID, name2, importance);
+            channel2.setDescription(desc2);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(channel2);
+        }
     }
 
     public void updateResponsibility() {
@@ -370,12 +393,17 @@ public class AddResponsibility extends AppCompatActivity {
                     subjectTypeSpinner.getSelectedItem().toString(),
                     db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
                     respId);
+            int reminderId = db.profileDao().getNotificationId(respId, "Reminder");
+            int delayId = db.profileDao().getNotificationId(respId, "Delay");
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(reminderId);
+            notificationManager.cancel(delayId);
+            db.profileDao().deleteNotificationById(reminderId);
+            db.profileDao().deleteNotificationById(delayId);
             checkResponsibilitiesDelay();
-            createNotification();
-            createDelayNotification();
-
+            createNotification(respId);
+            createDelayNotification(respId);
             returnToInfo();
-
         } else {
             Toast.makeText(this, "Uzupełnij wszystkie dane!",
                     Toast.LENGTH_SHORT).show();

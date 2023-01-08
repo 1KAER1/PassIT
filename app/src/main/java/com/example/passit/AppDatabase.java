@@ -9,6 +9,7 @@ import androidx.room.RoomDatabase;
 import com.example.passit.db.entities.LessonDate;
 import com.example.passit.db.entities.Lesson;
 import com.example.passit.db.entities.Note;
+import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
@@ -26,7 +27,8 @@ import com.example.passit.db.entities.User;
                 User.class,
                 Task.class,
                 Test.class,
-                Note.class
+                Note.class,
+                Notification.class
         }, version = 1
 )
 public abstract class AppDatabase extends RoomDatabase {

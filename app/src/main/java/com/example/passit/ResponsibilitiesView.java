@@ -63,13 +63,7 @@ public class ResponsibilitiesView extends AppCompatActivity {
 
         db = AppDatabase.getDbInstance(this);
 
-        /*responsibilitiesList = db.profileDao().getAllResponsibilities();
-        checkResponsibilitiesDelay();*/
-
         subjectList = db.profileDao().getAllSubjects();
-
-        /*adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
-        recyclerView.setAdapter(adapter);*/
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.responsibilitiesSortArray, R.layout.custom_spinner_layout);
         arrayAdapter.setDropDownViewResource(R.layout.custom_dropdown_spinner_layout);
@@ -138,7 +132,6 @@ public class ResponsibilitiesView extends AppCompatActivity {
                         adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
                         recyclerView.setAdapter(adapter);
                         break;
-
                 }
             }
 

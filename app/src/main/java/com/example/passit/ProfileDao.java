@@ -9,6 +9,7 @@ import androidx.room.Transaction;
 import com.example.passit.db.entities.Lesson;
 import com.example.passit.db.entities.LessonDate;
 import com.example.passit.db.entities.Note;
+import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
@@ -186,9 +187,25 @@ public interface ProfileDao {
     @Query("SELECT * FROM Test WHERE importance = :importance")
     List<Test> getTestsWithImportance(String importance);
 
+    //NOTIFICATION
+    @Insert
+    void insertNotification(Notification... notifications);
+
+    @Query("SELECT notification_id FROM Notification WHERE resp_id = :respId AND notification_type = :notificationType")
+    int getNotificationId(int respId, String notificationType);
+
+    @Query("SELECT notification_id FROM Notification WHERE notification_type = :notificationType")
+    int getDailyNotification(String notificationType);
+
+    @Query("DELETE FROM Notification WHERE notification_id = :notificationId")
+    void deleteNotificationById(int notificationId);
+
     //RESPONSIBILITY
     @Insert
     void insertResponsibility(Responsibility... responsibilities);
+
+    @Query("SELECT * FROM Responsibility ORDER BY resp_id DESC LIMIT 1")
+    int getLastRespId();
 
     @Query("SELECT * FROM Responsibility")
     List<Responsibility> getAllResponsibilities();

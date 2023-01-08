@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a95d68aac06a59c24e632271df4e9dae",
+    "identityHash": "5419566c67f0e28d90ba92ffb92985a8",
     "entities": [
       {
         "tableName": "Lesson",
@@ -520,12 +520,62 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Notification",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`notification_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `notification_type` TEXT, `notification_title` TEXT, `notification_text` TEXT, `time_to_trigger` INTEGER NOT NULL, `resp_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "notification_id",
+            "columnName": "notification_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notification_type",
+            "columnName": "notification_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notification_title",
+            "columnName": "notification_title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notification_text",
+            "columnName": "notification_text",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "time_to_trigger",
+            "columnName": "time_to_trigger",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resp_id",
+            "columnName": "resp_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "notification_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a95d68aac06a59c24e632271df4e9dae')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5419566c67f0e28d90ba92ffb92985a8')"
     ]
   }
 }
