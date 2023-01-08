@@ -1,7 +1,10 @@
 package com.example.passit;
 
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.channelID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayChannelID;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationText;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationTitle;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationID;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
@@ -89,6 +92,7 @@ public class AddResponsibility extends AppCompatActivity {
 
         initDatePicker();
         createNotificationChannel();
+        createDelayNotificationChannel();
 
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
@@ -254,8 +258,8 @@ public class AddResponsibility extends AppCompatActivity {
         String title, message;
         title = "Minął termin!";
         message = "Minął termin na oddanie: \"" + respNameET.getText().toString() + "\":\nTermin na oddanie: " + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
-        intent.putExtra(notificationTitle, title);
-        intent.putExtra(notificationText, message);
+        intent.putExtra(delayNotificationTitle, title);
+        intent.putExtra(delayNotificationText, message);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 getApplicationContext(),
@@ -278,7 +282,7 @@ public class AddResponsibility extends AppCompatActivity {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.HOUR_OF_DAY, hour - 1);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
@@ -338,6 +342,17 @@ public class AddResponsibility extends AppCompatActivity {
         String desc = "Used for reminding about responsibilities";
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         NotificationChannel channel = new NotificationChannel(channelID, name, importance);
+        channel.setDescription(desc);
+
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+
+    private void createDelayNotificationChannel() {
+        CharSequence name = "Zaległe obowiązki";
+        String desc = "Używane do powiadamiania o zaległyvh obowiązkach";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(delayChannelID, name, importance);
         channel.setDescription(desc);
 
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
