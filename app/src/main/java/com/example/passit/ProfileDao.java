@@ -194,6 +194,9 @@ public interface ProfileDao {
     @Query("SELECT notification_id FROM Notification WHERE resp_id = :respId AND notification_type = :notificationType")
     int getNotificationId(int respId, String notificationType);
 
+    @Query("SELECT * FROM Notification WHERE notification_id = :notificationId")
+    List<Notification> getNotificationById(int notificationId);
+
     @Query("SELECT notification_id FROM Notification WHERE notification_type = :notificationType")
     int getDailyNotification(String notificationType);
 

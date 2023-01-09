@@ -234,7 +234,7 @@ public class AddResponsibility extends AppCompatActivity {
             message = "Ostateczny termin na oddanie \"" + respNameET.getText().toString() + "\":\n" + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
         }
 
-        addNotificationToDatabase(title, message, time, notificationType);
+        addNotificationToDatabase(title, message, time, notificationType, responsibilityId);
         int notificationId = db.profileDao().getNotificationId(responsibilityId, notificationType);
 
         intent.putExtra(String.valueOf(notificationID), notificationId);
@@ -282,7 +282,7 @@ public class AddResponsibility extends AppCompatActivity {
         title = "Minął termin!";
         message = "Minął termin na oddanie: \"" + respNameET.getText().toString() + "\":\nTermin na oddanie: " + datePickerButton.getText().toString() + ", " + timeButton.getText().toString();
 
-        addNotificationToDatabase(title, message, calendar.getTimeInMillis(), notificationType);
+        addNotificationToDatabase(title, message, calendar.getTimeInMillis(), notificationType, responsibilityId);
 
         int notificationId = db.profileDao().getNotificationId(responsibilityId, notificationType);
         intent.putExtra(String.valueOf(notificationId), notificationId);
@@ -306,14 +306,14 @@ public class AddResponsibility extends AppCompatActivity {
         );
     }
 
-    public void addNotificationToDatabase(String title, String message, long time, String notificationType) {
+    public void addNotificationToDatabase(String title, String message, long time, String notificationType, int notificationRespId) {
         Notification notification = new Notification();
         notification.notification_type = notificationType;
         notification.notification_title = title;
         notification.notification_text = message;
         notification.time_to_trigger = time;
-        notification.resp_id = db.profileDao().getLastRespId();
-        System.out.println("Last added ID: " + db.profileDao().getLastRespId());
+        notification.resp_id = notificationRespId;
+        Log.d("MyTag77", "Title: " + title + " message: " + message + " TIME: " + time + "NOTIFICATION TYPE: " + notificationType + " RESP ID: " + notificationRespId);
         db.profileDao().insertNotification(notification);
     }
 

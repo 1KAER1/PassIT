@@ -78,7 +78,7 @@ public class ResponsibilitiesView extends AppCompatActivity {
 
                 switch (position) {
                     case 0:
-                        responsibilitiesList = db.profileDao().getAllUnfinishedResponsibilities();
+                        responsibilitiesList = db.profileDao().getAllResponsibilities();
                         checkResponsibilitiesDelay();
                         adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
                         recyclerView.setAdapter(adapter);
