@@ -52,7 +52,7 @@ public class NotificationSender {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
-                delayNotificationID,
+                notificationId,
                 intent,
                 PendingIntent.FLAG_IMMUTABLE
         );

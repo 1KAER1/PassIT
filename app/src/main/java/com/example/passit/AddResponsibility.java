@@ -243,7 +243,8 @@ public class AddResponsibility extends AppCompatActivity {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 getApplicationContext(),
-                notificationID,
+                //notificationID,
+                notificationId,
                 intent,
                 PendingIntent.FLAG_IMMUTABLE
         );
@@ -291,7 +292,8 @@ public class AddResponsibility extends AppCompatActivity {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 getApplicationContext(),
-                delayNotificationID,
+                //delayNotificationID,
+                notificationId,
                 intent,
                 PendingIntent.FLAG_IMMUTABLE
         );

@@ -1,7 +1,9 @@
 package com.example.passit.rvadapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -25,6 +27,7 @@ import com.example.passit.R;
 import com.example.passit.ResponsibilityInfo;
 import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
+import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 
 import java.util.List;
 
@@ -36,6 +39,7 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
     private AppDatabase db;
     private NotificationSender notificationSender;
     private NotificationManager notificationManager;
+    private AlarmManager alarmManager;
     private int reminderId, delayId;
 
     public ResponsibilitiesRVAdapter(List<Responsibility> responsibilitiesList) {
@@ -57,8 +61,12 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
         int pos = holder.getAdapterPosition();
         int respId = responsibilitiesList.get(pos).getResp_id();
         notificationManager = (NotificationManager) holder.respName.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        alarmManager = (AlarmManager) holder.respName.getContext().getSystemService(Context.ALARM_SERVICE);
+
         reminderId = db.profileDao().getNotificationId(respId, "Reminder");
         delayId = db.profileDao().getNotificationId(respId, "Delay");
+        Intent intent = new Intent(holder.respName.getContext(), ReminderBroadcast.class);
+
         Log.d("NOT", "NOTIFICATION IDS: " + reminderId + "     DELAY: " + delayId);
         reminderNotification = db.profileDao().getNotificationById(reminderId);
         delayNotification = db.profileDao().getNotificationById(delayId);
@@ -149,6 +157,13 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                     db.profileDao().setFinishedResponsibility(respId);
                     //TODO CANCEL NOTIFICATIONS
                     Log.d("NOT1", "NOTIFICATION IDS: " + reminderId + "     DELAY: " + delayId);
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(holder.respName.getContext(), reminderId, intent, PendingIntent.FLAG_IMMUTABLE);
+                    PendingIntent pendingIntent2 = PendingIntent.getBroadcast(holder.respName.getContext(), delayId, intent, PendingIntent.FLAG_IMMUTABLE);
+                    alarmManager.cancel(pendingIntent);
+                    alarmManager.cancel(pendingIntent2);
+                    pendingIntent.cancel();
+                    pendingIntent2.cancel();
                     notificationManager.cancel(reminderId);
                     notificationManager.cancel(delayId);
                 }
@@ -158,6 +173,12 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(holder.respName.getContext(), reminderId, intent, PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(holder.respName.getContext(), delayId, intent, PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+                alarmManager.cancel(pendingIntent2);
+                pendingIntent.cancel();
+                pendingIntent2.cancel();
                 notificationManager.cancel(reminderId);
                 notificationManager.cancel(delayId);
                 db.profileDao().deleteNotificationById(reminderId);
@@ -170,11 +191,11 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
         });
 
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), ResponsibilityInfo.class);
+            Intent intent2 = new Intent(view.getContext(), ResponsibilityInfo.class);
             Bundle bundle = new Bundle();
             bundle.putInt("respId", respId);
             intent.putExtras(bundle);
-            view.getContext().startActivity(intent);
+            view.getContext().startActivity(intent2);
         });
     }
 
