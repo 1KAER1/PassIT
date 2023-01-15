@@ -10,39 +10,38 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background">
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-        <TextView
-            android:id="@+id/headlineTV"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ectsPointsTV1"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Dodaj nowy przedmiot"
-            android:textColor="@color/textColor"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <EditText
-            android:id="@+id/ectsPointsTV"
-            android:layout_width="300dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="ECTS"
-            android:inputType="textPersonName"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/textColor"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/custom_textview"
+            android:hint="Liczba punktów ECTS za przedmiot"
             android:textColorHint="@color/hintColor"
+            app:counterEnabled="true"
+            app:counterMaxLength="2"
+            app:counterTextColor="@color/hintColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constLay" />
+            app:layout_constraintTop_toBottomOf="@+id/constLay">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ectsPointsTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <RadioGroup
             android:id="@+id/importanceRadioGroup"
@@ -93,7 +92,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.057"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ectsPointsTV" />
+            app:layout_constraintTop_toBottomOf="@+id/ectsPointsTV1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constLay"
@@ -107,7 +106,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/noteTitle">
+            app:layout_constraintTop_toBottomOf="@+id/noteTitle1">
 
             <CheckBox
                 android:id="@+id/exerciseCB"
@@ -188,23 +187,33 @@
             app:layout_constraintTop_toBottomOf="@+id/importanceRadioGroup"
             app:layout_constraintVertical_bias="1.0" />
 
-        <EditText
-            android:id="@+id/noteTitle"
-            android:layout_width="300dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="36dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/noteTitle1"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/custom_textview"
             android:hint="Nazwa przedmiotu"
-            android:inputType="textPersonName"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/textColor"
             android:textColorHint="@color/hintColor"
+            app:counterEnabled="true"
+            app:counterMaxLength="60"
+            app:counterTextColor="@color/hintColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headlineTV" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/noteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="60"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

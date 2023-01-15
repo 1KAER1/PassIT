@@ -17,6 +17,7 @@
         <entry key="..\:/PassIT/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.4255" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/ic_baseline_menu_book_24.xml" value="0.4255" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/ic_baseline_notes_24.xml" value="0.2445" />
+        <entry key="..\:/PassIT/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.433" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/ic_calendar.xml" value="0.54" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/ic_check_24.xml" value="0.3155" />
         <entry key="..\:/PassIT/app/src/main/res/drawable/ic_clear_24.xml" value="0.2445" />
@@ -95,6 +96,7 @@
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_summary_row.xml" value="0.5489583333333333" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_task_row.xml" value="0.2775229357798165" />
         <entry key="..\:/PassIT/app/src/main/res/layout/recyclerview_test_row.xml" value="0.33" />
+        <entry key="..\:/PassIT/app/src/main/res/menu/main_menu.xml" value="0.4523300555793074" />
       </map>
     </option>
   </component>

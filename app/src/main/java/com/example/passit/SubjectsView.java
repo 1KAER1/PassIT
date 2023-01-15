@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -20,7 +24,6 @@ import java.util.List;
 public class SubjectsView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private EditText searchBar;
     private FloatingActionButton addNewSubject;
     private RadioButton normalImportance, mediumImportance, highImportance;
     private SubjectsViewRVAdapter adapter;
@@ -33,8 +36,9 @@ public class SubjectsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subjects_view);
 
+        setTitle("Przedmioty");
+
         recyclerView = findViewById(R.id.subjectsRV);
-        searchBar = findViewById(R.id.searchBar);
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
@@ -49,6 +53,34 @@ public class SubjectsView extends AppCompatActivity {
 
         addNewSubject.setOnClickListener(view -> addNewSubject());
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
     }
 
     @Override

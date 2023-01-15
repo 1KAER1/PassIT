@@ -2,12 +2,15 @@ package com.example.passit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -22,15 +25,23 @@ public class ResponsibilityInfo extends AppCompatActivity {
     private MaterialAutoCompleteTextView respNameTV, respTypeTV, dateTV, respDescriptionTV, assignedSubjectTV;
     private TextInputLayout dateDueTIL;
     private AppDatabase db;
+    private NotificationSender notificationSender;
     private ImageView importanceCircle;
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
+    private List<Notification> reminderNotification = new ArrayList<>();
+    private List<Notification> delayNotification = new ArrayList<>();
     private Button deleteBtn, editBtn, finishBtn, returnBtn;
     private boolean editedDate = false;
+    private int reminderId, delayId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_responsibility_info);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -42,6 +53,8 @@ public class ResponsibilityInfo extends AppCompatActivity {
                 fromMenu = true;
             }
         }
+
+        notificationSender = new NotificationSender(this);
 
         respNameTV = findViewById(R.id.respNameET);
         respTypeTV = findViewById(R.id.respTypeET);
@@ -56,8 +69,12 @@ public class ResponsibilityInfo extends AppCompatActivity {
         dateDueTIL = findViewById(R.id.dateDueId);
 
         db = AppDatabase.getDbInstance(this);
+        reminderId = db.profileDao().getNotificationId(respId, "Reminder");
+        delayId = db.profileDao().getNotificationId(respId, "Delay");
 
         responsibilitiesList = db.profileDao().getResponsibilityWithId(respId);
+        reminderNotification = db.profileDao().getNotificationById(reminderId);
+        delayNotification = db.profileDao().getNotificationById(delayId);
 
         if (db.profileDao().getResponsibilityState(respId)) {
             finishBtn.setBackgroundResource(R.drawable.finish_button);
@@ -65,56 +82,73 @@ public class ResponsibilityInfo extends AppCompatActivity {
             finishBtn.setBackgroundResource(R.drawable.unfinished_button);
         }
 
-        fillInfo();
+        if (responsibilitiesList.size() > 0) {
+            fillInfo();
+        }
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        deleteBtn.setOnClickListener(view -> {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+            builder.setTitle("Usuń zadanie");
+            builder.setMessage("Czy na pewno chcesz usunąć " + responsibilitiesList.get(0).getResp_name() + "?");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Tak", (DialogInterface.OnClickListener) (dialog, which) -> {
+                notificationSender.cancelNotification(reminderId);
+                notificationSender.cancelNotification(delayId);
+                db.profileDao().deleteNotificationById(reminderId);
+                db.profileDao().deleteNotificationById(delayId);
                 db.profileDao().deleteResponsibility(respId);
+                dialog.dismiss();
                 returnToView();
+            });
+
+            builder.setNegativeButton("Nie", (DialogInterface.OnClickListener) (dialog, which) -> {
+                dialog.cancel();
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        });
+
+        finishBtn.setOnClickListener(view -> {
+
+            if (db.profileDao().getResponsibilityState(respId)) {
+                finishBtn.setBackgroundResource(R.drawable.unfinished_button);
+                db.profileDao().setUnfinishedResponsibility(respId);
+                notificationSender.sendNotification(reminderNotification.get(0).getTime_to_trigger(), reminderNotification.get(0).getResp_id(), reminderNotification.get(0).getNotification_type());
+                notificationSender.sendNotification(delayNotification.get(0).getTime_to_trigger(), delayNotification.get(0).getResp_id(), delayNotification.get(0).getNotification_type());
+                db.profileDao().deleteNotificationById(reminderId);
+                db.profileDao().deleteNotificationById(delayId);
+                reminderId = db.profileDao().getNotificationId(respId, "Reminder");
+                delayId = db.profileDao().getNotificationId(respId, "Delay");
+            } else {
+                finishBtn.setBackgroundResource(R.drawable.finish_button);
+                db.profileDao().setFinishedResponsibility(respId);
+                notificationSender.cancelNotification(reminderId);
+                notificationSender.cancelNotification(delayId);
             }
         });
 
-        finishBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (db.profileDao().getResponsibilityState(respId)) {
-                    finishBtn.setBackgroundResource(R.drawable.unfinished_button);
-                    db.profileDao().setUnfinishedResponsibility(respId);
-                } else {
-                    finishBtn.setBackgroundResource(R.drawable.finish_button);
-                    db.profileDao().setFinishedResponsibility(respId);
-                }
+        editBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), AddResponsibility.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("respId", respId);
+            if (fromCalendar) {
+                bundle.putString("calendar", "isCalendar");
+            } else if (fromMenu) {
+                bundle.putString("menu", "isMenu");
             }
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddResponsibility.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("respId", respId);
-                if (fromCalendar) {
-                    bundle.putString("calendar", "isCalendar");
-                } else if(fromMenu){
-                    bundle.putString("menu", "isMenu");
-                }
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-
-        returnBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (fromCalendar) {
-                    returnToCalendar();
-                } else if (fromMenu) {
-                    returnToMenu();
-                } else {
-                    returnToView();
-                }
+        returnBtn.setOnClickListener(view -> {
+            if (fromCalendar) {
+                returnToCalendar();
+            } else if (fromMenu) {
+                returnToMenu();
+            } else {
+                returnToView();
             }
         });
 

@@ -39,37 +39,13 @@
             android:name=".CalendarActivity"
             android:exported="false" />
         <activity
-            android:name=".TaskInfo"
-            android:exported="false" />
-        <activity
-            android:name=".TestInfo"
-            android:exported="false" />
-        <activity
             android:name=".SubjectDetails"
             android:exported="false" />
         <activity
             android:name=".AddNewProfile"
             android:exported="false" />
         <activity
-            android:name=".TestsView"
-            android:exported="false" />
-        <activity
-            android:name=".AddTest"
-            android:exported="false" />
-        <activity
-            android:name=".AddTask"
-            android:exported="false" />
-        <activity
-            android:name=".TasksView"
-            android:exported="false" />
-        <activity
             android:name=".SubjectsView"
-            android:exported="false" />
-        <activity
-            android:name=".SubjectInformation"
-            android:exported="false" />
-        <activity
-            android:name=".AddClass"
             android:exported="false" />
         <activity
             android:name=".AddSubject"

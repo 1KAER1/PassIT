@@ -3,7 +3,7 @@
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="@color/selectedResponsibility" />
+            <solid android:color="#26A69A" />
             <padding
                 android:bottom="4dp"
                 android:left="4dp"
@@ -14,7 +14,7 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="#38385E" />
+            <solid android:color="#2A716B" />
             <padding
                 android:bottom="4dp"
                 android:left="4dp"

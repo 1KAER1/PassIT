@@ -15,10 +15,10 @@
     <color name="textColorDarken">#9C9C9C</color>
     <color name="lightPurple">#9585AC</color>
     <color name="normalImportance">#66BB6A</color>
-    <color name="mediumImportance">#FFCA28</color>
+    <color name="mediumImportance">#FFA726</color>
     <color name="highImportance">#EF5350</color>
-    <color name="statsColor">#B032FF</color>
-    <color name="underlineColor">#9F32FF</color>
+    <color name="statsColor">#26A69A</color>
+    <color name="underlineColor">#26A69A</color>
     <color name="normalImportanceSelected">#116107</color>
     <color name="mediumImportanceSelected">#75670B</color>
     <color name="highImportanceSelected">#670909</color>

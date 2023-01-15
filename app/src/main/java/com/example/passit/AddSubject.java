@@ -2,10 +2,12 @@ package com.example.passit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Subject;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +26,7 @@ public class AddSubject extends AppCompatActivity {
     private int subjectId;
     private boolean isEdit = false;
     private Button nextButton;
-    private EditText subjectName, ectsPointsET;
-    private TextView headlineTV;
+    private TextInputEditText subjectName, ectsPointsET;
     private CheckBox lectureCB, exerciseCB, labCB;
     private RadioButton normalImportance, mediumImportance, highImportance;
     private List<Subject> subjectList = new ArrayList<>();
@@ -35,6 +37,8 @@ public class AddSubject extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_subject);
+
+        setTitle("Dodaj nowy przedmiot");
 
         db = AppDatabase.getDbInstance(this);
 
@@ -54,10 +58,27 @@ public class AddSubject extends AppCompatActivity {
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
-        headlineTV = findViewById(R.id.headlineTV);
+
+        subjectName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        ectsPointsET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         if (isEdit) {
-            headlineTV.setText("Edytuj przedmiot");
+            setTitle("Edytuj przedmiot");
             subjectName.setText(subjectList.get(0).getSubject_name());
             ectsPointsET.setText(String.valueOf(subjectList.get(0).getEcts_points()));
             nextButton.setText("ZAKTUALIZUJ");
@@ -113,6 +134,11 @@ public class AddSubject extends AppCompatActivity {
         });
     }
 
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     public void returnToSubjects() {
 
         Intent intent = new Intent(this, SubjectsView.class);
@@ -148,12 +174,7 @@ public class AddSubject extends AppCompatActivity {
         subject.importance = importance;
         subject.profile_id = db.profileDao().getActiveProfile();
         db.profileDao().insertSubject(subject);
-
-        Toast.makeText(getApplicationContext(), "Dodano do bazy",
-                Toast.LENGTH_LONG).show();
-
         finish();
-
     }
 
     public void updateSubject() {

@@ -37,6 +37,8 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_activity);
 
+        setTitle("Kalendarz");
+
         db = AppDatabase.getDbInstance(this);
 
         calendar = findViewById(R.id.calendarID);

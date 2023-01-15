@@ -5,6 +5,7 @@ import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNo
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationTitle;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -65,6 +66,17 @@ public class NotificationSender {
                 time,
                 pendingIntent
         );
+    }
+
+    public void cancelNotification(int notificationId) {
+        Intent intent = new Intent(context, ReminderBroadcast.class);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, intent, PendingIntent.FLAG_IMMUTABLE);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+        notificationManager.cancel(notificationId);
     }
 
     public void addNotificationToDatabase(String title, String message, long time, String notificationType, int notificationRespId, AppDatabase db) {

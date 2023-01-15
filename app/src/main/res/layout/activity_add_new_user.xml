@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     tools:context=".AddNewProfile">
 
     <TextView
@@ -29,8 +31,11 @@
         android:layout_marginTop="48dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/custom_textview"
-        android:hint="Twoje imię lub pseudonim"
+        android:hint="Twoje imię"
         android:textColorHint="@color/hintColor"
+        app:counterEnabled="true"
+        app:counterMaxLength="25"
+        app:counterTextColor="@color/hintColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

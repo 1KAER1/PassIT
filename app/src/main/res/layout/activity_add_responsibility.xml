@@ -23,9 +23,11 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/custom_textview"
             android:hint="Nazwa zadania"
             android:textColorHint="@color/hintColor"
+            app:counterEnabled="true"
+            app:counterMaxLength="60"
+            app:counterTextColor="@color/hintColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +37,7 @@
                 android:id="@+id/respName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="60"
                 android:textAlignment="center"
                 android:textColor="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -47,10 +50,10 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="35dp"
-            android:padding="10dp"
             android:background="@android:color/transparent"
             android:ems="10"
             android:minHeight="48dp"
+            android:padding="10dp"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -70,7 +73,7 @@
 
             <RadioButton
                 android:id="@+id/taskRB"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/radio_responsibility_selector"
@@ -83,14 +86,14 @@
 
             <RadioButton
                 android:id="@+id/testRB"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/radio_responsibility_selector"
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="TEST"
+                android:text="ZALICZENIE"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -103,10 +106,10 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="35dp"
-            android:padding="10dp"
             android:background="@android:color/transparent"
             android:ems="10"
             android:minHeight="48dp"
+            android:padding="10dp"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -226,6 +229,9 @@
             android:background="@drawable/custom_textview"
             android:hint="Opis"
             android:textColorHint="@color/hintColor"
+            app:counterEnabled="true"
+            app:counterMaxLength="1000"
+            app:counterTextColor="@color/hintColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/importanceRadioGroup">
@@ -234,6 +240,7 @@
                 android:id="@+id/respDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="1000"
                 android:textColor="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
 

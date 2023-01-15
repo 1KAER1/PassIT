@@ -2,9 +2,11 @@ package com.example.passit.rvadapters;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,11 +33,14 @@ import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<ResponsibilitiesRVAdapter.ViewHolder> {
+public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<ResponsibilitiesRVAdapter.ViewHolder> implements Filterable {
 
     private final List<Responsibility> responsibilitiesList;
+    private final List<Responsibility> responsibilitiesListFull;
     private List<Notification> reminderNotification;
     private List<Notification> delayNotification;
     private AppDatabase db;
@@ -44,6 +51,7 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
 
     public ResponsibilitiesRVAdapter(List<Responsibility> responsibilitiesList) {
         this.responsibilitiesList = responsibilitiesList;
+        responsibilitiesListFull = new ArrayList<>(responsibilitiesList);
     }
 
     @NonNull
@@ -67,7 +75,6 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
         delayId = db.profileDao().getNotificationId(respId, "Delay");
         Intent intent = new Intent(holder.respName.getContext(), ReminderBroadcast.class);
 
-        Log.d("NOT", "NOTIFICATION IDS: " + reminderId + "     DELAY: " + delayId);
         reminderNotification = db.profileDao().getNotificationById(reminderId);
         delayNotification = db.profileDao().getNotificationById(delayId);
 
@@ -141,7 +148,6 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                         holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
                     }
                     db.profileDao().setUnfinishedResponsibility(respId);
-                    //TODO ADD NOTIFICATIONS
 
                     notificationSender.sendNotification(reminderNotification.get(0).getTime_to_trigger(), reminderNotification.get(0).getResp_id(), reminderNotification.get(0).getNotification_type());
                     notificationSender.sendNotification(delayNotification.get(0).getTime_to_trigger(), delayNotification.get(0).getResp_id(), delayNotification.get(0).getNotification_type());
@@ -155,17 +161,10 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                     holder.respName.setBackgroundResource(R.color.cardBackgroundFinished);
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
                     db.profileDao().setFinishedResponsibility(respId);
-                    //TODO CANCEL NOTIFICATIONS
-                    Log.d("NOT1", "NOTIFICATION IDS: " + reminderId + "     DELAY: " + delayId);
 
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(holder.respName.getContext(), reminderId, intent, PendingIntent.FLAG_IMMUTABLE);
-                    PendingIntent pendingIntent2 = PendingIntent.getBroadcast(holder.respName.getContext(), delayId, intent, PendingIntent.FLAG_IMMUTABLE);
-                    alarmManager.cancel(pendingIntent);
-                    alarmManager.cancel(pendingIntent2);
-                    pendingIntent.cancel();
-                    pendingIntent2.cancel();
-                    notificationManager.cancel(reminderId);
-                    notificationManager.cancel(delayId);
+                    //CANCEL NOTIFICATION
+                    notificationSender.cancelNotification(reminderId);
+                    notificationSender.cancelNotification(delayId);
                 }
             }
         });
@@ -173,20 +172,39 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(holder.respName.getContext(), reminderId, intent, PendingIntent.FLAG_IMMUTABLE);
-                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(holder.respName.getContext(), delayId, intent, PendingIntent.FLAG_IMMUTABLE);
-                alarmManager.cancel(pendingIntent);
-                alarmManager.cancel(pendingIntent2);
-                pendingIntent.cancel();
-                pendingIntent2.cancel();
-                notificationManager.cancel(reminderId);
-                notificationManager.cancel(delayId);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.respName.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                builder.setTitle("Usuń zadanie");
+                builder.setMessage("Czy na pewno chcesz usunąć " + responsibilitiesList.get(pos).getResp_name() + "?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Tak", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    notificationSender.cancelNotification(reminderId);
+                    notificationSender.cancelNotification(delayId);
+                    db.profileDao().deleteNotificationById(reminderId);
+                    db.profileDao().deleteNotificationById(delayId);
+                    db.profileDao().deleteResponsibility(respId);
+                    responsibilitiesList.remove(pos);
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, responsibilitiesList.size());
+                    dialog.dismiss();
+                });
+
+                builder.setNegativeButton("Nie", (DialogInterface.OnClickListener) (dialog, which) -> {
+
+                    dialog.cancel();
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                /*notificationSender.cancelNotification(reminderId);
+                notificationSender.cancelNotification(delayId);
                 db.profileDao().deleteNotificationById(reminderId);
                 db.profileDao().deleteNotificationById(delayId);
                 db.profileDao().deleteResponsibility(respId);
                 responsibilitiesList.remove(pos);
                 notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, responsibilitiesList.size());
+                notifyItemRangeChanged(pos, responsibilitiesList.size());*/
             }
         });
 
@@ -194,7 +212,7 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
             Intent intent2 = new Intent(view.getContext(), ResponsibilityInfo.class);
             Bundle bundle = new Bundle();
             bundle.putInt("respId", respId);
-            intent.putExtras(bundle);
+            intent2.putExtras(bundle);
             view.getContext().startActivity(intent2);
         });
     }
@@ -203,6 +221,41 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
     public int getItemCount() {
         return responsibilitiesList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return respFilter;
+    }
+
+    private Filter respFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Responsibility> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(responsibilitiesListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for (Responsibility responsibility : responsibilitiesListFull) {
+                    if (responsibility.getResp_name().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(responsibility);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults results) {
+            responsibilitiesList.clear();
+            responsibilitiesList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView respName, progressTV;

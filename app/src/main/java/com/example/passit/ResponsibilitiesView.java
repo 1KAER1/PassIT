@@ -6,20 +6,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
-import com.example.passit.db.entities.Task;
 import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;
-import com.example.passit.rvadapters.TasksViewRVAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
@@ -37,7 +38,7 @@ import java.util.Objects;
 public class ResponsibilitiesView extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private EditText searchBar;
+    private SearchView searchBar;
     private FloatingActionButton addNewBtn;
     private Spinner sortSpinner;
     private RadioButton normalImportance, mediumImportance, highImportance;
@@ -48,17 +49,19 @@ public class ResponsibilitiesView extends AppCompatActivity {
     @SuppressLint("SimpleDateFormat")
     final DateFormat format = new SimpleDateFormat("d/MM/yyyy");
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_responsibilities_view);
+
+        setTitle("Obowiązki");
 
         addNewBtn = findViewById(R.id.addNewBtn);
         recyclerView = findViewById(R.id.responsibilitiesRV);
         normalImportance = findViewById(R.id.normalImportance);
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
-        searchBar = findViewById(R.id.searchBar);
         sortSpinner = findViewById(R.id.sortSpinner);
 
         db = AppDatabase.getDbInstance(this);
@@ -150,6 +153,34 @@ public class ResponsibilitiesView extends AppCompatActivity {
                 openAddNewTask();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
     }
 
     public void sortRespDates(List<Responsibility> responsibilityLisT) {

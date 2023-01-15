@@ -2,10 +2,10 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="@color/selectedResponsibility" />
+    <solid android:color="#26A69A" />
     <corners android:radius="5dp" />
     <stroke
         android:width="5px"
-        android:color="@color/selectedResponsibility" />
+        android:color="#26A69A" />
 
 </shape>

@@ -1,23 +1,18 @@
 package com.example.passit;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.passit.db.entities.Lesson;
-import com.example.passit.db.entities.LessonDate;
+import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
-import com.example.passit.rvadapters.ExerciseInfoRVAdapter;
-import com.example.passit.rvadapters.LabInfoRVAdapter;
-import com.example.passit.rvadapters.LectureInfoRVAdapter;
-import com.example.passit.rvadapters.SummaryRVAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +31,10 @@ public class SubjectDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_details);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             subjectId = extras.getInt("subjectId");
@@ -53,9 +52,6 @@ public class SubjectDetails extends AppCompatActivity {
         returnBtn = findViewById(R.id.returnBtn);
 
         db = AppDatabase.getDbInstance(this);
-
-        Toast.makeText(this, "Przesłane id przedmiotu: " + subjectId,
-                Toast.LENGTH_SHORT).show();
 
         subjectsList = db.profileDao().getSubjectWithId(subjectId);
 
@@ -95,8 +91,36 @@ public class SubjectDetails extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.profileDao().deleteSubject(subjectId);
-                returnToView();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                builder.setTitle("Usuń przedmiot");
+                builder.setMessage("Czy na pewno chcesz usunąć przedmiot " + subjectsList.get(0).getSubject_name() + "? Usunięcie przedmiotu usunie wszystkie przypisane do niego zadania!");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Tak", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    NotificationSender notificationSender = new NotificationSender(view.getContext());
+                    List<Responsibility> responsibilities = db.profileDao().getResponsibilityWithSubjectId(subjectsList.get(0).subject_id);
+
+                    for (Responsibility resp : responsibilities) {
+                        notificationSender.cancelNotification(db.profileDao().getNotificationId(resp.getResp_id(), "Reminder"));
+                        notificationSender.cancelNotification(db.profileDao().getNotificationId(resp.getResp_id(), "Delay"));
+                        db.profileDao().deleteNotificationById(db.profileDao().getNotificationId(resp.getResp_id(), "Reminder"));
+                        db.profileDao().deleteNotificationById(db.profileDao().getNotificationId(resp.getResp_id(), "Delay"));
+                        db.profileDao().deleteResponsibility(resp.getResp_id());
+                    }
+
+                    db.profileDao().deleteSubject(subjectId);
+                    returnToView();
+                    dialog.dismiss();
+                });
+
+                builder.setNegativeButton("Nie", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    dialog.cancel();
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+
             }
         });
 

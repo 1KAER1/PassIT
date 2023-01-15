@@ -70,6 +70,9 @@ public interface ProfileDao {
     @Insert
     void insertNote(Note... notes);
 
+    @Query("DELETE FROM Note WHERE note_id = :noteId")
+    void deleteNoteWithId(int noteId);
+
     @Query("SELECT * FROM Note WHERE note_id = :noteId")
     List<Note> getNoteWithId(int noteId);
 
@@ -239,6 +242,9 @@ public interface ProfileDao {
     @Query("DELETE FROM Responsibility WHERE resp_id = :respId")
     void deleteResponsibility(int respId);
 
+    @Query("DELETE FROM Responsibility WHERE subject_id = :subjectId")
+    void deleteResponsibilityWithSubject(int subjectId);
+
     @Query("UPDATE Responsibility SET finished = 1 WHERE resp_id = :respId")
     void setFinishedResponsibility(int respId);
 
@@ -256,6 +262,9 @@ public interface ProfileDao {
 
     @Query("SELECT * FROM Responsibility WHERE resp_id = :respId")
     List<Responsibility> getResponsibilityWithId(int respId);
+
+    @Query("SELECT * FROM Responsibility WHERE subject_id = :subjectId")
+    List<Responsibility> getResponsibilityWithSubjectId(int subjectId);
 
     @Query("SELECT * FROM Responsibility WHERE date_due = :dateDue")
     List<Responsibility> getResponsibilityWithDate(String dateDue);

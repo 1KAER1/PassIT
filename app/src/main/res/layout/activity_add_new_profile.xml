@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     tools:context=".AddNewProfile">
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="20dp"
         android:text="Dodaj nowy profil"
         android:textColor="@color/textColor"
         android:textSize="26sp"
@@ -20,43 +22,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/noteTitle"
-        android:layout_width="300dp"
-        android:layout_height="65dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/noteTitle1"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Nazwa profilu"
-        android:digits="abcdefghijklmnopqrstuvwxyzęóąśłżźćń ABCDEFGHIJKLMNOPQRSTUVWXYZĘÓĄŚŁŻŹĆŃ"
-        android:inputType="textPersonName"
-        android:textAlignment="center"
-        android:textColor="@color/textColor"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/custom_textview"
+        android:hint="Nazwa kierunku"
         android:textColorHint="@color/hintColor"
-        android:textSize="26sp"
+        app:counterEnabled="true"
+        app:counterMaxLength="70"
+        app:counterTextColor="@color/hintColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12">
 
-    <EditText
-        android:id="@+id/semesterET"
-        android:layout_width="300dp"
-        android:layout_height="65dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/noteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="70"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/semesterET2"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:gravity="center"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/custom_textview"
         android:hint="Semestr"
-        android:inputType="numberDecimal"
-        android:textAlignment="center"
-        android:textColor="@color/textColor"
         android:textColorHint="@color/hintColor"
-        android:textSize="26sp"
+        app:counterEnabled="true"
+        app:counterMaxLength="1"
+        app:counterTextColor="@color/hintColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/noteTitle1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/semesterET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/addProfileBtn"
@@ -72,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/semesterET"
+        app:layout_constraintTop_toBottomOf="@+id/semesterET2"
         app:layout_constraintVertical_bias="0.054" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

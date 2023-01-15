@@ -1,6 +1,11 @@
 package com.example.passit.rvadapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -17,16 +22,25 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.passit.AppDatabase;
+import com.example.passit.NotificationSender;
 import com.example.passit.R;
 import com.example.passit.ResponsibilityInfo;
+import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
+import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 
 import java.util.List;
 
 public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActivityRVAdapter.ViewHolder> {
 
     private final List<Responsibility> responsibilitiesList;
+    private List<Notification> reminderNotification;
+    private List<Notification> delayNotification;
     private AppDatabase db;
+    private NotificationSender notificationSender;
+    private NotificationManager notificationManager;
+    private AlarmManager alarmManager;
+    private int reminderId, delayId;
 
     public CalendarActivityRVAdapter(List<Responsibility> responsibilitiesList) {
         this.responsibilitiesList = responsibilitiesList;
@@ -43,8 +57,19 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
     @Override
     public void onBindViewHolder(@NonNull CalendarActivityRVAdapter.ViewHolder holder, int position) {
         db = AppDatabase.getDbInstance(holder.respName.getContext());
+        notificationSender = new NotificationSender(holder.respName.getContext());
         int pos = holder.getAdapterPosition();
         int respId = responsibilitiesList.get(pos).getResp_id();
+
+        notificationManager = (NotificationManager) holder.respName.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        alarmManager = (AlarmManager) holder.respName.getContext().getSystemService(Context.ALARM_SERVICE);
+
+        reminderId = db.profileDao().getNotificationId(respId, "Reminder");
+        delayId = db.profileDao().getNotificationId(respId, "Delay");
+        Intent intent = new Intent(holder.respName.getContext(), ReminderBroadcast.class);
+
+        reminderNotification = db.profileDao().getNotificationById(reminderId);
+        delayNotification = db.profileDao().getNotificationById(delayId);
 
         holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n"
                 + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()) +
@@ -107,20 +132,28 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
             public void onClick(View view) {
                 if (db.profileDao().getResponsibilityState(respId)) {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_uncheck_24);
-                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.respName.setPaintFlags(holder.respName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     holder.respName.setBackgroundResource(R.color.cardBackground2);
-                    //holder.progressTV.setText("W trakcie");
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
                     db.profileDao().setUnfinishedResponsibility(respId);
+
+                    //RESEND NOTIFICATION
+                    notificationSender.sendNotification(reminderNotification.get(0).getTime_to_trigger(), reminderNotification.get(0).getResp_id(), reminderNotification.get(0).getNotification_type());
+                    notificationSender.sendNotification(delayNotification.get(0).getTime_to_trigger(), delayNotification.get(0).getResp_id(), delayNotification.get(0).getNotification_type());
+                    db.profileDao().deleteNotificationById(reminderId);
+                    db.profileDao().deleteNotificationById(delayId);
+                    reminderId = db.profileDao().getNotificationId(respId, "Reminder");
+                    delayId = db.profileDao().getNotificationId(respId, "Delay");
                 } else {
                     holder.markFinishedBtn.setBackgroundResource(R.drawable.ic_check_24);
-                    //holder.subjectName.setPaintFlags(holder.subjectName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.respName.setPaintFlags(holder.respName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.respName.setBackgroundResource(R.color.cardBackgroundFinished);
-                    //holder.progressTV.setText("Ukończone");
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
                     db.profileDao().setFinishedResponsibility(respId);
+
+                    //CANCEL NOTIFICATION
+                    notificationSender.cancelNotification(reminderId);
+                    notificationSender.cancelNotification(delayId);
                 }
             }
         });
@@ -128,20 +161,39 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.profileDao().deleteResponsibility(respId);
-                responsibilitiesList.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, responsibilitiesList.size());
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.respName.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                builder.setTitle("Usuń zadanie");
+                builder.setMessage("Czy na pewno chcesz usunąć " + responsibilitiesList.get(pos).getResp_name() + "?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Tak", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    notificationSender.cancelNotification(reminderId);
+                    notificationSender.cancelNotification(delayId);
+                    db.profileDao().deleteNotificationById(reminderId);
+                    db.profileDao().deleteNotificationById(delayId);
+                    db.profileDao().deleteResponsibility(respId);
+                    responsibilitiesList.remove(pos);
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, responsibilitiesList.size());
+                    dialog.dismiss();
+                });
+
+                builder.setNegativeButton("Nie", (DialogInterface.OnClickListener) (dialog, which) -> {
+
+                    dialog.cancel();
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), ResponsibilityInfo.class);
+            Intent intent2 = new Intent(view.getContext(), ResponsibilityInfo.class);
             Bundle bundle = new Bundle();
             bundle.putInt("respId", respId);
             bundle.putString("calendar", "isCalendar");
-            intent.putExtras(bundle);
-            view.getContext().startActivity(intent);
+            intent2.putExtras(bundle);
+            view.getContext().startActivity(intent2);
         });
     }
 

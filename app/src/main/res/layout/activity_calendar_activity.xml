@@ -12,12 +12,12 @@
         android:id="@+id/calendarID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_textview"
+        android:dateTextAppearance="@style/CalenderViewDateCustomText"
+        android:theme="@style/CalenderViewCustom"
+        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        android:background="@drawable/custom_textview"
-        android:theme="@style/CalenderViewCustom"
-        android:dateTextAppearance="@style/CalenderViewDateCustomText"
-        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
