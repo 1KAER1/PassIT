@@ -4,7 +4,6 @@ import androidx.room.Embedded;
 import androidx.room.Relation;
 
 import com.example.passit.db.entities.Subject;
-import com.example.passit.db.entities.Task;
 
 import java.util.List;
 

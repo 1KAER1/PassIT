@@ -6,33 +6,24 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.passit.db.entities.LessonDate;
-import com.example.passit.db.entities.Lesson;
 import com.example.passit.db.entities.Note;
 import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
-import com.example.passit.db.entities.Task;
-import com.example.passit.db.entities.Test;
 import com.example.passit.db.entities.User;
 
 @Database(
         entities = {
-                Lesson.class,
-                LessonDate.class,
                 Profile.class,
                 Subject.class,
                 Responsibility.class,
                 User.class,
-                Task.class,
-                Test.class,
                 Note.class,
                 Notification.class
         }, version = 1
 )
 public abstract class AppDatabase extends RoomDatabase {
-
     public abstract ProfileDao profileDao();
 
     private static AppDatabase INSTANCE;
@@ -43,5 +34,4 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-
 }

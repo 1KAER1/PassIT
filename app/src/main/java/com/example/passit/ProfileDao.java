@@ -5,16 +5,13 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
-import com.example.passit.db.entities.Lesson;
-import com.example.passit.db.entities.LessonDate;
 import com.example.passit.db.entities.Note;
 import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
-import com.example.passit.db.entities.Task;
-import com.example.passit.db.entities.Test;
 import com.example.passit.db.entities.User;
 import com.example.passit.db.relations.SubjectWithLessons;
 
@@ -23,13 +20,13 @@ import java.util.List;
 @Dao
 public interface ProfileDao {
 
-    @Query("SELECT * FROM subject")
-    List<Subject> getAllSubjects();
-
 
     //USER
     @Insert
     void insertUser(User... users);
+
+    @Update
+    void updateUser(User... users);
 
     @Query("SELECT user_name FROM User")
     String getUserName();
@@ -79,13 +76,15 @@ public interface ProfileDao {
     @Query("UPDATE Note SET note_title=:noteTitle, note_description=:noteDescription  WHERE note_id=:noteId")
     void updateNote(String noteTitle, String noteDescription, int noteId);
 
-
     //Subject
     @Insert
     void insertSubject(Subject... subjects);
 
     @Query("SELECT COUNT(subject_id) FROM Subject")
     int getSubjectCount();
+
+    @Query("SELECT * FROM subject")
+    List<Subject> getAllSubjects();
 
     @Query("SELECT COUNT(subject_id) FROM Subject WHERE passed = 1")
     int getPassedSubjectCount();
@@ -129,66 +128,6 @@ public interface ProfileDao {
             "ects_points=:ectsPoints WHERE subject_id=:subjectId")
     void updateSubject(String subjectName, String importance, String ectsPoints, boolean isLecture, boolean isExercise,
                        boolean isLab, int subjectId);
-
-    //Task
-    @Insert
-    void insertTask(Task... tasks);
-
-    @Query("UPDATE Task SET task_name=:taskName, importance=:importance, date_due=:dateDue, hour_due=:hourDue," +
-            " description=:description, subject_type=:subjectType, subject_id=:subjectId WHERE task_id=:taskId")
-    void updateTask(String taskName, String importance, String dateDue, String hourDue, String description, String subjectType,
-                    int subjectId, int taskId);
-
-    @Query("SELECT * FROM task")
-    List<Task> getAllTasks();
-
-    @Query("SELECT * FROM Task WHERE task_id = :taskId")
-    List<Task> getTaskWithId(int taskId);
-
-    @Query("DELETE FROM Task WHERE task_id = :taskId")
-    void deleteTask(int taskId);
-
-    @Query("UPDATE Task SET finished = 1 WHERE task_id = :taskId")
-    void setFinishedTask(int taskId);
-
-    @Query("UPDATE Task SET finished = 0 WHERE task_id = :taskId")
-    void setUnfinishedTask(int taskId);
-
-    @Query("SELECT finished FROM Task WHERE task_id = :taskId")
-    boolean getTaskState(int taskId);
-
-    //Test
-    @Insert
-    void insertTest(Test... tests);
-
-    @Delete
-    void deleteTest(Test... test);
-
-    @Query("SELECT * FROM Test")
-    List<Test> getAllTests();
-
-    @Query("UPDATE Test SET test_name=:testName, importance=:importance, date_due=:dateDue, hour_due=:hourDue," +
-            " description=:description, subject_type=:subjectType, subject_id=:subjectId WHERE test_id=:testId")
-    void updateTest(String testName, String importance, String dateDue, String hourDue, String description, String subjectType,
-                    int subjectId, int testId);
-
-    @Query("DELETE FROM Test WHERE test_id = :testId")
-    void deleteTest(int testId);
-
-    @Query("UPDATE Test SET passed = 1 WHERE test_id = :testId")
-    void setPassedTest(int testId);
-
-    @Query("UPDATE Test SET passed = 0 WHERE test_id = :testId")
-    void setUnfinishedTest(int testId);
-
-    @Query("SELECT passed FROM Test WHERE test_id = :testId")
-    boolean getTestState(int testId);
-
-    @Query("SELECT * FROM Test WHERE test_id = :testId")
-    List<Test> getTestWithId(int testId);
-
-    @Query("SELECT * FROM Test WHERE importance = :importance")
-    List<Test> getTestsWithImportance(String importance);
 
     //NOTIFICATION
     @Insert
@@ -272,7 +211,6 @@ public interface ProfileDao {
     @Query("SELECT date_due FROM Responsibility")
     List<String> getResponsibilitiesDates();
 
-
     @Query("SELECT date_due FROM Responsibility WHERE delayed = 0 AND finished = 0")
     List<String> getUndelayedResponsibilitiesDates();
 
@@ -284,35 +222,4 @@ public interface ProfileDao {
 
     @Query("SELECT * FROM Responsibility WHERE importance = :importance")
     List<Responsibility> getResponsibilitiesWithImportance(String importance);
-
-
-    //Lesson
-    @Insert
-    void insertLesson(Lesson... lessons);
-
-    @Delete
-    void deleteLesson(Lesson... lesson);
-
-    @Query("SELECT * FROM Lesson WHERE subject_id = :subjectId AND lesson_type = :lessonType")
-    List<Lesson> getLessonWithId(int subjectId, String lessonType);
-
-    @Query("SELECT lesson_id FROM Lesson WHERE lesson_type = :lessonType AND subject_id = :subjectId")
-    int getLessonId(String lessonType, int subjectId);
-
-    //LessonDate
-    @Insert
-    void insertLessonDate(LessonDate... lessonDates);
-
-    @Delete
-    void deleteLessonDate(LessonDate... lessonDate);
-
-    @Transaction
-    @Query("SELECT * FROM Subject")
-    List<SubjectWithLessons> getSubjectWithLessons();
-
-    //Lesson Date
-    @Query("SELECT * FROM LessonDate WHERE lesson_id = :lessonId")
-    List<LessonDate> getLessonDate(int lessonId);
-
-
 }
