@@ -3,12 +3,18 @@ package com.example.passit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
@@ -30,7 +36,8 @@ public class ResponsibilityInfo extends AppCompatActivity {
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
     private List<Notification> reminderNotification = new ArrayList<>();
     private List<Notification> delayNotification = new ArrayList<>();
-    private Button deleteBtn, editBtn, finishBtn, returnBtn;
+    private Button deleteBtn, editBtn, finishBtn, returnBtn, fileExplorer;
+    private String savedFileUri;
     private boolean editedDate = false;
     private int reminderId, delayId;
 
@@ -65,6 +72,7 @@ public class ResponsibilityInfo extends AppCompatActivity {
         editBtn = findViewById(R.id.editBtn);
         finishBtn = findViewById(R.id.markFinishedBtn);
         returnBtn = findViewById(R.id.returnBtn);
+        fileExplorer = findViewById(R.id.fileExplorer);
         importanceCircle = findViewById(R.id.importanceCircle);
         dateDueTIL = findViewById(R.id.dateDueId);
 
@@ -152,12 +160,39 @@ public class ResponsibilityInfo extends AppCompatActivity {
             }
         });
 
+        fileExplorer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (savedFileUri != null) {
+                    Uri fileUri = Uri.parse(savedFileUri);
+
+                    ContentResolver contentResolver = view.getContext().getContentResolver();
+                    MimeTypeMap mime = MimeTypeMap.getSingleton();
+                    String type = contentResolver.getType(fileUri);
+                    Intent openFile = new Intent(Intent.ACTION_VIEW, fileUri);
+                    startActivity(openFile);
+                } else {
+                    Toast.makeText(view.getContext(), "Nie dodano żadnego pliku!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     public void fillInfo() {
         String dateWithHour = responsibilitiesList.get(0).getDate_due() + "  " + responsibilitiesList.get(0).getHour_due();
         String assignedSubject = db.profileDao().getSubjectName(responsibilitiesList.get(0).getSubject_id()) + "\n("
                 + responsibilitiesList.get(0).getSubject_type() + ")";
+
+        savedFileUri = responsibilitiesList.get(0).getFileUri();
+
+        if (savedFileUri == null) {
+            fileExplorer.setTextColor(Color.parseColor("#686868"));
+            fileExplorer.setText("Brak pliku z zadaniem");
+            fileExplorer.setBackgroundResource(R.drawable.disabled_button);
+            fileExplorer.setEnabled(false);
+        }
 
         respNameTV.setText(responsibilitiesList.get(0).getResp_name());
         switch (responsibilitiesList.get(0).getResponsibility_type()) {

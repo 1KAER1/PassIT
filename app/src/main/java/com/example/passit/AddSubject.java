@@ -31,6 +31,7 @@ public class AddSubject extends AppCompatActivity {
     private RadioButton normalImportance, mediumImportance, highImportance;
     private List<Subject> subjectList = new ArrayList<>();
     private AppDatabase db;
+    private long pressedTime;
 
 
     @Override
@@ -190,6 +191,31 @@ public class AddSubject extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
 
         returnToInfo();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (isEdit) {
+            Intent intent = new Intent(this, SubjectDetails.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("subjectId", subjectId);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } else {
+            if (pressedTime + 2000 > System.currentTimeMillis()) {
+                Intent intent = new Intent(this, SubjectsView.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Kliknij jeszcze raz, aby opuścić. Dane nie zostaną zapisane.", Toast.LENGTH_SHORT).show();
+            }
+            pressedTime = System.currentTimeMillis();
+        }
+    }
+
+    public void returnToView() {
+        Intent intent = new Intent(this, SubjectsView.class);
+        startActivity(intent);
     }
 
     public void returnToInfo() {

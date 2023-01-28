@@ -13,7 +13,6 @@ import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.db.entities.User;
-import com.example.passit.db.relations.SubjectWithLessons;
 
 import java.util.List;
 
@@ -174,8 +173,8 @@ public interface ProfileDao {
     int getTestCount();
 
     @Query("UPDATE Responsibility SET resp_name=:respName, responsibility_type=:respType,importance=:importance, date_due=:dateDue, hour_due=:hourDue," +
-            " description=:description, subject_type=:subjectType, subject_id=:subjectId WHERE resp_id=:respId")
-    void updateResponsibility(String respName, String respType, String importance, String dateDue, String hourDue, String description, String subjectType,
+            " description=:description, subject_type=:subjectType, fileUri=:fileUri ,subject_id=:subjectId WHERE resp_id=:respId")
+    void updateResponsibility(String respName, String respType, String importance, String dateDue, String hourDue, String description, String subjectType, String fileUri,
                               int subjectId, int respId);
 
     @Query("DELETE FROM Responsibility WHERE resp_id = :respId")

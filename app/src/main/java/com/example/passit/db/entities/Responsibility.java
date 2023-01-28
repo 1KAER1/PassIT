@@ -19,6 +19,8 @@ public class Responsibility {
     @Nullable
     public String description;
     public String subject_type;
+    @Nullable
+    public String fileUri;
     public boolean delayed;
     @ColumnInfo(defaultValue = "false")
     public boolean finished;
@@ -59,6 +61,11 @@ public class Responsibility {
 
     public String getSubject_type() {
         return subject_type;
+    }
+
+    @Nullable
+    public String getFileUri() {
+        return fileUri;
     }
 
     public boolean isFinished() {

@@ -9,8 +9,15 @@ import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notific
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -22,6 +29,8 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,10 +65,11 @@ public class AddResponsibility extends AppCompatActivity {
 
     private TextInputEditText respNameET, descET;
     private Spinner subjectSpinner, subjectTypeSpinner;
-    private Button datePickerButton, nextButton, timeButton;
+    private Button datePickerButton, nextButton, timeButton, filePicker;
     private RadioButton normalImportance, mediumImportance, highImportance, taskRB, testRB;
     private NotificationSender notificationSender;
     private int hour, minute;
+    private String savedFileUri;
     private List<String> subjectsList = new ArrayList<>();
     private List<String> subjectTypeList = new ArrayList<>();
     private List<Responsibility> respList = new ArrayList<>();
@@ -68,6 +78,7 @@ public class AddResponsibility extends AppCompatActivity {
     private long pressedTime;
     private int respId;
     private boolean isEdit, fromCalendar, fromMenu = false;
+    ActivityResultLauncher<Intent> resultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +115,27 @@ public class AddResponsibility extends AppCompatActivity {
         subjectSpinner = findViewById(R.id.assignedSubjectTV);
         subjectTypeSpinner = findViewById(R.id.subjectTypeSpinner);
         datePickerButton = findViewById(R.id.datePicker);
+        filePicker = findViewById(R.id.filePicker);
         timeButton = findViewById(R.id.timePicker);
         nextButton = findViewById(R.id.nextBtn);
         taskRB = findViewById(R.id.taskRB);
         testRB = findViewById(R.id.testRB);
+
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        Intent data = result.getData();
+
+                        if (data != null) {
+                            Uri fileUri = data.getData();
+                            savedFileUri = fileUri.toString();
+                            String path = fileUri.getPath();
+                        }
+                    }
+                }
+        );
 
         datePickerButton.setText(getTodaysDate());
         timeButton.setText(getCurrentTime());
@@ -126,6 +154,7 @@ public class AddResponsibility extends AppCompatActivity {
             respNameET.setText(respList.get(0).getResp_name());
             datePickerButton.setText(respList.get(0).getDate_due());
             timeButton.setText(respList.get(0).getHour_due());
+            savedFileUri = respList.get(0).getFileUri();
             descET.setText(respList.get(0).getDescription());
 
             switch (respList.get(0).getImportance()) {
@@ -190,6 +219,16 @@ public class AddResponsibility extends AppCompatActivity {
 
         timeButton.setOnClickListener(view -> popTimePicker());
         datePickerButton.setOnClickListener(this::openDatePicker);
+        filePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ActivityCompat.checkSelfPermission(AddResponsibility.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(AddResponsibility.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                } else {
+                    selectFile();
+                }
+            }
+        });
 
         respNameET.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
@@ -210,6 +249,23 @@ public class AddResponsibility extends AppCompatActivity {
                 addResponsibilityToDatabase();
             }
         });
+    }
+
+    public void selectFile() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/pdf");
+        resultLauncher.launch(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            selectFile();
+        } else {
+            Toast.makeText(getApplicationContext(), "Odmówiono dostępu do plików", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void hideKeyboard(View view) {
@@ -296,13 +352,15 @@ public class AddResponsibility extends AppCompatActivity {
 
     public void updateResponsibility() {
         if (checkInput()) {
-            db.profileDao().updateResponsibility(respNameET.getText().toString(),
+            db.profileDao().updateResponsibility(
+                    respNameET.getText().toString(),
                     checkResponsibilityType(),
                     checkImportanceSelection(),
                     datePickerButton.getText().toString(),
                     timeButton.getText().toString(),
                     descET.getText().toString(),
                     subjectTypeSpinner.getSelectedItem().toString(),
+                    savedFileUri,
                     db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
                     respId);
             int reminderId = db.profileDao().getNotificationId(respId, "Reminder");
@@ -397,6 +455,7 @@ public class AddResponsibility extends AppCompatActivity {
         responsibility.date_due = datePickerButton.getText().toString();
         responsibility.hour_due = timeButton.getText().toString();
         responsibility.description = descET.getText().toString();
+        responsibility.fileUri = savedFileUri;
         responsibility.subject_type = subjectTypeSpinner.getSelectedItem().toString();
         responsibility.subject_id = db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString());
         return responsibility;
