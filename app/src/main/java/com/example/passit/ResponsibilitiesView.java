@@ -48,6 +48,7 @@ public class ResponsibilitiesView extends AppCompatActivity {
     private AppDatabase db;
     @SuppressLint("SimpleDateFormat")
     final DateFormat format = new SimpleDateFormat("d/MM/yyyy");
+    final DateFormat format2 = new SimpleDateFormat("d/MM/yyyy HH:mm");
 
 
     @Override
@@ -88,16 +89,26 @@ public class ResponsibilitiesView extends AppCompatActivity {
                         break;
                     case 1:
                         responsibilitiesList = db.profileDao().getHighImportanceResponsibilities();
-                        responsibilitiesList.addAll(db.profileDao().getMediumImportanceResponsibilities());
-                        responsibilitiesList.addAll(db.profileDao().getNormalImportanceResponsibilities());
+                        sortRespDates(responsibilitiesList);
+                        List<Responsibility> responsibilitiesListTmp1 = db.profileDao().getMediumImportanceResponsibilities();
+                        sortRespDates(responsibilitiesListTmp1);
+                        responsibilitiesList.addAll(responsibilitiesListTmp1);
+                        List<Responsibility> responsibilitiesListTmp2 = db.profileDao().getNormalImportanceResponsibilities();
+                        sortRespDates(responsibilitiesListTmp2);
+                        responsibilitiesList.addAll(responsibilitiesListTmp2);
                         checkResponsibilitiesDelay();
                         adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
                         recyclerView.setAdapter(adapter);
                         break;
                     case 2:
                         responsibilitiesList = db.profileDao().getNormalImportanceResponsibilities();
-                        responsibilitiesList.addAll(db.profileDao().getMediumImportanceResponsibilities());
-                        responsibilitiesList.addAll(db.profileDao().getHighImportanceResponsibilities());
+                        sortRespDates(responsibilitiesList);
+                        List<Responsibility> responsibilitiesListTmp3 = db.profileDao().getMediumImportanceResponsibilities();
+                        sortRespDates(responsibilitiesListTmp3);
+                        responsibilitiesList.addAll(responsibilitiesListTmp3);
+                        List<Responsibility> responsibilitiesListTmp4 = db.profileDao().getHighImportanceResponsibilities();
+                        sortRespDates(responsibilitiesListTmp4);
+                        responsibilitiesList.addAll(responsibilitiesListTmp4);
                         checkResponsibilitiesDelay();
                         adapter = new ResponsibilitiesRVAdapter(responsibilitiesList);
                         recyclerView.setAdapter(adapter);
@@ -186,7 +197,7 @@ public class ResponsibilitiesView extends AppCompatActivity {
     public void sortRespDates(List<Responsibility> responsibilityLisT) {
         responsibilityLisT.sort((o1, o2) -> {
             try {
-                return Objects.requireNonNull(format.parse(o1.date_due)).compareTo(format.parse(o2.date_due));
+                return Objects.requireNonNull(format2.parse(o1.date_due + " " + o1.hour_due)).compareTo(format2.parse(o2.date_due + " " + o2.hour_due));
             } catch (ParseException e) {
                 throw new IllegalArgumentException(e);
             }

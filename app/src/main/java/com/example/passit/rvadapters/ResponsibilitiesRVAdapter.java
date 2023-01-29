@@ -80,7 +80,7 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
 
         holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n"
                 + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()) +
-                "\n\n\nTermin: " + responsibilitiesList.get(pos).getDate_due());
+                "\n\n\nTermin: " + responsibilitiesList.get(pos).getDate_due() + ", " + responsibilitiesList.get(pos).getHour_due());
         holder.respName.setBackgroundResource(R.color.cardBackground2);
 
         switch (responsibilitiesList.get(pos).getResponsibility_type()) {
