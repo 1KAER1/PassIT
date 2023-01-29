@@ -30,6 +30,8 @@ public interface ProfileDao {
     @Query("SELECT user_name FROM User")
     String getUserName();
 
+    @Query("SELECT * FROM User ORDER BY user_id DESC LIMIT 1")
+    int getLastUserId();
     //Profile
     @Insert
     void insertProfile(Profile... profiles);

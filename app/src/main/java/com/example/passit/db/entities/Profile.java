@@ -18,6 +18,7 @@ public class Profile {
     public String profile_name;
     public int semester;
     public boolean isActive;
+    public int user_id;
 
     public int getProfile_id() {
         return profile_id;

@@ -99,6 +99,7 @@ public class AddNewProfile extends AppCompatActivity {
         Profile profile = new Profile();
         profile.profile_name = profileName;
         profile.semester = Integer.parseInt(semesterET.getText().toString());
+        profile.user_id = db.profileDao().getLastUserId();
         db.profileDao().deactivateProfiles();
         db.profileDao().insertProfile(profile);
         db.profileDao().activateProfile(profileName);
