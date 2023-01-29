@@ -80,7 +80,7 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
 
         holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n"
                 + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()) +
-                "\n\n\nTermin: " + responsibilitiesList.get(pos).getDate_due() + ", " + responsibilitiesList.get(pos).getHour_due());
+                "\n\nTermin:\n" + responsibilitiesList.get(pos).getDate_due() + ", " + responsibilitiesList.get(pos).getHour_due());
         holder.respName.setBackgroundResource(R.color.cardBackground2);
 
         switch (responsibilitiesList.get(pos).getResponsibility_type()) {
@@ -162,7 +162,6 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
                     db.profileDao().setFinishedResponsibility(respId);
 
-                    //CANCEL NOTIFICATION
                     notificationSender.cancelNotification(reminderId);
                     notificationSender.cancelNotification(delayId);
                 }
@@ -196,15 +195,6 @@ public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<Responsibili
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-
-                /*notificationSender.cancelNotification(reminderId);
-                notificationSender.cancelNotification(delayId);
-                db.profileDao().deleteNotificationById(reminderId);
-                db.profileDao().deleteNotificationById(delayId);
-                db.profileDao().deleteResponsibility(respId);
-                responsibilitiesList.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, responsibilitiesList.size());*/
             }
         });
 

@@ -12,6 +12,7 @@
         android:id="@+id/calendarID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         app:abbreviationsBarColor="@color/accentColor"
         app:abbreviationsLabelsColor="@color/white"
         app:anotherMonthsDaysLabelsColor="@color/accentColor"
@@ -26,14 +27,19 @@
         app:pagesColor="@color/background"
         app:selectionColor="@color/underlineColor"
         app:selectionLabelColor="@color/white"
-        app:todayLabelColor="@color/underlineColor"
-        app:type="many_days_picker" />
+        app:swipeEnabled="true"
+        app:todayLabelColor="@color/underlineColor" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/respRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        android:fadeScrollbars="false"
+        android:orientation="horizontal"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarThumbHorizontal="@drawable/recyclerview_scrollbar"
+        android:scrollbars="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

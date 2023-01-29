@@ -73,7 +73,7 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
 
         holder.respName.setText(responsibilitiesList.get(pos).getResp_name() + "\n"
                 + db.profileDao().getSubjectName(responsibilitiesList.get(pos).getSubject_id()) +
-                "\n\n\nTermin: " + responsibilitiesList.get(pos).getDate_due());
+                "\n\n\nTermin: " + responsibilitiesList.get(pos).getDate_due() + ", " + responsibilitiesList.get(pos).getHour_due());
         holder.respName.setBackgroundResource(R.color.cardBackground2);
 
         switch (responsibilitiesList.get(pos).getResponsibility_type()) {
@@ -137,7 +137,6 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.white));
                     db.profileDao().setUnfinishedResponsibility(respId);
 
-                    //RESEND NOTIFICATION
                     notificationSender.sendNotification(reminderNotification.get(0).getTime_to_trigger(), reminderNotification.get(0).getResp_id(), reminderNotification.get(0).getNotification_type());
                     notificationSender.sendNotification(delayNotification.get(0).getTime_to_trigger(), delayNotification.get(0).getResp_id(), delayNotification.get(0).getNotification_type());
                     db.profileDao().deleteNotificationById(reminderId);
@@ -151,7 +150,6 @@ public class CalendarActivityRVAdapter extends RecyclerView.Adapter<CalendarActi
                     holder.progressTV.setTextColor(ContextCompat.getColor(holder.respName.getContext(), R.color.normalImportance));
                     db.profileDao().setFinishedResponsibility(respId);
 
-                    //CANCEL NOTIFICATION
                     notificationSender.cancelNotification(reminderId);
                     notificationSender.cancelNotification(delayId);
                 }
