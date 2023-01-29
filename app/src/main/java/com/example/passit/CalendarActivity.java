@@ -6,14 +6,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.CalendarView;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.rvadapters.CalendarActivityRVAdapter;
-import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,13 +31,17 @@ import java.util.Objects;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    private CalendarView calendar;
+    private CalendarView calendarView;
     private AppDatabase db;
     private RecyclerView recyclerView;
     private List<Responsibility> responsibilitiesList = new ArrayList<>();
+    private List<Responsibility> responsibilitiesList2 = new ArrayList<>();
     private CalendarActivityRVAdapter adapter;
     private String selectedDate;
     private boolean specificDate = false;
+    List<Calendar> datesToHighlight = new ArrayList<>();
+    @SuppressLint("SimpleDateFormat")
+    SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -41,7 +53,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         db = AppDatabase.getDbInstance(this);
 
-        calendar = findViewById(R.id.calendarID);
+        calendarView = (CalendarView) findViewById(R.id.calendarID);
         recyclerView = findViewById(R.id.respRV);
 
         Bundle extras = getIntent().getExtras();
@@ -49,8 +61,12 @@ public class CalendarActivity extends AppCompatActivity {
             selectedDate = extras.getString("editedDate");
             specificDate = true;
             try {
-                calendar.setDate(Objects.requireNonNull(new SimpleDateFormat("dd/MM/yyyy").parse(selectedDate)).getTime(), true, true);
-            } catch (ParseException e) {
+                Calendar calendar = Calendar.getInstance();
+                Date date = sdf.parse(selectedDate);
+                assert date != null;
+                calendar.setTime(date);
+                calendarView.setDate(calendar);
+            } catch (ParseException | OutOfDateRangeException e) {
                 e.printStackTrace();
             }
         }
@@ -60,22 +76,50 @@ public class CalendarActivity extends AppCompatActivity {
         } else {
             responsibilitiesList = db.profileDao().getResponsibilityWithDate(getTodaysDate());
         }
+
+        try {
+            responsibilitiesList2 = db.profileDao().getAllResponsibilities();
+            datesToHighlight = convertDatesToCalendar(responsibilitiesList2);
+            calendarView.setHighlightedDays(datesToHighlight);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         adapter = new CalendarActivityRVAdapter(responsibilitiesList);
         recyclerView.setAdapter(adapter);
 
-        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                month++;
-
-                String date = day + "/" + month + "/" + year;
-                /*Toast.makeText(getApplicationContext(), "Wybrana data: " + date,
-                        Toast.LENGTH_SHORT).show();*/
-                responsibilitiesList = db.profileDao().getResponsibilityWithDate(date);
-                adapter = new CalendarActivityRVAdapter(responsibilitiesList);
-                recyclerView.setAdapter(adapter);
-            }
+        calendarView.setOnDayClickListener(eventDay -> {
+            long dateInMillis = eventDay.getCalendar().getTimeInMillis();
+            Date sDate = new Date(dateInMillis);
+            String date = sdf.format(sDate);
+            responsibilitiesList = db.profileDao().getResponsibilityWithDate(date);
+            adapter = new CalendarActivityRVAdapter(responsibilitiesList);
+            recyclerView.setAdapter(adapter);
         });
+    }
+
+    private List<Calendar> convertDatesToCalendar(List<Responsibility> responsibilitiesList) throws ParseException {
+        List<Calendar> calendars = new ArrayList<>();
+        List<EventDay> events = new ArrayList<>();
+
+        for (Responsibility resp : responsibilitiesList) {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d/MM/yyyy");
+            Date date1 = sdf.parse(resp.getDate_due());
+            Calendar calendar = Calendar.getInstance();
+            assert date1 != null;
+            calendar.setTime(date1);
+            calendars.add(calendar);
+
+            events.add(new EventDay(calendar, R.drawable.ic_highlight));
+        }
+
+        calendarView.setEvents(events);
+        return calendars;
+    }
+
+    public String getSelectedDate() {
+        return selectedDate;
     }
 
     private String getTodaysDate() {

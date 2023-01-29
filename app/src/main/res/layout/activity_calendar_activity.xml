@@ -8,18 +8,26 @@
     android:background="@color/background"
     tools:context=".CalendarActivity">
 
-    <CalendarView
+    <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_textview"
-        android:dateTextAppearance="@style/CalenderViewDateCustomText"
-        android:theme="@style/CalenderViewCustom"
-        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+        app:abbreviationsBarColor="@color/accentColor"
+        app:abbreviationsLabelsColor="@color/white"
+        app:anotherMonthsDaysLabelsColor="@color/accentColor"
+        app:datePicker="true"
+        app:daysLabelsColor="@color/white"
+        app:eventsEnabled="true"
+        app:headerColor="@color/background"
+        app:highlightedDaysLabelsColor="@color/teal_200"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:pagesColor="@color/background"
+        app:selectionColor="@color/underlineColor"
+        app:selectionLabelColor="@color/white"
+        app:todayLabelColor="@color/underlineColor"
+        app:type="many_days_picker" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/respRV"

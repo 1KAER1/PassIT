@@ -22,4 +22,31 @@
         <item>Tylko mało ważne</item>
     </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="material_calendar_monday">P</string>
+    <string name="material_calendar_tuesday">W</string>
+    <string name="material_calendar_wednesday">Ś</string>
+    <string name="material_calendar_thursday">C</string>
+    <string name="material_calendar_friday">P</string>
+    <string name="material_calendar_saturday">S</string>
+    <string name="material_calendar_sunday">N</string>
+
+    <array name="material_calendar_months_array">
+        <item>Styczeń</item>
+        <item>Luty</item>
+        <item>Marzec</item>
+        <item>Kwiecień</item>
+        <item>May</item>
+        <item>Czerwiec</item>
+        <item>Lipiec</item>
+        <item>Sierpień</item>
+        <item>Wrzesień</item>
+        <item>Październik</item>
+        <item>Listopad</item>
+        <item>Grudzień</item>
+    </array>
+
+    <string name="material_calendar_today_button">Dzisiaj</string>
+    <string name="material_calendar_positive_button">OK</string>
+    <string name="material_calendar_negative_button">Anuluj</string>
 </resources>
