@@ -2,12 +2,6 @@ package com.example.passit;
 
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.channelID;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayChannelID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationText;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationTitle;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -328,25 +322,26 @@ public class AddResponsibility extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Responsibilities to do";
+            CharSequence name = "Przypomnienie o obowiązkach";
             String desc = "Used for reminding about responsibilities";
-
             CharSequence name2 = "Zaległe obowiązki";
             String desc2 = "Używane do powiadamiania o zaległych obowiązkach";
-
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(channelID, name, importance);
             channel.setDescription(desc);
-
             NotificationChannel channel2 = new NotificationChannel(delayChannelID, name2, importance);
             channel2.setDescription(desc2);
 
+            List<NotificationChannel> channels = new ArrayList<>();
+            channels.add(channel);
+            channels.add(channel2);
+
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-            notificationManager.createNotificationChannel(channel2);
+            notificationManager.createNotificationChannels(channels);
         }
     }
 

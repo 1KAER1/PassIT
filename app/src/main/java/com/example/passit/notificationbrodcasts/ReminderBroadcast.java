@@ -30,27 +30,19 @@ public class ReminderBroadcast extends BroadcastReceiver {
     public static String delayNotificationTitle = "notificationTitle";
     public static String delayNotificationText = "notificationText";
 
-    public static int delaysNotificationID = 3;
-    public static String delaysChannelID = "channel3";
-    public static String delaysNotificationTitle = "notificationTitle";
-    public static String delaysNotificationText = "notificationText";
+    public static int dailyNotificationID = 3;
+    public static String dailyChannelID = "channel3";
+    public static String dailyNotificationTitle = "notificationTitle3";
+    public static String dailyNotificationText = "notificationText3";
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        int id = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
-
         Notification builder = new NotificationCompat.Builder(context, channelID)
                 .setSmallIcon(R.drawable.ic_baseline_notes_24)
                 .setContentTitle(intent.getStringExtra(notificationTitle))
                 .setContentText(intent.getStringExtra(notificationText))
-                .build();
-
-        Notification delayNotification = new NotificationCompat.Builder(context, delayChannelID)
-                .setSmallIcon(R.drawable.ic_baseline_notes_24)
-                .setContentTitle(intent.getStringExtra(delayNotificationTitle))
-                .setContentText(intent.getStringExtra(delayNotificationText))
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

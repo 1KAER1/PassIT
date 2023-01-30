@@ -3,6 +3,8 @@ package com.example.passit;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationText;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationTitle;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -42,14 +44,17 @@ public class NotificationSender {
         } else if (notificationType.equals("Reminder")) {
             title = "Zbliża się termin oddania";
             message = "Ostateczny termin na oddanie \"" + respList.get(0).getResp_name() + "\":\n" + respList.get(0).getDate_due() + ", " + respList.get(0).getHour_due();
+        } else if (notificationType.equals("Daily")) {
+            title = "Coś do dodania?";
+            message = "Dodaj nowe zadania lub notatki, żeby o nich nie zapomnieć!";
         }
 
         addNotificationToDatabase(title, message, time, notificationType, responsibilityId, db);
 
         int notificationId = db.profileDao().getNotificationId(responsibilityId, notificationType);
         intent.putExtra(String.valueOf(notificationId), notificationId);
-        intent.putExtra(delayNotificationTitle, title);
-        intent.putExtra(delayNotificationText, message);
+        intent.putExtra(notificationTitle, title);
+        intent.putExtra(notificationText, message);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,

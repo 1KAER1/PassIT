@@ -1,5 +1,9 @@
 package com.example.passit;
 
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyChannelID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyNotificationID;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyNotificationText;
+import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyNotificationTitle;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayChannelID;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
@@ -15,6 +19,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         passedTV = findViewById(R.id.passedTV);
         taskNo = findViewById(R.id.taskNo);
         testNo = findViewById(R.id.testNo);
-        createNotificationChannel();
 
         db = AppDatabase.getDbInstance(this);
 
@@ -91,10 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (profilesList.isEmpty()) {
             addNewUser();
-        }
-
-        if (db.profileDao().getDailyNotification(notificationType) < 1) {
-            createDailyNotification();
         }
 
         userNameTV.setText("Cześć " + db.profileDao().getUserName() + "!");
@@ -166,64 +166,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (ParseException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public void createDailyNotification() {
-        Intent intent = new Intent(this, ReminderBroadcast.class);
-
-        String title, message;
-        title = "Coś do dodania?";
-        message = "Dodaj nowe zadania lub notatki, żeby o nich nie zapomnieć!";
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 15);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
-        addNotificationToDatabase(title, message, calendar.getTimeInMillis(), notificationType);
-
-        int notificationId = db.profileDao().getDailyNotification(notificationType);
-        intent.putExtra(String.valueOf(notificationId), notificationId);
-        intent.putExtra(notificationTitle, title);
-        intent.putExtra(notificationText, message);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getApplicationContext(),
-                delayNotificationID,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
-        );
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        alarmManager.setInexactRepeating(
-                AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY,
-                pendingIntent
-        );
-    }
-
-    public void addNotificationToDatabase(String title, String message, long time, String notificationType) {
-        Notification notification = new Notification();
-        notification.notification_type = notificationType;
-        notification.notification_title = title;
-        notification.notification_text = message;
-        notification.time_to_trigger = time;
-        System.out.println("Last added ID: " + db.profileDao().getLastRespId());
-        db.profileDao().insertNotification(notification);
-    }
-
-    private void createNotificationChannel() {
-        CharSequence name = "Delayed Responsibilities";
-        String desc = "Used for reminding about delayed responsibilities";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(delayChannelID, name, importance);
-        channel.setDescription(desc);
-
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
     }
 
     private String getCurrentTime() {
