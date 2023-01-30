@@ -294,27 +294,19 @@ public class AddResponsibility extends AppCompatActivity {
         try {
             @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
             Date date1 = sdf.parse(datePickerButton.getText().toString());
-            Date date2 = sdf.parse(getTodaysDate());
-            LocalTime hourDue = LocalTime.parse(timeButton.getText().toString());
-            LocalTime currentTime = LocalTime.parse(getCurrentTime());
+
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month - 1);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            calendar.set(Calendar.MINUTE, minute);
+            calendar.set(Calendar.SECOND, 0);
 
             assert date1 != null;
             if (notificationType.equals("Reminder")) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month - 1);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
                 calendar.set(Calendar.HOUR_OF_DAY, hour - 1);
-                calendar.set(Calendar.MINUTE, minute);
-                calendar.set(Calendar.SECOND, 0);
             } else if (notificationType.equals("Delay")) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month - 1);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
                 calendar.set(Calendar.HOUR_OF_DAY, hour);
-                calendar.set(Calendar.MINUTE, minute);
-                calendar.set(Calendar.SECOND, 0);
             }
-            return calendar.getTimeInMillis();
         } catch (ParseException ex) {
             ex.printStackTrace();
         }

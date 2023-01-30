@@ -38,15 +38,15 @@ public class NotificationSender {
         List<Responsibility> respList = db.profileDao().getResponsibilityWithId(responsibilityId);
 
 
-        if (notificationType.equals("Delay")) {
-            title = "Minął termin!";
-            message = "Minął termin na oddanie: \"" + respList.get(0).getResp_name() + "\":\nTermin na oddanie: " + respList.get(0).getDate_due() + ", " + respList.get(0).getHour_due();
-        } else if (notificationType.equals("Reminder")) {
-            title = "Zbliża się termin oddania";
-            message = "Ostateczny termin na oddanie \"" + respList.get(0).getResp_name() + "\":\n" + respList.get(0).getDate_due() + ", " + respList.get(0).getHour_due();
-        } else if (notificationType.equals("Daily")) {
-            title = "Coś do dodania?";
-            message = "Dodaj nowe zadania lub notatki, żeby o nich nie zapomnieć!";
+        switch (notificationType) {
+            case "Delay":
+                title = "Minął termin!";
+                message = "Minął termin na oddanie: \"" + respList.get(0).getResp_name() + "\":\nTermin na oddanie: " + respList.get(0).getDate_due() + ", " + respList.get(0).getHour_due();
+                break;
+            case "Reminder":
+                title = "Zbliża się termin oddania";
+                message = "Ostateczny termin na oddanie \"" + respList.get(0).getResp_name() + "\":\n" + respList.get(0).getDate_due() + ", " + respList.get(0).getHour_due();
+                break;
         }
 
         addNotificationToDatabase(title, message, time, notificationType, responsibilityId, db);
@@ -64,8 +64,6 @@ public class NotificationSender {
         );
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 time,
