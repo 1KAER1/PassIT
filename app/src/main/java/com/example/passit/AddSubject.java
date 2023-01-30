@@ -167,21 +167,21 @@ public class AddSubject extends AppCompatActivity {
 
     public void saveNewSubject(String subjectName, boolean isLecture, boolean isExercise, boolean isLab, int ectsPoints, String importance) {
         Subject subject = new Subject();
-        subject.subject_name = subjectName;
+        subject.subject_name = subjectName.trim();
         subject.is_lecture = isLecture;
         subject.is_exercise = isExercise;
         subject.is_lab = isLab;
         subject.ects_points = ectsPoints;
-        subject.importance = importance;
+        subject.importance = importance.trim();
         subject.profile_id = db.profileDao().getActiveProfile();
         db.profileDao().insertSubject(subject);
         finish();
     }
 
     public void updateSubject() {
-        db.profileDao().updateSubject(subjectName.getText().toString(),
-                checkImportanceSelection(),
-                ectsPointsET.getText().toString(),
+        db.profileDao().updateSubject(subjectName.getText().toString().trim(),
+                checkImportanceSelection().trim(),
+                ectsPointsET.getText().toString().trim(),
                 lectureCB.isChecked(),
                 exerciseCB.isChecked(),
                 labCB.isChecked(),

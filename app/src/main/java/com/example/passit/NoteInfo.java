@@ -125,8 +125,8 @@ public class NoteInfo extends AppCompatActivity {
     public void addNoteToDatabase() {
         if (checkInput()) {
             Note note = new Note();
-            note.note_title = noteTitle.getText().toString();
-            note.note_description = noteDescription.getText().toString();
+            note.note_title = noteTitle.getText().toString().trim();
+            note.note_description = noteDescription.getText().toString().trim();
             note.profile_id = db.profileDao().getActiveProfile();
             db.profileDao().insertNote(note);
             returnToView();
@@ -138,8 +138,9 @@ public class NoteInfo extends AppCompatActivity {
 
     public void updateNote() {
         if (checkInput()) {
-            db.profileDao().updateNote(noteTitle.getText().toString(),
-                    noteDescription.getText().toString(),
+            db.profileDao().updateNote(
+                    noteTitle.getText().toString().trim(),
+                    noteDescription.getText().toString().trim(),
                     noteId);
         } else {
             Toast.makeText(this, "Podaj tytuł notatki!",

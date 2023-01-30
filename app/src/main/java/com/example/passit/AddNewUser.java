@@ -71,7 +71,7 @@ public class AddNewUser extends AppCompatActivity {
         String userName = userNameET.getText().toString();
 
         User user = new User();
-        user.user_name = userName;
+        user.user_name = userName.trim();
         db.profileDao().insertUser(user);
 
         addNewProfile();

@@ -94,15 +94,15 @@ public class AddNewProfile extends AppCompatActivity {
 
     public void addDatabaseEntry() {
 
-        String profileName = profileNameET.getText().toString();
+        String profileName = profileNameET.getText().toString().trim();
 
         Profile profile = new Profile();
-        profile.profile_name = profileName;
-        profile.semester = Integer.parseInt(semesterET.getText().toString());
+        profile.profile_name = profileName.trim();
+        profile.semester = Integer.parseInt(semesterET.getText().toString().trim());
         profile.user_id = db.profileDao().getLastUserId();
         db.profileDao().deactivateProfiles();
         db.profileDao().insertProfile(profile);
-        db.profileDao().activateProfile(profileName);
+        db.profileDao().activateProfile(profileName.trim());
 
         returnToMainMenu();
     }
