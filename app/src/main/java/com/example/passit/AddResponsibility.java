@@ -341,14 +341,14 @@ public class AddResponsibility extends AppCompatActivity {
         if (checkInput()) {
             db.profileDao().updateResponsibility(
                     respNameET.getText().toString().trim(),
-                    checkResponsibilityType().trim(),
-                    checkImportanceSelection().trim(),
+                    checkResponsibilityType(),
+                    checkImportanceSelection(),
                     datePickerButton.getText().toString().trim(),
                     timeButton.getText().toString().trim(),
                     descET.getText().toString().trim(),
-                    subjectTypeSpinner.getSelectedItem().toString().trim(),
-                    savedFileUri.trim(),
-                    db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString().trim()),
+                    subjectTypeSpinner.getSelectedItem().toString(),
+                    savedFileUri,
+                    db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString()),
                     respId);
             int reminderId = db.profileDao().getNotificationId(respId, "Reminder");
             int delayId = db.profileDao().getNotificationId(respId, "Delay");
@@ -437,13 +437,13 @@ public class AddResponsibility extends AppCompatActivity {
     public Responsibility setupResponsibility() {
         Responsibility responsibility = new Responsibility();
         responsibility.resp_name = respNameET.getText().toString().trim();
-        responsibility.responsibility_type = checkResponsibilityType().trim();
-        responsibility.importance = checkImportanceSelection().trim();
-        responsibility.date_due = datePickerButton.getText().toString().trim();
-        responsibility.hour_due = timeButton.getText().toString().trim();
+        responsibility.responsibility_type = checkResponsibilityType();
+        responsibility.importance = checkImportanceSelection();
+        responsibility.date_due = datePickerButton.getText().toString();
+        responsibility.hour_due = timeButton.getText().toString();
         responsibility.description = descET.getText().toString().trim();
-        responsibility.fileUri = savedFileUri.trim();
-        responsibility.subject_type = subjectTypeSpinner.getSelectedItem().toString().trim();
+        responsibility.fileUri = savedFileUri;
+        responsibility.subject_type = subjectTypeSpinner.getSelectedItem().toString();
         responsibility.subject_id = db.profileDao().getSubjectId(subjectSpinner.getSelectedItem().toString());
         return responsibility;
     }
