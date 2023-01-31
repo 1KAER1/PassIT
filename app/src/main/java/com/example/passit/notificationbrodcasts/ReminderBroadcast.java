@@ -16,10 +16,6 @@ import java.util.Date;
 public class ReminderBroadcast extends BroadcastReceiver {
 
 
-    public static int delayedRespID = 3;
-    public static int summary_id = 0;
-
-    //1 HOUR BEFORE DEADLINE NOTIFICATION
     public static int notificationID = 1;
     public static String channelID = "channel1";
     public static String notificationTitle = "notificationTitle";
