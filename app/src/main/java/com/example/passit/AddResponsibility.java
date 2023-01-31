@@ -436,7 +436,7 @@ public class AddResponsibility extends AppCompatActivity {
 
     public Responsibility setupResponsibility() {
         Responsibility responsibility = new Responsibility();
-        responsibility.resp_name = respNameET.getText().toString().trim();
+        responsibility.resp_name = respNameET.getText().toString().replaceAll("\n", " ").replaceAll(" +", " ").trim();
         responsibility.responsibility_type = checkResponsibilityType();
         responsibility.importance = checkImportanceSelection();
         responsibility.date_due = datePickerButton.getText().toString();

@@ -68,10 +68,10 @@ public class AddNewUser extends AppCompatActivity {
 
     public void addDatabaseEntry() {
 
-        String userName = userNameET.getText().toString();
+        String userName = userNameET.getText().toString().replaceAll("\n", " ").replaceAll(" +", " ").trim();
 
         User user = new User();
-        user.user_name = userName.trim();
+        user.user_name = userName;
         db.profileDao().insertUser(user);
 
         addNewProfile();

@@ -60,6 +60,8 @@ public class AddSubject extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
 
+        ectsPointsET.setFilters(new android.text.InputFilter[]{new com.example.passit.InputFilter("0", "15")});
+
         subjectName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -167,21 +169,21 @@ public class AddSubject extends AppCompatActivity {
 
     public void saveNewSubject(String subjectName, boolean isLecture, boolean isExercise, boolean isLab, int ectsPoints, String importance) {
         Subject subject = new Subject();
-        subject.subject_name = subjectName.trim();
+        subject.subject_name = subjectName.replaceAll("\n", " ").replaceAll(" +", " ").trim();
         subject.is_lecture = isLecture;
         subject.is_exercise = isExercise;
         subject.is_lab = isLab;
         subject.ects_points = ectsPoints;
-        subject.importance = importance.trim();
+        subject.importance = importance;
         subject.profile_id = db.profileDao().getActiveProfile();
         db.profileDao().insertSubject(subject);
         finish();
     }
 
     public void updateSubject() {
-        db.profileDao().updateSubject(subjectName.getText().toString().trim(),
-                checkImportanceSelection().trim(),
-                ectsPointsET.getText().toString().trim(),
+        db.profileDao().updateSubject(subjectName.getText().toString().replaceAll("\n", " ").replaceAll(" +", " ").trim(),
+                checkImportanceSelection(),
+                ectsPointsET.getText().toString(),
                 lectureCB.isChecked(),
                 exerciseCB.isChecked(),
                 labCB.isChecked(),

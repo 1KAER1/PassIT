@@ -125,7 +125,7 @@ public class NoteInfo extends AppCompatActivity {
     public void addNoteToDatabase() {
         if (checkInput()) {
             Note note = new Note();
-            note.note_title = noteTitle.getText().toString().trim();
+            note.note_title = noteTitle.getText().toString().replaceAll("\n", " ").replaceAll(" +", " ").trim();
             note.note_description = noteDescription.getText().toString().trim();
             note.profile_id = db.profileDao().getActiveProfile();
             db.profileDao().insertNote(note);
@@ -139,7 +139,7 @@ public class NoteInfo extends AppCompatActivity {
     public void updateNote() {
         if (checkInput()) {
             db.profileDao().updateNote(
-                    noteTitle.getText().toString().trim(),
+                    noteTitle.getText().toString().replaceAll("\n", " ").replaceAll(" +", " ").trim(),
                     noteDescription.getText().toString().trim(),
                     noteId);
         } else {

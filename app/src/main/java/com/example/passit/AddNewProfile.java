@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -33,6 +34,8 @@ public class AddNewProfile extends AppCompatActivity {
         semesterET = findViewById(R.id.semesterET);
         addProfileBtn = findViewById(R.id.addProfileBtn);
         db = AppDatabase.getDbInstance(this);
+
+        semesterET.setFilters(new InputFilter[]{new com.example.passit.InputFilter("1", "10")});
 
         addProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,11 +97,11 @@ public class AddNewProfile extends AppCompatActivity {
 
     public void addDatabaseEntry() {
 
-        String profileName = profileNameET.getText().toString().trim();
+        String profileName = profileNameET.getText().toString().replaceAll("\n", " ").replaceAll(" +", " ").trim();
 
         Profile profile = new Profile();
-        profile.profile_name = profileName.trim();
-        profile.semester = Integer.parseInt(semesterET.getText().toString().trim());
+        profile.profile_name = profileName;
+        profile.semester = Integer.parseInt(semesterET.getText().toString());
         profile.user_id = db.profileDao().getLastUserId();
         db.profileDao().deactivateProfiles();
         db.profileDao().insertProfile(profile);
