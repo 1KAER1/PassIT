@@ -10,10 +10,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.rvadapters.SubjectsViewRVAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

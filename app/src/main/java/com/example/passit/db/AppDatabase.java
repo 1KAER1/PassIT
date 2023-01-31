@@ -1,4 +1,4 @@
-package com.example.passit;
+package com.example.passit.db;
 
 import android.content.Context;
 

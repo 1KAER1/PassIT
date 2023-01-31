@@ -10,8 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Note;
 import com.example.passit.rvadapters.NotesViewRVAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

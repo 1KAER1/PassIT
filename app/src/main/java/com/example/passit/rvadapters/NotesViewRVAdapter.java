@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.passit.AppDatabase;
+import com.example.passit.db.AppDatabase;
 import com.example.passit.NoteInfo;
 import com.example.passit.R;
 import com.example.passit.db.entities.Note;

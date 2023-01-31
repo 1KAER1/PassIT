@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
+import com.example.passit.helpers.NotificationSender;
 
 import java.util.ArrayList;
 import java.util.List;

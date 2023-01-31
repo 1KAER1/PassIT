@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.passit.AppDatabase;
+import com.example.passit.db.AppDatabase;
 import com.example.passit.R;
 import com.example.passit.ResponsibilityInfo;
 import com.example.passit.db.entities.Responsibility;

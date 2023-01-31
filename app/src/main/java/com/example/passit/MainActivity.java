@@ -1,38 +1,18 @@
 package com.example.passit;
 
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyChannelID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyNotificationID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyNotificationText;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.dailyNotificationTitle;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayChannelID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.passit.db.entities.Notification;
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Profile;
 import com.example.passit.db.entities.Responsibility;
-import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 import com.example.passit.rvadapters.ResponsibilitiesMainRVAdapter;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 

@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Subject;
+import com.example.passit.helpers.InputFilterMinMax;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class AddSubject extends AppCompatActivity {
         mediumImportance = findViewById(R.id.mediumImportance);
         highImportance = findViewById(R.id.highImportance);
 
-        ectsPointsET.setFilters(new android.text.InputFilter[]{new com.example.passit.InputFilter("0", "15")});
+        ectsPointsET.setFilters(new android.text.InputFilter[]{new InputFilterMinMax("0", "15")});
 
         subjectName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

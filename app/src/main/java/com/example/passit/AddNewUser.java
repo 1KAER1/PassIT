@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.passit.db.entities.Profile;
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.User;
 import com.google.android.material.textfield.TextInputEditText;
 

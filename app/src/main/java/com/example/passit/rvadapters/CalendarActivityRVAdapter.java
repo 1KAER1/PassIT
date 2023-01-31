@@ -17,12 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.passit.AppDatabase;
-import com.example.passit.NotificationSender;
+import com.example.passit.db.AppDatabase;
+import com.example.passit.helpers.NotificationSender;
 import com.example.passit.R;
 import com.example.passit.ResponsibilityInfo;
 import com.example.passit.db.entities.Notification;

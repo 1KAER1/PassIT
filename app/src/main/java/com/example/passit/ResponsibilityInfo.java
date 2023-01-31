@@ -9,15 +9,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
+import com.example.passit.helpers.NotificationSender;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 

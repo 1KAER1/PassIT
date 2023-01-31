@@ -18,6 +18,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 import com.example.passit.rvadapters.ResponsibilitiesRVAdapter;

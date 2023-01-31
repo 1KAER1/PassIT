@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Note;
 
 import java.util.ArrayList;

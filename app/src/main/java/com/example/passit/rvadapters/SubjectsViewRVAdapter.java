@@ -20,11 +20,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.passit.AppDatabase;
-import com.example.passit.NotificationSender;
+import com.example.passit.db.AppDatabase;
+import com.example.passit.helpers.NotificationSender;
 import com.example.passit.R;
 import com.example.passit.SubjectDetails;
-import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.db.entities.Subject;
 

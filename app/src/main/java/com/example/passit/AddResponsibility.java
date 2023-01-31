@@ -14,36 +14,29 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.passit.db.entities.Notification;
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Responsibility;
-import com.example.passit.notificationbrodcasts.ReminderBroadcast;
+import com.example.passit.helpers.NotificationSender;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -436,7 +429,9 @@ public class AddResponsibility extends AppCompatActivity {
 
     public Responsibility setupResponsibility() {
         Responsibility responsibility = new Responsibility();
+
         responsibility.resp_name = respNameET.getText().toString().replaceAll("\n", " ").replaceAll(" +", " ").trim();
+
         responsibility.responsibility_type = checkResponsibilityType();
         responsibility.importance = checkImportanceSelection();
         responsibility.date_due = datePickerButton.getText().toString();

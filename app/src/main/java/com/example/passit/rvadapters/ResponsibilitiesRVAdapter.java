@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +23,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.passit.AppDatabase;
-import com.example.passit.NotificationSender;
+import com.example.passit.db.AppDatabase;
+import com.example.passit.helpers.NotificationSender;
 import com.example.passit.R;
 import com.example.passit.ResponsibilityInfo;
 import com.example.passit.db.entities.Notification;
@@ -35,7 +33,6 @@ import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ResponsibilitiesRVAdapter extends RecyclerView.Adapter<ResponsibilitiesRVAdapter.ViewHolder> implements Filterable {
 

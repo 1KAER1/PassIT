@@ -1,8 +1,5 @@
-package com.example.passit;
+package com.example.passit.helpers;
 
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationID;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationText;
-import static com.example.passit.notificationbrodcasts.ReminderBroadcast.delayNotificationTitle;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationText;
 import static com.example.passit.notificationbrodcasts.ReminderBroadcast.notificationTitle;
 
@@ -13,12 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.passit.AddResponsibility;
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Notification;
 import com.example.passit.db.entities.Responsibility;
 import com.example.passit.notificationbrodcasts.ReminderBroadcast;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class NotificationSender {

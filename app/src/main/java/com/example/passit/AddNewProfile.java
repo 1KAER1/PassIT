@@ -9,10 +9,11 @@ import android.text.InputFilter;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.passit.db.AppDatabase;
 import com.example.passit.db.entities.Profile;
+import com.example.passit.helpers.InputFilterMinMax;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class AddNewProfile extends AppCompatActivity {
         addProfileBtn = findViewById(R.id.addProfileBtn);
         db = AppDatabase.getDbInstance(this);
 
-        semesterET.setFilters(new InputFilter[]{new com.example.passit.InputFilter("1", "10")});
+        semesterET.setFilters(new InputFilter[]{new InputFilterMinMax("1", "10")});
 
         addProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
