@@ -86,7 +86,6 @@ public class NotificationSender {
         notification.notification_text = message;
         notification.time_to_trigger = time;
         notification.resp_id = notificationRespId;
-        Log.d("MyTag77", "Title: " + title + " message: " + message + " TIME: " + time + "NOTIFICATION TYPE: " + notificationType + " RESP ID: " + notificationRespId);
         db.profileDao().insertNotification(notification);
     }
 }
